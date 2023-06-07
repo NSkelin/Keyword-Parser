@@ -1,0 +1,12 @@
+{
+  "extends": ["next/core-web-vitals", "prettier", "eslint:recommended"],
+  "rules": {
+    "semi": ["error", "always"],
+    "camelcase": ["error", {"properties": "always"}],
+    "quotes": ["error", "double"],
+    "func-call-spacing": ["error", "never"],
+    "arrow-spacing": ["error", {"before": true, "after": true}],
+    "no-trailing-spaces": ["error", {"skipBlankLines": false, "ignoreComments": false}],
+    "space-before-blocks": ["error", "always"]
+  }
+}
