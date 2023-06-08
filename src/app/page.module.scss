@@ -1,0 +1,46 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  width: 100%;
+  padding: 6rem;
+  min-height: 100vh;
+}
+.HighlightAreaWrap,
+.keywordsLists {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px gray;
+}
+.HighlightAreaWrap {
+  flex: 3;
+}
+.keywordsLists {
+  display: flex;
+  flex: 1;
+  gap: 20px;
+  li {
+    list-style: none;
+  }
+}
+.red {
+  background-color: #ffc9c9;
+}
+.blue {
+  background-color: #a3daff;
+}
+.yellow {
+  background-color: #ffec99;
+}
+
+.regExList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.plainRegEx {
+  background-color: white;
+  box-shadow: inset 1px 1px 1px gray;
+  padding: 20px;
+}
