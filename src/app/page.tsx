@@ -101,8 +101,8 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div style={{display: "flex", gap: "100px"}}>
-        <div className={styles.HighlightAreaWrap}>
-          <h2>Job Description</h2>
+        <section className={styles.HighlightAreaWrap}>
+          <h2>Text to parse</h2>
           <HighlightWithinTextarea
             value={value}
             highlight={[
@@ -121,8 +121,8 @@ export default function Home() {
             ]}
             onChange={onChange}
           />
-        </div>
-        <div className={styles.keywordsLists}>
+        </section>
+        <section className={styles.keywordsLists}>
           <KeywordDisplay keywords={sortMap(countKeywords(value, hardSkills))} title={"Hard Skills"} highlightColor="#ffc9c9" />
           <KeywordDisplay keywords={sortMap(countKeywords(value, softSkills))} title={"Soft Skills"} highlightColor="#a3daff" />
           <KeywordDisplay
@@ -130,16 +130,16 @@ export default function Home() {
             title={"Other Keywords"}
             highlightColor="#ffec99"
           />
-        </div>
+        </section>
       </div>
-      <div className={styles.regExList}>
+      <aside className={styles.regExList}>
         <h3>Hard Skills RegEx</h3>
         <p className={styles.plainRegEx}>{createKeywordsRegEx(hardSkills).toString()}</p>
         <h3>Soft Skills RegEx</h3>
         <p className={styles.plainRegEx}>{createKeywordsRegEx(softSkills).toString()}</p>
         <h3>Other RegEx</h3>
         <p className={styles.plainRegEx}>{createKeywordsRegEx(otherKeywords).toString()}</p>
-      </div>
+      </aside>
     </main>
   );
 }
