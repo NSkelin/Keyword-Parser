@@ -103,24 +103,26 @@ export default function Home() {
       <div className={styles.contentWrap}>
         <section className={styles.HighlightAreaWrap}>
           <h2>Text to parse</h2>
-          <HighlightWithinTextarea
-            value={value}
-            highlight={[
-              {
-                highlight: createKeywordsRegEx(hardSkills),
-                className: styles.red,
-              },
-              {
-                highlight: createKeywordsRegEx(softSkills),
-                className: styles.blue,
-              },
-              {
-                highlight: createKeywordsRegEx(otherKeywords),
-                className: styles.yellow,
-              },
-            ]}
-            onChange={onChange}
-          />
+          <div className={styles.textArea}>
+            <HighlightWithinTextarea
+              value={value}
+              highlight={[
+                {
+                  highlight: createKeywordsRegEx(hardSkills),
+                  className: styles.red,
+                },
+                {
+                  highlight: createKeywordsRegEx(softSkills),
+                  className: styles.blue,
+                },
+                {
+                  highlight: createKeywordsRegEx(otherKeywords),
+                  className: styles.yellow,
+                },
+              ]}
+              onChange={onChange}
+            />
+          </div>
         </section>
         <section className={styles.keywordsLists}>
           <KeywordDisplay keywords={sortMap(countKeywords(value, hardSkills))} title={"Hard Skills"} highlightColor="#ffc9c9" />
