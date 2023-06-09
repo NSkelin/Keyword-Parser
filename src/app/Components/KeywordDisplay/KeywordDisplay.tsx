@@ -32,10 +32,10 @@ type KeywordDisplayProps = {keywords: [string, number][]; title: string; highlig
 function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) {
   const list = createDisplayItems(keywords, highlightColor);
   return (
-    <div className={styles.list}>
+    <section className={styles.list}>
       <h2>{title}</h2>
       <ol>{list}</ol>
-    </div>
+    </section>
   );
 }
 
