@@ -1,7 +1,8 @@
 "use client";
-import React, {useState} from "react";
-import styles from "./page.module.scss";
+import {useState} from "react";
 import {HighlightWithinTextarea} from "react-highlight-within-textarea";
+import KeywordDisplay from "./Components/KeywordDisplay/KeywordDisplay";
+import styles from "./page.module.scss";
 
 // TODO
 // copy top skills to plain text for easy pasting into resume
@@ -21,18 +22,6 @@ function sortMap(map: Map<string, number>) {
   return sortedArray;
 }
 
-// create react display
-function createKeywordDisplay(sortedArray: [string, number][]) {
-  let list = sortedArray.map(([key, value]) => {
-    return (
-      <li key={key}>
-        {value} {key}
-      </li>
-    );
-  });
-  return <ol>{list}</ol>;
-}
-
 type keywords = {displayName: string; aliases: string[]};
 function countKeywords(compareStr: string, keywords: keywords[]) {
   const map = new Map<string, number>();
@@ -42,7 +31,7 @@ function countKeywords(compareStr: string, keywords: keywords[]) {
     map.set(words.displayName, (compareStr.match(regEx) || []).length);
   }
 
-  return createKeywordDisplay(sortMap(map));
+  return map;
 }
 
 // creates the regex for highlighting the keywords
@@ -134,18 +123,9 @@ export default function Home() {
           />
         </div>
         <div className={styles.keywordsLists}>
-          <div>
-            <b>Hard Skills</b>
-            {countKeywords(value, hardSkills)}
-          </div>
-          <div>
-            <b>Soft Skills</b>
-            {countKeywords(value, softSkills)}
-          </div>
-          <div>
-            <b>Other keywords</b>
-            {countKeywords(value, otherKeywords)}
-          </div>
+          <KeywordDisplay keywords={sortMap(countKeywords(value, hardSkills))} title={"Hard Skills"} />
+          <KeywordDisplay keywords={sortMap(countKeywords(value, softSkills))} title={"Soft Skills"} />
+          <KeywordDisplay keywords={sortMap(countKeywords(value, otherKeywords))} title={"Other Keywords"} />
         </div>
       </div>
       <div className={styles.regExList}>

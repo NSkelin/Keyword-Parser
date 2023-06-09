@@ -14,15 +14,11 @@
   box-shadow: 3px 3px 3px gray;
 }
 .HighlightAreaWrap {
-  flex: 3;
+  flex: 1;
 }
 .keywordsLists {
   display: flex;
-  flex: 1;
   gap: 20px;
-  li {
-    list-style: none;
-  }
 }
 .red {
   background-color: #ffc9c9;
