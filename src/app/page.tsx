@@ -3,20 +3,14 @@ import React, {useState} from "react";
 import styles from "./page.module.scss";
 import {HighlightWithinTextarea} from "react-highlight-within-textarea";
 
+// TODO
+// copy top skills to plain text for easy pasting into resume
+// keyword alias's should be show in the count too. So a break down (5 react (3react, 2react.js)) etc.
+//  - have most common alias shown by default
+// filter highlight by specific keyword(s)
 
-const count = (str: string, regEx: RegExp) => {
-  // get array of all matching words
-  let arr = str.match(regEx) || [];
-  console.log(arr);
-
-  // save / count word occurence
-  const map = new Map<string, number>();
-  for (let i of arr) {
-    i = i.toLowerCase();
-    map.set(i, map.get(i) === undefined ? 1 : map.get(i)! + 1);
-  }
-
-  // sort by number or alphabetical of number is the same
+// sort by number or alphabetical of number is the same
+function sortMap(map: Map<string, number>) {
   const sortedArray = Array.from(map.entries()).sort(([aName, aNumber], [bName, bNumber]) => {
     if (aNumber === bNumber) {
       if (aName < bName) return -1;
@@ -24,8 +18,11 @@ const count = (str: string, regEx: RegExp) => {
     } else if (aNumber > bNumber) return -1;
     return 1;
   });
+  return sortedArray;
+}
 
-  // create react display
+// create react display
+function createKeywordDisplay(sortedArray: [string, number][]) {
   let list = sortedArray.map(([key, value]) => {
     return (
       <li key={key}>
@@ -34,53 +31,83 @@ const count = (str: string, regEx: RegExp) => {
     );
   });
   return <ol>{list}</ol>;
-};
-export default function Home() {
-  const [hardSkills, setHardSkills] = useState([
-    "html",
-    "html5",
-    "css",
-    "javascript",
-    "css3",
-    "document",
-    "API",
-    "responsive",
-    "react",
-    "react.js",
-    "angularJS",
-    "node.js",
-    "server-side rendering",
-    "SSR",
-    "UI",
-    "git",
-    "github",
-    "restful apis",
-    "Angular 7+",
-    "MySQL",
-    "Laravel",
-    "PHP",
-    "SQL",
-    "AWS",
-    "rest api",
-  ]);
-  const [softSkills, setSoftSkills] = useState(["collaborate", "team player", "organized"]);
-  const [otherKeyWords, setOtherKeyWords] = useState([
-    "develop",
-    "developer",
-    "development",
-    "optimize",
-    "database",
-    "test",
-    "tests",
-    "front end",
-    "front-end",
-  ]);
-  const [value, setValue] = useState("");
-  const onChange = (value) => setValue(value);
+}
 
-  const hardSkillsRegEx = new RegExp(`\\b${hardSkills.join("\\b|\\b")}\\b`, "gi");
-  const softSkillsRegEx = new RegExp(`\\b${softSkills.join("\\b|\\b")}\\b`, "gi");
-  const otherRegEx = new RegExp(`\\b${otherKeyWords.join("\\b|\\b")}\\b`, "gi");
+type keywords = {displayName: string; aliases: string[]};
+function countKeywords(compareStr: string, keywords: keywords[]) {
+  const map = new Map<string, number>();
+
+  for (const words of keywords) {
+    const regEx = new RegExp(`\\b${words.aliases.join("\\b|\\b")}\\b`, "gi");
+    map.set(words.displayName, (compareStr.match(regEx) || []).length);
+  }
+
+  return createKeywordDisplay(sortMap(map));
+}
+
+// creates the regex for highlighting the keywords
+function createKeywordsRegEx(keywords: keywords[]) {
+  let arr: string[] = [];
+  for (const words of keywords) {
+    arr = [...words.aliases, ...arr];
+  }
+  return new RegExp(`\\b${arr.join("\\b|\\b")}\\b`, "gi");
+}
+
+export default function Home() {
+  const [value, setValue] = useState("");
+  const hardSkills = [
+    {displayName: "Angular", aliases: ["angularJS", "Angular 7+", "angular"]},
+    {displayName: "API", aliases: ["API"]},
+    {displayName: "AWS", aliases: ["AWS"]},
+    {displayName: "CSS", aliases: ["css", "css3"]},
+    {displayName: "Cypress", aliases: ["cypress"]},
+    {displayName: "Docker", aliases: ["docker"]},
+    {displayName: "Document", aliases: ["documentation", "document"]},
+    {displayName: "Enzyme", aliases: ["enzyme"]},
+    {displayName: "Flutter", aliases: ["flutter"]},
+    {displayName: "Git", aliases: ["git"]},
+    {displayName: "GitHub", aliases: ["github"]},
+    {displayName: "Html", aliases: ["html", "html5"]},
+    {displayName: "Java", aliases: ["java"]},
+    {displayName: "JavaScript", aliases: ["javascript"]},
+    {displayName: "Jest", aliases: ["jest"]},
+    {displayName: "Kubernetes", aliases: ["kubernetes"]},
+    {displayName: "Laravel", aliases: ["Laravel"]},
+    {displayName: "MongoDB", aliases: ["mongodb"]},
+    {displayName: "MySQL", aliases: ["MySQL"]},
+    {displayName: "NodeJS", aliases: ["node.js"]},
+    {displayName: "PHP", aliases: ["PHP"]},
+    {displayName: "Python", aliases: ["python"]},
+    {displayName: "React", aliases: ["reactJS", "react.js", "react"]},
+    {displayName: "Responsive", aliases: ["responsive"]},
+    {displayName: "RESTful api", aliases: ["rest", "rest api", "restful", "restful api", "restful apis", "restful api's"]},
+    {displayName: "SSR", aliases: ["server-side rendering", "SSR", "serverside rendering", "server side rendering"]},
+    {displayName: "SQL", aliases: ["SQL"]},
+    {displayName: "Testing", aliases: ["test", "tested", "testing"]},
+    {displayName: "TypeScript", aliases: ["typescript"]},
+    {displayName: "UI/UX", aliases: ["UI", "UX", "UI/UX", "UX/UI"]},
+    {displayName: "Vue", aliases: ["vue", "vue.js"]},
+  ];
+  const softSkills = [
+    {displayName: "Collaborate", aliases: ["collaborate", "collaboration"]},
+    {displayName: "Organized", aliases: ["organized"]},
+    {displayName: "Team player", aliases: ["team player"]},
+  ];
+  const otherKeywords = [
+    {displayName: "Agile", aliases: ["agile"]},
+    {displayName: "CI/CD", aliases: ["continuos integration", "continuos delivery", "CI/CD"]},
+    {displayName: "Database", aliases: ["database"]},
+    {displayName: "Design", aliases: ["design"]},
+    {displayName: "Develop", aliases: ["develop", "development"]},
+    {displayName: "Devops", aliases: ["devops"]},
+    {displayName: "Front end", aliases: ["front end", "front-end"]},
+    {displayName: "Optimize", aliases: ["optimize", "optimization"]},
+    {displayName: "Scrum", aliases: ["scrum"]},
+    {displayName: "Version control", aliases: ["version control"]},
+  ];
+
+  const onChange = (value: string) => setValue(value);
 
   return (
     <main className={styles.main}>
@@ -91,15 +118,15 @@ export default function Home() {
             value={value}
             highlight={[
               {
-                highlight: hardSkillsRegEx,
+                highlight: createKeywordsRegEx(hardSkills),
                 className: styles.red,
               },
               {
-                highlight: softSkillsRegEx,
+                highlight: createKeywordsRegEx(softSkills),
                 className: styles.blue,
               },
               {
-                highlight: otherRegEx,
+                highlight: createKeywordsRegEx(otherKeywords),
                 className: styles.yellow,
               },
             ]}
@@ -109,25 +136,25 @@ export default function Home() {
         <div className={styles.keywordsLists}>
           <div>
             <b>Hard Skills</b>
-            {count(value, hardSkillsRegEx)}
+            {countKeywords(value, hardSkills)}
           </div>
           <div>
             <b>Soft Skills</b>
-            {count(value, softSkillsRegEx)}
+            {countKeywords(value, softSkills)}
           </div>
           <div>
             <b>Other keywords</b>
-            {count(value, otherRegEx)}
+            {countKeywords(value, otherKeywords)}
           </div>
         </div>
       </div>
       <div className={styles.regExList}>
         <h3>Hard Skills RegEx</h3>
-        <p className={styles.plainRegEx}>{hardSkillsRegEx.toString()}</p>
+        <p className={styles.plainRegEx}>{createKeywordsRegEx(hardSkills).toString()}</p>
         <h3>Soft Skills RegEx</h3>
-        <p className={styles.plainRegEx}>{softSkillsRegEx.toString()}</p>
+        <p className={styles.plainRegEx}>{createKeywordsRegEx(softSkills).toString()}</p>
         <h3>Other RegEx</h3>
-        <p className={styles.plainRegEx}>{otherRegEx.toString()}</p>
+        <p className={styles.plainRegEx}>{createKeywordsRegEx(otherKeywords).toString()}</p>
       </div>
     </main>
   );
