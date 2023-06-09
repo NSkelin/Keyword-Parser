@@ -123,9 +123,13 @@ export default function Home() {
           />
         </div>
         <div className={styles.keywordsLists}>
-          <KeywordDisplay keywords={sortMap(countKeywords(value, hardSkills))} title={"Hard Skills"} />
-          <KeywordDisplay keywords={sortMap(countKeywords(value, softSkills))} title={"Soft Skills"} />
-          <KeywordDisplay keywords={sortMap(countKeywords(value, otherKeywords))} title={"Other Keywords"} />
+          <KeywordDisplay keywords={sortMap(countKeywords(value, hardSkills))} title={"Hard Skills"} highlightColor="#ffc9c9" />
+          <KeywordDisplay keywords={sortMap(countKeywords(value, softSkills))} title={"Soft Skills"} highlightColor="#a3daff" />
+          <KeywordDisplay
+            keywords={sortMap(countKeywords(value, otherKeywords))}
+            title={"Other Keywords"}
+            highlightColor="#ffec99"
+          />
         </div>
       </div>
       <div className={styles.regExList}>
