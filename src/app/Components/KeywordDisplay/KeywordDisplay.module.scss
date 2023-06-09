@@ -4,12 +4,17 @@
   h2 {
     margin-bottom: 20px;
   }
+  ol {
+    overflow: auto;
+    height: 100%;
+    width: 200px;
+  }
   li {
     list-style: none;
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;
-    width: 200px;
+    width: 100%;
     position: relative;
     & > span {
       position: relative;
