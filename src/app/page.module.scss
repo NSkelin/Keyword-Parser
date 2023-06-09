@@ -6,6 +6,10 @@
   padding: 6rem;
   min-height: 100vh;
 }
+.contentWrap {
+  display: flex;
+  gap: 100px;
+}
 .HighlightAreaWrap,
 .keywordsLists {
   background-color: white;

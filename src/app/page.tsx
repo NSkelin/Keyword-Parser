@@ -100,7 +100,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <div style={{display: "flex", gap: "100px"}}>
+      <div className={styles.contentWrap}>
         <section className={styles.HighlightAreaWrap}>
           <h2>Text to parse</h2>
           <HighlightWithinTextarea
