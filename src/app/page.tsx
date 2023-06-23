@@ -24,8 +24,8 @@ function sortMap(map: Map<string, number>) {
   return sortedArray;
 }
 
-type keywords = {displayName: string; aliases: string[]};
-function countKeywords(compareStr: string, keywords: keywords[]) {
+type keyword = {displayName: string; aliases: string[]};
+function countKeywords(compareStr: string, keywords: keyword[]) {
   const map = new Map<string, number>();
 
   for (const words of keywords) {
