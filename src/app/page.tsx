@@ -25,12 +25,12 @@ function sortMap(map: Map<string, number>) {
 }
 
 type keyword = {displayName: string; aliases: string[]};
-function countKeywords(compareStr: string, keywords: keyword[]) {
+function countKeywords(sourceText: string, keywords: keyword[]) {
   const map = new Map<string, number>();
 
   for (const words of keywords) {
     const regEx = new RegExp(`\\b${words.aliases.join("\\b|\\b")}\\b`, "gi");
-    map.set(words.displayName, (compareStr.match(regEx) || []).length);
+    map.set(words.displayName, (sourceText.match(regEx) || []).length);
   }
 
   return map;
