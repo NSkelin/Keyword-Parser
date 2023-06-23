@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model keywords {
+  title    String    @id
+  keywords keyword[]
+}
+
+model keyword {
+  displayName   String         @id
+  aliases       keywordAlias[]
+  keywords      keywords?      @relation(fields: [keywordsTitle], references: [title])
+  keywordsTitle String?
+}
+
+model keywordAlias {
+  id                 Int      @id @default(autoincrement())
+  alias              String
+  keyword            keyword? @relation(fields: [keywordDisplayName], references: [displayName])
+  keywordDisplayName String?
+}
