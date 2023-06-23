@@ -2,6 +2,7 @@
 import {useState} from "react";
 import {HighlightWithinTextarea} from "react-highlight-within-textarea";
 import KeywordDisplay from "./Components/KeywordDisplay/KeywordDisplay";
+import RegExDisplay from "./Components/KeywordDisplay/RegExDisplay/RegExDisplay";
 import styles from "./page.module.scss";
 import {createKeywordsRegEx} from "@/utils";
 
@@ -187,12 +188,9 @@ export default function Home() {
         </section>
       </div>
       <aside className={styles.regExList}>
-        <h3>Hard Skills RegEx</h3>
-        <p className={styles.plainRegEx}>{createKeywordsRegEx(hardSkills).toString()}</p>
-        <h3>Soft Skills RegEx</h3>
-        <p className={styles.plainRegEx}>{createKeywordsRegEx(softSkills).toString()}</p>
-        <h3>Other RegEx</h3>
-        <p className={styles.plainRegEx}>{createKeywordsRegEx(otherKeywords).toString()}</p>
+        <RegExDisplay title="Hard Skills RegEx" keywords={hardSkills} />
+        <RegExDisplay title="Soft Skills RegEx" keywords={softSkills} />
+        <RegExDisplay title="other RegEx" keywords={otherKeywords} />
       </aside>
     </main>
   );
