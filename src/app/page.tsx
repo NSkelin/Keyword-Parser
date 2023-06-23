@@ -3,6 +3,7 @@ import {useState} from "react";
 import {HighlightWithinTextarea} from "react-highlight-within-textarea";
 import KeywordDisplay from "./Components/KeywordDisplay/KeywordDisplay";
 import styles from "./page.module.scss";
+import {createKeywordsRegEx} from "@/utils";
 
 // TODO
 // copy top skills to plain text for easy pasting into resume
@@ -33,15 +34,6 @@ function countKeywords(compareStr: string, keywords: keywords[]) {
   }
 
   return map;
-}
-
-// creates the regex for highlighting the keywords
-function createKeywordsRegEx(keywords: keywords[]) {
-  let arr: string[] = [];
-  for (const words of keywords) {
-    arr = [...words.aliases, ...arr];
-  }
-  return new RegExp(`\\b${arr.join("\\b|\\b")}\\b`, "gi");
 }
 
 export default function Home() {
