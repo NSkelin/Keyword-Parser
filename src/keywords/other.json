@@ -1,0 +1,20 @@
+{
+  "title": "Hard Skills",
+  "keywords": [
+    {"displayName": "Agile", "aliases": ["agile"]},
+    {"displayName": "CI/CD", "aliases": ["continuos integration", "continuos delivery", "CI/CD"]},
+    {"displayName": "Database", "aliases": ["database"]},
+    {"displayName": "Design", "aliases": ["design"]},
+    {"displayName": "Develop", "aliases": ["develop", "development", "developing"]},
+    {"displayName": "Devops", "aliases": ["devops"]},
+    {
+      "displayName": "Front end",
+      "aliases": ["frontend", "front end", "front-end", "front end developer", "front end developer's"]
+    },
+    {"displayName": "Optimize", "aliases": ["optimize", "optimization"]},
+    {"displayName": "Scrum", "aliases": ["scrum"]},
+    {"displayName": "Version control", "aliases": ["version control"]},
+    {"displayName": "Web developer", "aliases": ["web developer", "web dev"]},
+    {"displayName": "manage", "aliases": ["manage", "managing", "management"]}
+  ]
+}
