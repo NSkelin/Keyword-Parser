@@ -1,5 +1,5 @@
 {
-  "title": "Hard Skills",
+  "title": "Other Keywords",
   "keywords": [
     {"displayName": "Agile", "aliases": ["agile"]},
     {"displayName": "CI/CD", "aliases": ["continuos integration", "continuos delivery", "CI/CD"]},
