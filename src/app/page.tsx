@@ -9,13 +9,6 @@ import KeywordDisplay from "./Components/KeywordDisplay/KeywordDisplay";
 import RegExDisplay from "./Components/RegExDisplay/RegExDisplay";
 import styles from "./page.module.scss";
 
-// TODO
-// copy top skills to plain text for easy pasting into resume
-//  - support custom formatting
-// keyword alias's should be show in the count too. So a break down (5 react (3react, 2react.js)) etc.
-//  - have most common alias shown by default
-// filter highlight by specific keyword(s)
-
 // sort by number or alphabetical of number is the same
 function sortMap(map: Map<string, number>) {
   const sortedArray = Array.from(map.entries()).sort(([aName, aNumber], [bName, bNumber]) => {
