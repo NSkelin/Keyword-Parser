@@ -11,31 +11,6 @@
   gap: 100px;
   height: 80vh;
 }
-.HighlightAreaWrap,
-.keywordsLists {
-  background-color: white;
-  padding: 50px;
-  border-radius: 10px;
-  box-shadow: 3px 3px 3px gray;
-}
-.HighlightAreaWrap {
-  display: flex;
-  flex-direction: column;
-  h2 {
-    margin-bottom: 20px;
-  }
-  flex: 1;
-}
-.textArea {
-  flex: 1;
-  overflow: auto;
-  padding-top: 10px;
-  border-top: 2px solid gray;
-}
-.keywordsLists {
-  display: flex;
-  gap: 50px;
-}
 .red {
   background-color: #ffc9c9;
 }
