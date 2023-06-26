@@ -66,17 +66,17 @@ export default function Home() {
         <section className={styles.keywordsLists}>
           <KeywordDisplay
             keywords={sortMap(countKeywords(value, hardSkills.keywords))}
-            title={"Hard Skills"}
+            title={hardSkills.title}
             highlightColor="#ffc9c9"
           />
           <KeywordDisplay
             keywords={sortMap(countKeywords(value, softSkills.keywords))}
-            title={"Soft Skills"}
+            title={softSkills.title}
             highlightColor="#a3daff"
           />
           <KeywordDisplay
             keywords={sortMap(countKeywords(value, otherKeywords.keywords))}
-            title={"Other Keywords"}
+            title={otherKeywords.title}
             highlightColor="#ffec99"
           />
         </section>
