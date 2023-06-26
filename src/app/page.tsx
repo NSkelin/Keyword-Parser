@@ -1,5 +1,5 @@
 "use client";
-import {createKeywordsRegEx} from "@/utils";
+import {createKeywordsRegEx} from "utils";
 import {useState} from "react";
 import {HighlightWithinTextarea} from "react-highlight-within-textarea";
 import hardSkills from "../keywords/hardskills.json";

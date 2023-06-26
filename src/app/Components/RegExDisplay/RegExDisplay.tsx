@@ -1,6 +1,6 @@
 import React, {createElement} from "react";
 import styles from "./RegExDisplay.module.scss";
-import {createKeywordsRegEx} from "@/utils";
+import {createKeywordsRegEx} from "utils";
 
 type keyword = {displayName: string; aliases: string[]};
 
