@@ -10,15 +10,16 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model keywords {
+model keywordCollection {
   title    String    @id
+  color    String?
   keywords keyword[]
 }
 
 model keyword {
-  displayName   String         @id
+  displayName   String             @id
   aliases       keywordAlias[]
-  keywords      keywords?      @relation(fields: [keywordsTitle], references: [title])
+  keywords      keywordCollection? @relation(fields: [keywordsTitle], references: [title])
   keywordsTitle String?
 }
 
