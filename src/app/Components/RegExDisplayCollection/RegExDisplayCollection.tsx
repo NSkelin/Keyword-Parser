@@ -1,15 +1,15 @@
 import React from "react";
 import styles from "./RegExDisplayCollection.module.scss";
 import RegExDisplay from "../RegExDisplay/RegExDisplay";
+import prisma from "utils/prisma";
 
-type keyword = {displayName: string; aliases: string[]};
-type keywords = {title: string; keywords: keyword[]};
-export type RegExDisplayCollectionProps = {
-  keywordsCollection: keywords[];
-};
-function RegExDisplayCollection({keywordsCollection}: RegExDisplayCollectionProps) {
-  const displays = keywordsCollection.map((keywords) => {
-    return <RegExDisplay key={keywords.title} title={keywords.title} keywords={keywords.keywords} />;
+async function RegExDisplayCollection() {
+  const collections = await prisma.keywords.findMany({
+    select: {title: true},
+  });
+
+  const displays = collections.map((collection) => {
+    return <RegExDisplay key={collection.title} title={collection.title} />;
   });
 
   return <aside className={styles.regExList}>{displays}</aside>;
