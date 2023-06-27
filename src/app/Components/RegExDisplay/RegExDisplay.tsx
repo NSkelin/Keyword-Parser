@@ -35,7 +35,7 @@ async function RegExDisplay({title, headingLevel = 3}: RegExDisplayProps) {
   return (
     <>
       {Heading}
-      <p className={styles.background}>{createKeywordsRegEx(arr).toString();}</p>
+      <p className={styles.background}>{createKeywordsRegEx(arr).toString()}</p>
     </>
   );
 }
