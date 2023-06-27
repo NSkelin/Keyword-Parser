@@ -13,3 +13,16 @@ if (process.env.NODE_ENV === "production") {
 }
 
 export default prisma;
+
+// retrieve data from db
+export async function getCollectionAliases(collectionTitle: string) {
+  return await prisma.keywordAlias.findMany({
+    where: {
+      keyword: {
+        keywords: {
+          title: collectionTitle,
+        },
+      },
+    },
+  });
+}

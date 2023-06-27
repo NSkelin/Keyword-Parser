@@ -1,7 +1,7 @@
 import React, {createElement} from "react";
 import styles from "./RegExDisplay.module.scss";
 import {createKeywordsRegEx} from "utils";
-import prisma from "utils/prisma";
+import {getCollectionAliases} from "utils/prisma";
 
 type RegExDisplayProps = {
   /**
@@ -14,17 +14,7 @@ async function RegExDisplay({title, headingLevel = 3}: RegExDisplayProps) {
   const Heading = createElement("h" + headingLevel, null, title);
 
   // retrieve data from db
-  const aliases = await prisma.keywordAlias.findMany({
-    where: {
-      keyword: {
-        keywords: {
-          title: title,
-        },
-      },
-    },
-
-    select: {alias: true},
-  });
+  const aliases = await getCollectionAliases(title);
 
   // parse data
   let arr: string[] = [];
