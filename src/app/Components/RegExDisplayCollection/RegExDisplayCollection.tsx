@@ -4,7 +4,7 @@ import RegExDisplay from "../RegExDisplay/RegExDisplay";
 import prisma from "utils/prisma";
 
 async function RegExDisplayCollection() {
-  const collections = await prisma.keywords.findMany({
+  const collections = await prisma.keywordCollection.findMany({
     select: {title: true},
   });
 
