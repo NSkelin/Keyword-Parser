@@ -12,9 +12,9 @@ export default function Home() {
         <KeywordParser />
       </div>
       <aside className={styles.regExList}>
-        <RegExDisplay title={hardSkills.title} keywords={hardSkills.keywords} />
-        <RegExDisplay title={softSkills.title} keywords={softSkills.keywords} />
-        <RegExDisplay title={otherKeywords.title} keywords={otherKeywords.keywords} />
+        <RegExDisplay title={hardSkills.title} />
+        <RegExDisplay title={softSkills.title} />
+        <RegExDisplay title={otherKeywords.title} />
       </aside>
     </main>
   );
