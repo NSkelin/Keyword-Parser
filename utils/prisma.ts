@@ -31,9 +31,10 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
         : {title: {in: collectionTitles}},
   });
 
-  const formattedData = data.map(({keywords, ...rest}) => {
+  const formattedData = data.map(({keywords, color, ...rest}) => {
     return {
       ...rest,
+      color: color == null ? undefined : color,
       keywords: keywords.flatMap((keyword) => {
         return keyword.aliases.map((obj) => obj.alias);
       }),
