@@ -13,19 +13,13 @@ type RegExDisplayProps = {
 async function RegExDisplay({title, headingLevel = 3}: RegExDisplayProps) {
   const Heading = createElement("h" + headingLevel, null, title);
 
-  // retrieve data from db
-  const aliases = await getCollectionAliases(title);
-
-  // parse data
-  let arr: string[] = [];
-  for (const alias of aliases) {
-    arr.push(alias.alias);
-  }
+  const data = await getCollectionAliases(title);
+  const aliases = data[0].keywords;
 
   return (
     <>
       {Heading}
-      <p className={styles.background}>{createKeywordsRegEx(arr).toString()}</p>
+      <p className={styles.background}>{createKeywordsRegEx(aliases).toString()}</p>
     </>
   );
 }
