@@ -1,1 +1,2 @@
-export {default} from "./KeywordParser.tsx";
+export {default} from "./KeywordParser";
+export * from "./KeywordParser";

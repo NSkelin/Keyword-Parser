@@ -1,1 +1,2 @@
-export {default} from "./RegExDisplay.tsx";
+export {default} from "./RegExDisplay";
+export * from "./RegExDisplay";

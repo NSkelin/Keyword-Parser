@@ -1,1 +1,2 @@
-export {default} from "./KeywordDisplay.tsx";
+export {default} from "./KeywordDisplay";
+export * from "./KeywordDisplay";
