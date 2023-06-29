@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 export default prisma;
 
+// gets each alias for every collection
 export async function getCollectionAliases(collectionTitles?: string[] | string) {
   const data = await prisma.keywordCollection.findMany({
     include: {
@@ -37,6 +38,43 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
       color: color == null ? undefined : color,
       keywords: keywords.flatMap((keyword) => {
         return keyword.aliases.map((obj) => obj.alias);
+      }),
+    };
+  });
+
+  return formattedData;
+}
+
+// gets each keyword and its aliases for every collection
+export async function getCollectionKeywords() {
+  const data = await prisma.keywordCollection.findMany({
+    select: {
+      title: true,
+      color: true,
+      keywords: {
+        select: {
+          displayName: true,
+          aliases: {
+            select: {
+              alias: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const formattedData = data.map(({keywords, color, ...rest}) => {
+    return {
+      ...rest,
+      color: color == null ? undefined : color,
+      keywords: keywords.map(({aliases, ...rest}) => {
+        return {
+          ...rest,
+          aliases: aliases.map(({alias}) => {
+            return alias;
+          }),
+        };
       }),
     };
   });

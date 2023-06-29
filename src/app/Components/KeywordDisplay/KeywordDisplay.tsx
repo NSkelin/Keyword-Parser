@@ -1,6 +1,5 @@
 import React, {CSSProperties} from "react";
 import styles from "./KeywordDisplay.module.scss";
-import type {Property} from "csstype";
 
 function countTotal(array: [string, number][]) {
   let total = 0;
@@ -11,7 +10,7 @@ function countTotal(array: [string, number][]) {
 }
 
 // create react display
-function createDisplayItems(sortedArray: [string, number][], highlightColor: Property.BackgroundColor) {
+function createDisplayItems(sortedArray: [string, number][], highlightColor: CSSProperties["backgroundColor"]) {
   const totalKeywords = countTotal(sortedArray);
   const emptyStyle: CSSProperties = {
     color: "gray",
@@ -33,7 +32,7 @@ function createDisplayItems(sortedArray: [string, number][], highlightColor: Pro
   return list;
 }
 
-type KeywordDisplayProps = {keywords: [string, number][]; title: string; highlightColor: Property.BackgroundColor};
+export type KeywordDisplayProps = {keywords: [string, number][]; title: string; highlightColor: CSSProperties["backgroundColor"]};
 function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) {
   const list = createDisplayItems(keywords, highlightColor);
   return (

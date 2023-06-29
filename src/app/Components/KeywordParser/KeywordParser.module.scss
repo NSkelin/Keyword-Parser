@@ -1,5 +1,4 @@
-.HighlightAreaWrap,
-.keywordsLists {
+.HighlightAreaWrap {
   background-color: white;
   padding: 50px;
   border-radius: 10px;
@@ -18,8 +17,4 @@
   overflow: auto;
   padding-top: 10px;
   border-top: 2px solid gray;
-}
-.keywordsLists {
-  display: flex;
-  gap: 50px;
 }

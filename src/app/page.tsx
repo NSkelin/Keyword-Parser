@@ -1,4 +1,4 @@
-import {getCollectionAliases} from "utils/prisma";
+import {getCollectionAliases, getCollectionKeywords} from "utils/prisma";
 import KeywordParser from "./Components/KeywordParser/KeywordParser";
 import RegExDisplayCollection from "./Components/RegExDisplayCollection/RegExDisplayCollection";
 import styles from "./page.module.scss";
@@ -11,10 +11,12 @@ export default async function Home() {
     return filters;
   }, [] as {color: string | undefined; filter: string[]}[]);
 
+  const collectionKeywords = await getCollectionKeywords();
+
   return (
     <main className={styles.main}>
       <div className={styles.contentWrap}>
-        <KeywordParser highlightFilters={highlightFilters} />
+        <KeywordParser highlightFilters={highlightFilters} collections={collectionKeywords} />
       </div>
       <RegExDisplayCollection />
     </main>
