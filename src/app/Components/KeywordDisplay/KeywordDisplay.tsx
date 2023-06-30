@@ -1,6 +1,9 @@
-import React, {CSSProperties} from "react";
+import {CSSProperties, useRef} from "react";
 import styles from "./KeywordDisplay.module.scss";
+import KeywordEditorDialog from "../KeywordEditorDialog/KeywordEditorDialog";
 
+// counts the total keywords found across all keywords.
+// used to calculate the percentage an individual keyword makes up of the total.
 function countTotal(array: [string, number][]) {
   let total = 0;
   for (const arr of array) {
@@ -35,8 +38,18 @@ function createDisplayItems(sortedArray: [string, number][], highlightColor: CSS
 export type KeywordDisplayProps = {keywords: [string, number][]; title: string; highlightColor: CSSProperties["backgroundColor"]};
 function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) {
   const list = createDisplayItems(keywords, highlightColor);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  function showModal() {
+    dialogRef.current?.showModal();
+  }
+
   return (
     <section className={styles.list}>
+      <KeywordEditorDialog ref={dialogRef} collection={title} />
+      <div>
+        <button onClick={showModal}>+</button>
+      </div>
       <h2>{title}</h2>
       <ol>{list}</ol>
     </section>
