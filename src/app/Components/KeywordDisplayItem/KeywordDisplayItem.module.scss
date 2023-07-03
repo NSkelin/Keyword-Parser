@@ -1,0 +1,14 @@
+.item {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  width: 100%;
+  position: relative;
+}
+.highlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
