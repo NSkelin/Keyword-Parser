@@ -1,7 +1,7 @@
 import {CSSProperties} from "react";
 import styles from "./KeywordDisplayItem.module.scss";
 
-type KeywordDisplayItemProps = {
+export type KeywordDisplayItemProps = {
   /**
    * The color for the background fill.
    */
