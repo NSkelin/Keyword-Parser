@@ -1,0 +1,21 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  h2 {
+    margin-bottom: 20px;
+  }
+  ol {
+    overflow: auto;
+    height: 100%;
+    width: 200px;
+  }
+  li {
+    & > span {
+      position: relative;
+    }
+    &:not(:last-child) {
+      border-bottom: 1px solid gray;
+      margin-bottom: 5px;
+    }
+  }
+}
