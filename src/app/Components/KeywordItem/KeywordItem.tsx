@@ -1,5 +1,5 @@
 import {CSSProperties} from "react";
-import styles from "./KeywordDisplayItem.module.scss";
+import styles from "./KeywordItem.module.scss";
 
 export type KeywordDisplayItemProps = {
   /**
@@ -20,7 +20,7 @@ export type KeywordDisplayItemProps = {
    */
   highlightPercent?: number;
 };
-function KeywordDisplayItem({highlightColor, name, instances, highlightPercent = 0}: KeywordDisplayItemProps) {
+function KeywordItem({highlightColor, name, instances, highlightPercent = 0}: KeywordDisplayItemProps) {
   const emptyStyle: CSSProperties = {
     color: "gray",
     borderBottomColor: "lightgray",
@@ -38,4 +38,4 @@ function KeywordDisplayItem({highlightColor, name, instances, highlightPercent =
   );
 }
 
-export default KeywordDisplayItem;
+export default KeywordItem;

@@ -1,6 +1,6 @@
 import React, {CSSProperties} from "react";
 import styles from "./KeywordList.module.scss";
-import KeywordDisplayItem from "../KeywordDisplayItem/KeywordDisplayItem";
+import KeywordItem from "../KeywordItem/KeywordItem";
 
 // counts the total keywords found across all keywords.
 // used to calculate the percentage an individual keyword makes up of the total.
@@ -20,7 +20,7 @@ function createListItems(keywords: [string, number][], highlightColor: CSSProper
     const highlightPercent = (keywordAmount / totalKeywords) * 100;
 
     return (
-      <KeywordDisplayItem
+      <KeywordItem
         highlightColor={highlightColor}
         highlightPercent={highlightPercent}
         name={keywordName}
