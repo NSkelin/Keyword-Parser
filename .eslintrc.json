@@ -1,5 +1,8 @@
 {
-  "extends": ["next/core-web-vitals", "prettier", "eslint:recommended"],
+  "extends": ["next/core-web-vitals", "prettier", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "root": true,
   "rules": {
     "semi": ["error", "always"],
     "camelcase": ["error", {"properties": "always"}],
