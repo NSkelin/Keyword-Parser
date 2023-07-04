@@ -3,25 +3,13 @@ import styles from "./KeywordDisplayCollection.module.scss";
 import KeywordDisplay from "../KeywordDisplay";
 import {createKeywordsRegEx} from "utils";
 
-// sort by number or alphabetical of number is the same
-function sortMap(map: Map<string, number>) {
-  const sortedArray = Array.from(map.entries()).sort(([aName, aNumber], [bName, bNumber]) => {
-    if (aNumber === bNumber) {
-      if (aName < bName) return -1;
-      return 1;
-    } else if (aNumber > bNumber) return -1;
-    return 1;
-  });
-  return sortedArray;
-}
-
 export type keyword = {displayName: string; aliases: string[]};
 function countKeywords(sourceText: string, keywords: keyword[]) {
-  const map = new Map<string, number>();
-
+  const map = new Map<string, {count: number; aliases: string[]}>();
   for (const words of keywords) {
     const regEx = createKeywordsRegEx(words.aliases);
-    map.set(words.displayName, (sourceText.match(regEx) || []).length);
+    const instances = (sourceText.match(regEx) || []).length;
+    map.set(words.displayName, {count: instances, aliases: words.aliases});
   }
 
   return map;
@@ -41,7 +29,7 @@ export type KeywordDisplayCollectionProps = {
 };
 function KeywordDisplayCollection({text, collections}: KeywordDisplayCollectionProps) {
   const displays = collections.map(({title, keywords, color}) => {
-    return <KeywordDisplay key={title} keywords={sortMap(countKeywords(text, keywords))} title={title} highlightColor={color} />;
+    return <KeywordDisplay key={title} keywords={countKeywords(text, keywords)} title={title} highlightColor={color} />;
   });
 
   return <section className={styles.displayCollection}>{displays}</section>;

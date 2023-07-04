@@ -22,7 +22,7 @@ function KeywordParser({highlightFilters, collections}: KeywordParserProps) {
   const [value, setValue] = useState("");
   const onChange = (value: string) => setValue(value);
 
-  let highlights = [];
+  const highlights = [];
   for (const {color, filter} of highlightFilters) {
     highlights.push({
       highlight: createKeywordsRegEx(filter),
