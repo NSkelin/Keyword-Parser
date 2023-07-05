@@ -3,10 +3,10 @@ import {createKeywordAndAliases} from "utils/prisma";
 export async function POST(req: Request, {params}: {params: {collection: string}}) {
   try {
     const collection = params.collection;
-    const data = await req.formData();
+    const data = await req.json();
 
-    const displayName = data.get("displayName");
-    const aliases = data.get("aliases");
+    const displayName = data.displayName;
+    const aliases = data.aliases;
 
     if (typeof displayName === "string" && typeof aliases === "string") {
       const aliasObjs = aliases.split(",").map((alias) => {

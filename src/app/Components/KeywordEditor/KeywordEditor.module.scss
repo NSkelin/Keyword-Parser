@@ -1,0 +1,22 @@
+.dialog {
+  padding: 50px;
+  margin: auto;
+  border: 1px gray solid;
+  border-radius: 10px;
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+.title {
+  padding-bottom: 30px;
+}
+.buttonWrap {
+  display: flex;
+  justify-content: space-between;
+  div {
+    display: flex;
+    gap: 10px;
+  }
+}

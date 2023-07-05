@@ -9,11 +9,12 @@ export type KeywordEditorProps = {
   defaultDisplayName: string;
   defaultAliases: string;
   collection: string;
+  mode?: "Create" | "Edit";
   onAliasesChange: ChangeEventHandler<HTMLInputElement>;
   onDisplayNameChange: ChangeEventHandler<HTMLInputElement>;
 };
 const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function KeywordEditor(
-  {defaultDisplayName, defaultAliases, collection, onAliasesChange, onDisplayNameChange}: KeywordEditorProps,
+  {defaultDisplayName, defaultAliases, collection, mode = "Create", onAliasesChange, onDisplayNameChange}: KeywordEditorProps,
   ref
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -78,9 +79,54 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       });
   }
 
+  function handleCreate() {
+    console.log("test");
+    // Handle updating the data
+    fetch(`/api/${collection}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({displayName: defaultDisplayName, aliases: defaultAliases}),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Keyword created successfully");
+          handleDialogClose();
+        } else {
+          console.error("Failed to create keyword");
+        }
+      })
+      .catch((error) => {
+        console.error("Error occurred while creating keyword:", error);
+      });
+  }
+
+  const title = mode === "Create" ? "Create a new keyword" : "Edit or delete the keyword";
+  const buttons = () => {
+    if (mode === "Create") {
+      return (
+        <>
+          <button onClick={handleCreate}>Create</button>
+          <button onClick={handleDialogClose}>Cancel</button>
+        </>
+      );
+    } else if (mode === "Edit") {
+      return (
+        <>
+          <button onClick={handleSave}>Save</button>
+          <div>
+            <button onClick={handleDelete}>Delete</button>
+            <button onClick={handleDialogClose}>Cancel</button>
+          </div>
+        </>
+      );
+    }
+  };
+
   return (
-    <dialog ref={dialogRef}>
-      <h2>Update or Delete Data</h2>
+    <dialog ref={dialogRef} className={styles.dialog}>
+      <h2 className={styles.title}>{title}</h2>
       <label>
         Display Name:
         <input type="text" value={defaultDisplayName} onChange={onDisplayNameChange} />
@@ -91,9 +137,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
         <input type="text" value={defaultAliases} onChange={onAliasesChange} />
       </label>
       <br />
-      <button onClick={handleSave}>Save</button>
-      <button onClick={handleDelete}>Delete</button>
-      <button onClick={handleDialogClose}>Cancel</button>
+      <div className={styles.buttonWrap}>{buttons()}</div>
     </dialog>
   );
 });

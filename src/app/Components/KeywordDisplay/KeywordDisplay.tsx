@@ -1,5 +1,4 @@
 import {CSSProperties, ChangeEvent, useRef, useState} from "react";
-import KeywordEditorDialog from "../KeywordEditorDialog/KeywordEditorDialog";
 import KeywordList from "../KeywordList/KeywordList";
 import styles from "./KeywordDisplay.module.scss";
 import KeywordEditor from "../KeywordEditor/KeywordEditor";
@@ -11,24 +10,28 @@ export type KeywordDisplayProps = {
   highlightColor: CSSProperties["backgroundColor"];
 };
 function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) {
-  const createDialogRef = useRef<HTMLDialogElement>(null);
-  const editDialogRef = useRef<HTMLDialogElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const [displayName, setDisplayName] = useState("");
   const [aliases, setAliases] = useState("");
+  const [editorMode, setEditorMode] = useState<"Create" | "Edit" | undefined>("Create");
   const keywordsList: [string, number][] = [...keywords].map(([key, {count}]) => [key, count]);
 
-  function showModal() {
-    createDialogRef.current?.showModal();
+  function handleCreate() {
+    setDisplayName("");
+    setEditorMode("Create");
+    setAliases("");
+    dialogRef.current?.showModal();
   }
 
   function handleEdit(name: string) {
-    if (editDialogRef.current) {
+    if (dialogRef.current) {
       setDisplayName(name);
+      setEditorMode("Edit");
       const aliases = keywords.get(name);
       if (aliases?.aliases != null) {
         setAliases(aliases.aliases.join(","));
       }
-      editDialogRef.current.showModal();
+      dialogRef.current.showModal();
     }
   }
 
@@ -42,18 +45,18 @@ function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) 
 
   return (
     <section className={styles.wrapper}>
-      <KeywordEditorDialog ref={createDialogRef} collection={title} />
       <KeywordEditor
-        ref={editDialogRef}
+        ref={dialogRef}
         collection={title}
         defaultAliases={aliases}
         defaultDisplayName={displayName}
+        mode={editorMode}
         onAliasesChange={handleAliasesChange}
         onDisplayNameChange={handleDisplayNameChange}
       />
       <div>
         <input type={"color"}></input>
-        <button onClick={showModal}>+</button>
+        <button onClick={handleCreate}>Add keyword +</button>
       </div>
       <h2>{title}</h2>
       <KeywordList onEdit={handleEdit} keywords={keywordsList} highlightColor={highlightColor} />
