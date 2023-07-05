@@ -6,15 +6,15 @@ type KeywordEditorRef = {
 };
 
 export type KeywordEditorProps = {
-  defaultDisplayName: string;
-  defaultAliases: string;
+  displayName: string;
+  aliases: string;
   collection: string;
   mode?: "Create" | "Edit";
   onAliasesChange: ChangeEventHandler<HTMLInputElement>;
   onDisplayNameChange: ChangeEventHandler<HTMLInputElement>;
 };
 const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function KeywordEditor(
-  {defaultDisplayName, defaultAliases, collection, mode = "Create", onAliasesChange, onDisplayNameChange}: KeywordEditorProps,
+  {displayName, aliases, collection, mode = "Create", onAliasesChange, onDisplayNameChange}: KeywordEditorProps,
   ref
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -41,12 +41,12 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
 
   function handleSave() {
     // Handle updating the data
-    fetch(`/api/${collection}/${defaultDisplayName}`, {
+    fetch(`/api/${collection}/${displayName}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({newAliases: defaultAliases}),
+      body: JSON.stringify({newAliases: aliases}),
     })
       .then((response) => {
         if (response.ok) {
@@ -63,7 +63,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
 
   function handleDelete() {
     // Handle deleting the data
-    fetch(`/api/${collection}/${defaultDisplayName}`, {
+    fetch(`/api/${collection}/${displayName}`, {
       method: "DELETE",
     })
       .then((response) => {
@@ -80,14 +80,13 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
   }
 
   function handleCreate() {
-    console.log("test");
     // Handle updating the data
     fetch(`/api/${collection}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({displayName: defaultDisplayName, aliases: defaultAliases}),
+      body: JSON.stringify({displayName: displayName, aliases: aliases}),
     })
       .then((response) => {
         if (response.ok) {
@@ -129,12 +128,12 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       <h2 className={styles.title}>{title}</h2>
       <label>
         Display Name:
-        <input type="text" value={defaultDisplayName} onChange={onDisplayNameChange} />
+        <input type="text" value={displayName} onChange={onDisplayNameChange} />
       </label>
       <br />
       <label>
         Aliases (comma-separated):
-        <input type="text" value={defaultAliases} onChange={onAliasesChange} />
+        <input type="text" value={aliases} onChange={onAliasesChange} />
       </label>
       <br />
       <div className={styles.buttonWrap}>{buttons()}</div>

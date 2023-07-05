@@ -5,7 +5,6 @@ import KeywordEditor from "../KeywordEditor/KeywordEditor";
 
 export type KeywordDisplayProps = {
   title: string;
-  // keywords: {name: string; count: number; aliases: string}[];
   keywords: Map<string, {count: number; aliases: string[]}>;
   highlightColor: CSSProperties["backgroundColor"];
 };
@@ -48,8 +47,8 @@ function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) 
       <KeywordEditor
         ref={dialogRef}
         collection={title}
-        defaultAliases={aliases}
-        defaultDisplayName={displayName}
+        aliases={aliases}
+        displayName={displayName}
         mode={editorMode}
         onAliasesChange={handleAliasesChange}
         onDisplayNameChange={handleDisplayNameChange}
