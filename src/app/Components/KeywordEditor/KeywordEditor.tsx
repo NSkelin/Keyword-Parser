@@ -117,6 +117,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
 
   function validateInput(input: string) {
     if (input.length <= 1) return false;
+    else return true;
   }
 
   const title = mode === "Create" ? "Create a new keyword" : "Edit or delete the keyword";
