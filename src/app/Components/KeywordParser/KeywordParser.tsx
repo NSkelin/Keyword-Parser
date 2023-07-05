@@ -1,5 +1,6 @@
 "use client";
 import React, {ReactNode, useState, CSSProperties} from "react";
+import {useImmer} from "use-immer";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {createKeywordsRegEx} from "utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
@@ -16,10 +17,11 @@ export type KeywordParserProps = {
     color: string | undefined;
     filter: string[];
   }[];
-  collections: Collections;
+  initalCollections: Collections;
 };
-function KeywordParser({highlightFilters, collections}: KeywordParserProps) {
+function KeywordParser({highlightFilters, initalCollections}: KeywordParserProps) {
   const [value, setValue] = useState("");
+  const [collections, setCollections] = useImmer(initalCollections);
   const onChange = (value: string) => setValue(value);
 
   const highlights = [];
@@ -30,6 +32,39 @@ function KeywordParser({highlightFilters, collections}: KeywordParserProps) {
     });
   }
 
+  function handleCreateKeyword(collectionName: string, displayName: string, aliases: string[]) {
+    setCollections((draft) => {
+      draft
+        .find((collection) => collection.title === collectionName)
+        ?.keywords.push({displayName: displayName, aliases: aliases});
+    });
+    return;
+  }
+
+  function handleUpdateKeyword(collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) {
+    setCollections((draft) => {
+      const collection = draft.find((collection) => collection.title === collectionName);
+      const keyword = collection?.keywords.find((keyword) => keyword.displayName === displayName);
+      if (keyword) {
+        keyword.aliases = newAliases;
+        keyword.displayName = newDisplayName;
+      }
+    });
+    return;
+  }
+
+  function handleDeleteKeyword(collectionName: string, displayName: string) {
+    console.log(collectionName, displayName);
+    setCollections((draft) => {
+      const collection = draft.find((collection) => collection.title === collectionName);
+      const index = collection?.keywords.findIndex((keyword) => keyword.displayName === displayName);
+      if (index !== -1 && index != null) {
+        collection?.keywords.splice(index, 1);
+      }
+    });
+    return;
+  }
+
   return (
     <>
       <section className={styles.HighlightAreaWrap}>
@@ -38,7 +73,13 @@ function KeywordParser({highlightFilters, collections}: KeywordParserProps) {
           <HighlightWithinTextarea value={value} highlight={highlights} onChange={onChange} />
         </div>
       </section>
-      <KeywordDisplayCollection text={value} collections={collections} />
+      <KeywordDisplayCollection
+        text={value}
+        collections={collections}
+        onCreate={handleCreateKeyword}
+        onDelete={handleDeleteKeyword}
+        onUpdate={handleUpdateKeyword}
+      />
     </>
   );
 }

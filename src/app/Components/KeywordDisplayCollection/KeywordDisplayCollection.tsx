@@ -26,10 +26,23 @@ export type KeywordDisplayCollectionProps = {
    */
   text: string;
   collections: Collections;
+  onCreate: (collectionName: string, displayName: string, aliases: string[]) => void;
+  onUpdate: (collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) => void;
+  onDelete: (collectionName: string, displayName: string) => void;
 };
-function KeywordDisplayCollection({text, collections}: KeywordDisplayCollectionProps) {
+function KeywordDisplayCollection({text, collections, onCreate, onUpdate, onDelete}: KeywordDisplayCollectionProps) {
   const displays = collections.map(({title, keywords, color}) => {
-    return <KeywordDisplay key={title} keywords={countKeywords(text, keywords)} title={title} highlightColor={color} />;
+    return (
+      <KeywordDisplay
+        key={title}
+        keywords={countKeywords(text, keywords)}
+        title={title}
+        highlightColor={color}
+        onCreate={onCreate}
+        onDelete={onDelete}
+        onUpdate={onUpdate}
+      />
+    );
   });
 
   return <section className={styles.displayCollection}>{displays}</section>;

@@ -6,15 +6,30 @@ type KeywordEditorRef = {
 };
 
 export type KeywordEditorProps = {
+  oldDisplayName: string;
   displayName: string;
-  aliases: string;
   collection: string;
+  aliases: string;
   mode?: "Create" | "Edit";
   onAliasesChange: ChangeEventHandler<HTMLInputElement>;
   onDisplayNameChange: ChangeEventHandler<HTMLInputElement>;
+  onCreate: (collectionName: string, displayName: string, aliases: string[]) => void;
+  onUpdate: (collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) => void;
+  onDelete: (collectionName: string, displayName: string) => void;
 };
 const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function KeywordEditor(
-  {displayName, aliases, collection, mode = "Create", onAliasesChange, onDisplayNameChange}: KeywordEditorProps,
+  {
+    oldDisplayName,
+    displayName,
+    collection,
+    aliases,
+    mode = "Create",
+    onAliasesChange,
+    onDisplayNameChange,
+    onCreate,
+    onUpdate,
+    onDelete,
+  }: KeywordEditorProps,
   ref
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -39,48 +54,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
     }
   }
 
-  function handleSave() {
-    // Handle updating the data
-    fetch(`/api/${collection}/${displayName}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({newAliases: aliases}),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Data updated successfully");
-          handleDialogClose();
-        } else {
-          console.error("Failed to update data");
-        }
-      })
-      .catch((error) => {
-        console.error("Error occurred while updating data:", error);
-      });
-  }
-
-  function handleDelete() {
-    // Handle deleting the data
-    fetch(`/api/${collection}/${displayName}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Data deleted successfully");
-          handleDialogClose();
-        } else {
-          console.error("Failed to delete data");
-        }
-      })
-      .catch((error) => {
-        console.error("Error occurred while deleting data:", error);
-      });
-  }
-
   function handleCreate() {
-    // Handle updating the data
     fetch(`/api/${collection}`, {
       method: "POST",
       headers: {
@@ -90,14 +64,52 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
     })
       .then((response) => {
         if (response.ok) {
-          console.log("Keyword created successfully");
           handleDialogClose();
+          onCreate(collection, displayName, aliases.split(","));
         } else {
-          console.error("Failed to create keyword");
+          console.error("Failed to add keyword");
         }
       })
       .catch((error) => {
-        console.error("Error occurred while creating keyword:", error);
+        console.error("Error occurred while adding keyword:", error);
+      });
+  }
+
+  function handleUpdate() {
+    fetch(`/api/${collection}/${oldDisplayName}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({newDisplayName: displayName, newAliases: aliases}),
+    })
+      .then((response) => {
+        if (response.ok) {
+          handleDialogClose();
+          onUpdate(collection, oldDisplayName, displayName, aliases.split(","));
+        } else {
+          console.error("Failed to update keyword");
+        }
+      })
+      .catch((error) => {
+        console.error("Error occurred while updating keyword:", error);
+      });
+  }
+
+  function handleDelete() {
+    fetch(`/api/${collection}/${displayName}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          handleDialogClose();
+          onDelete(collection, displayName);
+        } else {
+          console.error("Failed to delete keyword");
+        }
+      })
+      .catch((error) => {
+        console.error("Error occurred while deleting keyword:", error);
       });
   }
 
@@ -113,7 +125,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
     } else if (mode === "Edit") {
       return (
         <>
-          <button onClick={handleSave}>Save</button>
+          <button onClick={handleUpdate}>Save</button>
           <div>
             <button onClick={handleDelete}>Delete</button>
             <button onClick={handleDialogClose}>Cancel</button>

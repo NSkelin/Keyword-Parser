@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.contentWrap}>
-        <KeywordParser highlightFilters={highlightFilters} collections={collectionKeywords} />
+        <KeywordParser highlightFilters={highlightFilters} initalCollections={collectionKeywords} />
       </div>
       <RegExDisplayCollection />
     </main>

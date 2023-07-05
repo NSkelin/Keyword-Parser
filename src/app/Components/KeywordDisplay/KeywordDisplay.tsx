@@ -7,24 +7,29 @@ export type KeywordDisplayProps = {
   title: string;
   keywords: Map<string, {count: number; aliases: string[]}>;
   highlightColor: CSSProperties["backgroundColor"];
+  onCreate: (collectionName: string, displayName: string, aliases: string[]) => void;
+  onUpdate: (collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) => void;
+  onDelete: (collectionName: string, displayName: string) => void;
 };
-function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) {
+function KeywordDisplay({keywords, title, highlightColor, onCreate, onUpdate, onDelete}: KeywordDisplayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [displayName, setDisplayName] = useState("");
+  const [editorDisplayName, setEditorDisplayName] = useState("");
+  const [editorId, setEditorId] = useState("");
   const [aliases, setAliases] = useState("");
   const [editorMode, setEditorMode] = useState<"Create" | "Edit" | undefined>("Create");
   const keywordsList: [string, number][] = [...keywords].map(([key, {count}]) => [key, count]);
 
-  function handleCreate() {
-    setDisplayName("");
+  function openCreate() {
+    setEditorDisplayName("");
     setEditorMode("Create");
     setAliases("");
     dialogRef.current?.showModal();
   }
 
-  function handleEdit(name: string) {
+  function openEdit(name: string) {
     if (dialogRef.current) {
-      setDisplayName(name);
+      setEditorDisplayName(name);
+      setEditorId(name);
       setEditorMode("Edit");
       const aliases = keywords.get(name);
       if (aliases?.aliases != null) {
@@ -35,7 +40,7 @@ function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) 
   }
 
   function handleDisplayNameChange(e: ChangeEvent<HTMLInputElement>) {
-    setDisplayName(e.target.value);
+    setEditorDisplayName(e.target.value);
   }
 
   function handleAliasesChange(e: ChangeEvent<HTMLInputElement>) {
@@ -46,19 +51,23 @@ function KeywordDisplay({keywords, title, highlightColor}: KeywordDisplayProps) 
     <section className={styles.wrapper}>
       <KeywordEditor
         ref={dialogRef}
-        collection={title}
         aliases={aliases}
-        displayName={displayName}
+        collection={title}
+        oldDisplayName={editorId}
+        displayName={editorDisplayName}
         mode={editorMode}
         onAliasesChange={handleAliasesChange}
         onDisplayNameChange={handleDisplayNameChange}
+        onCreate={onCreate}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
       />
       <div>
         <input type={"color"}></input>
-        <button onClick={handleCreate}>Add keyword +</button>
+        <button onClick={openCreate}>Add keyword +</button>
       </div>
       <h2>{title}</h2>
-      <KeywordList onEdit={handleEdit} keywords={keywordsList} highlightColor={highlightColor} />
+      <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={highlightColor} />
     </section>
   );
 }
