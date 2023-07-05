@@ -13,6 +13,10 @@
   height: 100%;
 }
 .right {
+  z-index: 1;
   display: flex;
   gap: 10px;
+  span {
+    font-variant-numeric: tabular-nums;
+  }
 }
