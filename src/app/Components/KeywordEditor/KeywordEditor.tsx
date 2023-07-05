@@ -55,6 +55,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
   }
 
   function handleCreate() {
+    if (!validateInput(displayName) && !validateInput(aliases)) return;
     fetch(`/api/${collection}`, {
       method: "POST",
       headers: {
@@ -76,6 +77,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
   }
 
   function handleUpdate() {
+    if (!validateInput(displayName) && !validateInput(aliases)) return;
     fetch(`/api/${collection}/${oldDisplayName}`, {
       method: "PUT",
       headers: {
@@ -111,6 +113,10 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       .catch((error) => {
         console.error("Error occurred while deleting keyword:", error);
       });
+  }
+
+  function validateInput(input: string) {
+    if (input.length <= 1) return false;
   }
 
   const title = mode === "Create" ? "Create a new keyword" : "Edit or delete the keyword";
