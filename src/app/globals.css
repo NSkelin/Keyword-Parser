@@ -105,3 +105,9 @@ a {
     color-scheme: dark;
   }
 }
+
+button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+}
