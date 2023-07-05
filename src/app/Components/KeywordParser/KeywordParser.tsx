@@ -13,24 +13,19 @@ const HighlightColor = ({color, children}: HighlightColorProps) => {
 };
 
 export type KeywordParserProps = {
-  highlightFilters: {
-    color: string | undefined;
-    filter: string[];
-  }[];
   initalCollections: Collections;
 };
-function KeywordParser({highlightFilters, initalCollections}: KeywordParserProps) {
+function KeywordParser({initalCollections}: KeywordParserProps) {
   const [value, setValue] = useState("");
   const [collections, setCollections] = useImmer(initalCollections);
   const onChange = (value: string) => setValue(value);
 
-  const highlights = [];
-  for (const {color, filter} of highlightFilters) {
-    highlights.push({
-      highlight: createKeywordsRegEx(filter),
+  const highlights = collections.map(({keywords, color}) => {
+    return {
+      highlight: createKeywordsRegEx(keywords.flatMap((keyword) => keyword.aliases)),
       component: ({children}: {children: ReactNode}) => <HighlightColor color={color}>{children}</HighlightColor>,
-    });
-  }
+    };
+  });
 
   function handleCreateKeyword(collectionName: string, displayName: string, aliases: string[]) {
     setCollections((draft) => {
