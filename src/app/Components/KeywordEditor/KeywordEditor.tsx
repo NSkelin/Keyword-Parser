@@ -1,5 +1,6 @@
 import React, {useRef, forwardRef, useImperativeHandle, ChangeEventHandler} from "react";
 import styles from "./KeywordEditor.module.scss";
+import CommaSeparatedInput from "../CommaSeparatedInput/CommaSeparatedInput";
 
 type KeywordEditorRef = {
   showModal: () => void;
@@ -9,9 +10,9 @@ export type KeywordEditorProps = {
   oldDisplayName: string;
   displayName: string;
   collection: string;
-  aliases: string;
+  aliases: string[];
   mode?: "Create" | "Edit";
-  onAliasesChange: ChangeEventHandler<HTMLInputElement>;
+  onAliasesChange: (aliases: string[]) => void;
   onDisplayNameChange: ChangeEventHandler<HTMLInputElement>;
   onCreate: (collectionName: string, displayName: string, aliases: string[]) => void;
   onUpdate: (collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) => void;
@@ -66,7 +67,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       .then((response) => {
         if (response.ok) {
           handleDialogClose();
-          onCreate(collection, displayName, aliases.split(","));
+          onCreate(collection, displayName, aliases);
         } else {
           console.error("Failed to add keyword");
         }
@@ -88,7 +89,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       .then((response) => {
         if (response.ok) {
           handleDialogClose();
-          onUpdate(collection, oldDisplayName, displayName, aliases.split(","));
+          onUpdate(collection, oldDisplayName, displayName, aliases);
         } else {
           console.error("Failed to update keyword");
         }
@@ -115,9 +116,16 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       });
   }
 
-  function validateInput(input: string) {
-    if (input.length <= 1) return false;
-    else return true;
+  function validateInput(input: string | string[]) {
+    if (Array.isArray(input)) {
+      for (const val of input) {
+        if (val.length <= 1) return false;
+      }
+      return true;
+    } else {
+      if (input.length <= 1) return false;
+      else return true;
+    }
   }
 
   const title = mode === "Create" ? "Create a new keyword" : "Edit or delete the keyword";
@@ -141,21 +149,19 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       );
     }
   };
-
   return (
     <dialog ref={dialogRef} className={styles.dialog}>
-      <h2 className={styles.title}>{title}</h2>
-      <label>
-        Display Name:
-        <input type="text" value={displayName} onChange={onDisplayNameChange} />
-      </label>
-      <br />
-      <label>
-        Aliases (comma-separated):
-        <input type="text" value={aliases} onChange={onAliasesChange} />
-      </label>
-      <br />
-      <div className={styles.buttonWrap}>{buttons()}</div>
+      <div className={styles.content}>
+        <div className={styles.inputs}>
+          <h2>{title}</h2>
+          <label>
+            Display Name
+            <input type="text" value={displayName} onChange={onDisplayNameChange} />
+          </label>
+          <CommaSeparatedInput label={"Aliases (comma-separated)"} savedInputs={aliases} onInputChange={onAliasesChange} />
+        </div>
+        <div className={styles.buttonWrap}>{buttons()}</div>
+      </div>
     </dialog>
   );
 });

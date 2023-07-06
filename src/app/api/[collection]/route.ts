@@ -6,10 +6,10 @@ export async function POST(req: Request, {params}: {params: {collection: string}
     const data = await req.json();
 
     const displayName = data.displayName;
-    const aliases = data.aliases;
+    const aliases: string[] = data.aliases;
 
-    if (typeof displayName === "string" && typeof aliases === "string") {
-      const aliasObjs = aliases.split(",").map((alias) => {
+    if (typeof displayName === "string") {
+      const aliasObjs = aliases.map((alias) => {
         return {alias: alias};
       });
       createKeywordAndAliases(displayName, aliasObjs, collection);

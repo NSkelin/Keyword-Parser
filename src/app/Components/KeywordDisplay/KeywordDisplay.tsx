@@ -15,14 +15,14 @@ function KeywordDisplay({keywords, title, highlightColor, onCreate, onUpdate, on
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [editorDisplayName, setEditorDisplayName] = useState("");
   const [editorId, setEditorId] = useState("");
-  const [aliases, setAliases] = useState("");
+  const [aliases, setAliases] = useState<string[]>([]);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit" | undefined>("Create");
   const keywordsList: [string, number][] = [...keywords].map(([key, {count}]) => [key, count]);
 
   function openCreate() {
     setEditorDisplayName("");
     setEditorMode("Create");
-    setAliases("");
+    setAliases([]);
     dialogRef.current?.showModal();
   }
 
@@ -33,7 +33,7 @@ function KeywordDisplay({keywords, title, highlightColor, onCreate, onUpdate, on
       setEditorMode("Edit");
       const aliases = keywords.get(name);
       if (aliases?.aliases != null) {
-        setAliases(aliases.aliases.join(","));
+        setAliases(aliases.aliases);
       }
       dialogRef.current.showModal();
     }
@@ -43,10 +43,9 @@ function KeywordDisplay({keywords, title, highlightColor, onCreate, onUpdate, on
     setEditorDisplayName(e.target.value);
   }
 
-  function handleAliasesChange(e: ChangeEvent<HTMLInputElement>) {
-    setAliases(e.target.value);
+  function handleAliasesChange(aliases: string[]) {
+    setAliases(aliases);
   }
-
   return (
     <section className={styles.wrapper}>
       <KeywordEditor
