@@ -2,6 +2,18 @@ import React, {useRef, forwardRef, useImperativeHandle, ChangeEventHandler} from
 import styles from "./KeywordEditor.module.scss";
 import CommaSeparatedInput from "../CommaSeparatedInput/CommaSeparatedInput";
 
+export function validateInput(input: string | string[]) {
+  if (Array.isArray(input)) {
+    for (const val of input) {
+      if (val.length <= 1) return false;
+    }
+    return true;
+  } else {
+    if (input.length <= 1) return false;
+    else return true;
+  }
+}
+
 type KeywordEditorRef = {
   showModal: () => void;
 };
@@ -114,18 +126,6 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       .catch((error) => {
         console.error("Error occurred while deleting keyword:", error);
       });
-  }
-
-  function validateInput(input: string | string[]) {
-    if (Array.isArray(input)) {
-      for (const val of input) {
-        if (val.length <= 1) return false;
-      }
-      return true;
-    } else {
-      if (input.length <= 1) return false;
-      else return true;
-    }
   }
 
   const title = mode === "Create" ? "Create a new keyword" : "Edit or delete the keyword";
