@@ -43,6 +43,7 @@ export type KeywordEditorProps = {
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
   onDelete: (collectionName: string, displayName: string) => void;
 };
+/** A \<dialog> form used to add / edit / delete keywords. */
 const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function KeywordEditor(
   {
     displayNameID,
