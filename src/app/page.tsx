@@ -9,7 +9,7 @@ export default async function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.contentWrap}>
-        <KeywordParser initalCollections={collectionKeywords} />
+        <KeywordParser initialDisplays={collectionKeywords} />
       </div>
       <RegExDisplayCollection />
     </main>
