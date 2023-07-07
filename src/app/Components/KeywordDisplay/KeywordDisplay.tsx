@@ -58,7 +58,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
         ref={dialogRef}
         aliases={aliases}
         collection={title}
-        oldDisplayName={editorId}
+        displayNameID={editorId}
         displayName={editorDisplayName}
         mode={editorMode}
         onAliasesChange={(aliases) => setAliases(aliases)}

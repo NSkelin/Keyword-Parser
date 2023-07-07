@@ -19,20 +19,33 @@ type KeywordEditorRef = {
 };
 
 export type KeywordEditorProps = {
-  oldDisplayName: string;
+  /** The original displayName property before any editing occurs. Acts as the ID when updating the database.
+   * Only used in edit mode so technically optional if you dont plan on using edit mode.  */
+  displayNameID: string;
+  /** The value for the \<input> representing the currently edited keywords displayName. */
   displayName: string;
+  /** The collection the currently edited keyword is apart of. Used to call the REST api. */
   collection: string;
+  /** The list of aliases shown under the aliases \<input>. Each alias is represented by a clickable box underneath
+   * the input allowing users to delete existing keywords easily. Requires onAliasesChange to function properly. */
   aliases: string[];
+  /** Changes how the dialog's title and buttons are rendered. "Create" has two buttons, one to create a new keyword and another to cancel.
+   * "Edit" has three buttons, one to save changes, one to delete the keyword, and another to cancel any changes.*/
   mode?: "Create" | "Edit";
+  /** A callback for when the user adds or removes an alias from the editor. Used for updating state. */
   onAliasesChange: (aliases: string[]) => void;
+  /** A callback for the displayName \<input> onChange event. The displayName property is the \<input>s value so the result must be stored in state. */
   onDisplayNameChange: ChangeEventHandler<HTMLInputElement>;
+  /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
   onCreate: (collectionName: string, displayName: string, aliases: string[]) => void;
+  /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
   onUpdate: (collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) => void;
+  /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
   onDelete: (collectionName: string, displayName: string) => void;
 };
 const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function KeywordEditor(
   {
-    oldDisplayName,
+    displayNameID,
     displayName,
     collection,
     aliases,
@@ -47,6 +60,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
+  /** Exposes the dialogs showModal() function to the forwarded ref. Only exposed methods can be called. */
   useImperativeHandle(
     ref,
     () => {
@@ -61,12 +75,18 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
     []
   );
 
+  /** Closes the dialog. Uses the dialogs built in close() method. */
   function handleDialogClose() {
     if (dialogRef.current) {
       dialogRef.current.close();
     }
   }
 
+  /**
+   * Handles the response to a user creating a keyword, by verifying input, and handling errors.
+   * Sends the request to the REST api and upon success closes the editor and calls the passed in callback function.
+   * Allowing the app to use the data to update the state, update the database, etc.
+   */
   function handleCreate() {
     if (!validateInput(displayName) && !validateInput(aliases)) return;
     fetch(`/api/${collection}`, {
@@ -89,9 +109,14 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       });
   }
 
+  /**
+   * Handles the response to a user updating a keyword, by verifying input, and handling errors.
+   * Sends the request to the REST api and upon success closes the editor and calls the passed in callback function.
+   * Allowing the app to use the data to update the state, update the database, etc.
+   */
   function handleUpdate() {
     if (!validateInput(displayName) && !validateInput(aliases)) return;
-    fetch(`/api/${collection}/${oldDisplayName}`, {
+    fetch(`/api/${collection}/${displayNameID}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -101,7 +126,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       .then((response) => {
         if (response.ok) {
           handleDialogClose();
-          onUpdate(collection, oldDisplayName, displayName, aliases);
+          onUpdate(collection, displayNameID, displayName, aliases);
         } else {
           console.error("Failed to update keyword");
         }
@@ -111,6 +136,11 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       });
   }
 
+  /**
+   * Handles the response to a user deleting a keyword, by verifying input, and handling errors.
+   * Sends the request to the REST api and upon success closes the editor and calls the passed in callback function.
+   * Allowing the app to use the data to update the state, update the database, etc.
+   */
   function handleDelete() {
     fetch(`/api/${collection}/${displayName}`, {
       method: "DELETE",
@@ -128,6 +158,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       });
   }
 
+  // Create the editors title and available buttons depending on if its creating a new keyword or editing and existing one.
   const title = mode === "Create" ? "Create a new keyword" : "Edit or delete the keyword";
   const buttons = () => {
     if (mode === "Create") {
@@ -149,9 +180,10 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       );
     }
   };
+
   return (
     <dialog ref={dialogRef} className={styles.dialog}>
-      <div className={styles.content}>
+      <div className={styles.container}>
         <div className={styles.inputs}>
           <h2>{title}</h2>
           <label>
@@ -160,7 +192,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
           </label>
           <CommaSeparatedInput label={"Aliases (comma-separated)"} savedInputs={aliases} onInputChange={onAliasesChange} />
         </div>
-        <div className={styles.buttonWrap}>{buttons()}</div>
+        <div className={styles.actionBar}>{buttons()}</div>
       </div>
     </dialog>
   );
