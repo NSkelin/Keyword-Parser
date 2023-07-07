@@ -5,7 +5,7 @@ import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {createKeywordsRegEx} from "utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
 import styles from "./KeywordParser.module.scss";
-import {Collections} from "../KeywordDisplayCollection";
+import {Display} from "../KeywordDisplayCollection";
 
 type HighlightColorProps = {color: CSSProperties["backgroundColor"]; children?: ReactNode};
 const HighlightColor = ({color, children}: HighlightColorProps) => {
@@ -13,17 +13,17 @@ const HighlightColor = ({color, children}: HighlightColorProps) => {
 };
 
 export type KeywordParserProps = {
-  initalCollections: Collections;
+  initalCollections: Display[];
 };
 function KeywordParser({initalCollections}: KeywordParserProps) {
   const [value, setValue] = useState("");
   const [collections, setCollections] = useImmer(initalCollections);
   const onChange = (value: string) => setValue(value);
 
-  const highlights = collections.map(({keywords, color}) => {
+  const highlights = collections.map(({keywords, highlightColor}) => {
     return {
       highlight: createKeywordsRegEx(keywords.flatMap((keyword) => keyword.aliases)),
-      component: ({children}: {children: ReactNode}) => <HighlightColor color={color}>{children}</HighlightColor>,
+      component: ({children}: {children: ReactNode}) => <HighlightColor color={highlightColor}>{children}</HighlightColor>,
     };
   });
 
@@ -70,7 +70,7 @@ function KeywordParser({initalCollections}: KeywordParserProps) {
       </section>
       <KeywordDisplayCollection
         text={value}
-        collections={collections}
+        displays={collections}
         onCreate={handleCreateKeyword}
         onDelete={handleDeleteKeyword}
         onUpdate={handleUpdateKeyword}
