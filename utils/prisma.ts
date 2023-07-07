@@ -67,7 +67,7 @@ export async function getCollectionKeywords() {
   const formattedData = data.map(({keywords, color, ...rest}) => {
     return {
       ...rest,
-      color: color == null ? undefined : color,
+      highlightColor: color == null ? undefined : color,
       keywords: keywords.map(({aliases, ...rest}) => {
         return {
           ...rest,
