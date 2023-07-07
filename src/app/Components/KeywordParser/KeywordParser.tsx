@@ -6,6 +6,7 @@ import {createKeywordsRegEx} from "utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
 import styles from "./KeywordParser.module.scss";
 import {Collections} from "../KeywordDisplayCollection";
+import KeywordSummary from "../KeywordSummary/KeywordSummary";
 
 type HighlightColorProps = {color: CSSProperties["backgroundColor"]; children?: ReactNode};
 const HighlightColor = ({color, children}: HighlightColorProps) => {
@@ -60,6 +61,9 @@ function KeywordParser({initalCollections}: KeywordParserProps) {
     return;
   }
 
+  const t = collections.find((collection) => collection.title === "Hard Skills")?.keywords;
+  const t2 = t?.map(({displayName}) => displayName);
+
   return (
     <>
       <section className={styles.HighlightAreaWrap}>
@@ -75,6 +79,7 @@ function KeywordParser({initalCollections}: KeywordParserProps) {
         onDelete={handleDeleteKeyword}
         onUpdate={handleUpdateKeyword}
       />
+      {t2 ? <KeywordSummary keywords={t2} /> : <></>}
     </>
   );
 }
