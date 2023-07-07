@@ -1,7 +1,7 @@
 import {CSSProperties} from "react";
 import styles from "./KeywordItem.module.scss";
 
-export type KeywordDisplayItemProps = {
+export type KeywordItemProps = {
   /**
    * The color for the background fill.
    */
@@ -11,7 +11,7 @@ export type KeywordDisplayItemProps = {
    */
   name: string;
   /**
-   * The amount of this keyword.
+   * A number that represents how many times this keyword appeared in a search.
    */
   instances?: number;
   /**
@@ -27,7 +27,7 @@ export type KeywordDisplayItemProps = {
 /**
  * Renders a single list item \<li>
  */
-function KeywordItem({highlightColor = "lightblue", name, instances = 0, highlightPercent = 0, onEdit}: KeywordDisplayItemProps) {
+function KeywordItem({highlightColor = "lightblue", name, instances = 0, highlightPercent = 0, onEdit}: KeywordItemProps) {
   const emptyStyle: CSSProperties = {
     color: "gray",
     borderBottomColor: "lightgray",
