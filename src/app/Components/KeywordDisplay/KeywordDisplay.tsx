@@ -1,4 +1,4 @@
-import {CSSProperties, ChangeEvent, useRef, useState} from "react";
+import {CSSProperties, useRef, useState} from "react";
 import KeywordList from "../KeywordList/KeywordList";
 import styles from "./KeywordDisplay.module.scss";
 import KeywordEditor from "../KeywordEditor/KeywordEditor";
