@@ -3,13 +3,14 @@ import styles from "./RegExDisplayCollection.module.scss";
 import RegExDisplay from "../RegExDisplay/RegExDisplay";
 import prisma from "utils/prisma";
 
+/** Renders a RegExDisplay for every collection in the database. Used for debugging. */
 async function RegExDisplayCollection() {
   const collections = await prisma.keywordCollection.findMany({
     select: {title: true},
   });
 
   const displays = collections.map((collection) => {
-    return <RegExDisplay key={collection.title} title={collection.title} />;
+    return <RegExDisplay key={collection.title} collection={collection.title} />;
   });
 
   return <aside className={styles.regExList}>{displays}</aside>;
