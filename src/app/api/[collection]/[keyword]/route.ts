@@ -18,10 +18,11 @@ export async function DELETE(req: Request, {params}: {params: {collection: strin
 
 export async function PUT(req: Request, {params}: {params: {collection: string; keyword: string}}) {
   try {
-    const data: {newDisplayName: string; newAliases: string[]} = await req.json();
+    type data = {newDisplayName: string; newAliases: string[]; proficient: boolean};
+    const {newDisplayName, newAliases, proficient}: data = await req.json();
     const displayName = params.keyword;
 
-    updateKeywordAndAliases(displayName, data.newAliases, data.newDisplayName);
+    updateKeywordAndAliases(displayName, proficient, newAliases, newDisplayName);
     return new Response("Success");
   } catch (error) {
     console.log(error);

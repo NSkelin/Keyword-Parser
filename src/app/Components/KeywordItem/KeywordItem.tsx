@@ -15,9 +15,18 @@ export type KeywordItemProps = {
   highlightPercent?: number;
   /** A callback for when the edit button is clicked. */
   onEdit: (name: string) => void;
+  /** Controls if a proficiency tag is shown next to the name. */
+  proficient?: boolean;
 };
 /** Renders a single list item \<li> */
-function KeywordItem({highlightColor = "lightblue", name, instances = 0, highlightPercent = 0, onEdit}: KeywordItemProps) {
+function KeywordItem({
+  highlightColor = "lightblue",
+  name,
+  instances = 0,
+  highlightPercent = 0,
+  onEdit,
+  proficient = false,
+}: KeywordItemProps) {
   const emptyStyle: CSSProperties = {
     color: "gray",
     borderBottomColor: "lightgray",
@@ -27,6 +36,7 @@ function KeywordItem({highlightColor = "lightblue", name, instances = 0, highlig
   return (
     <li className={styles.container} style={itemStyle}>
       <div style={{backgroundColor: highlightColor, width: `${highlightPercent}%`}} className={styles.highlight}></div>
+      {proficient ? "P" : ""}
       <span>{name}</span>
       <div className={styles.containerEnd}>
         <button onClick={() => onEdit(name)}>Edit</button>

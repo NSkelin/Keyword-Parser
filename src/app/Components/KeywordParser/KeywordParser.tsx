@@ -37,23 +37,30 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
   });
 
   /** Adds a given displays keyword to state. */
-  function handleCreateKeyword(collectionName: string, displayName: string, aliases: string[]) {
+  function handleCreateKeyword(collectionName: string, displayName: string, proficient: boolean, aliases: string[]) {
     setDisplays((draft) => {
       draft
         .find((collection) => collection.title === collectionName)
-        ?.keywords.push({displayName: displayName, aliases: aliases});
+        ?.keywords.push({displayName: displayName, proficient: proficient, aliases: aliases});
     });
     return;
   }
 
   /** Updates states representation of a given displays keyword. */
-  function handleUpdateKeyword(collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) {
+  function handleUpdateKeyword(
+    collectionName: string,
+    displayName: string,
+    newDisplayName: string,
+    proficient: boolean,
+    newAliases: string[]
+  ) {
     setDisplays((draft) => {
       const collection = draft.find((collection) => collection.title === collectionName);
       const keyword = collection?.keywords.find((keyword) => keyword.displayName === displayName);
       if (keyword) {
         keyword.aliases = newAliases;
         keyword.displayName = newDisplayName;
+        keyword.proficient = proficient;
       }
     });
     return;

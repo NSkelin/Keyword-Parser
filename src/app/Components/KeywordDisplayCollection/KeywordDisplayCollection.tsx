@@ -3,14 +3,14 @@ import styles from "./KeywordDisplayCollection.module.scss";
 import KeywordDisplay from "../KeywordDisplay";
 import {createKeywordsRegEx} from "utils";
 
-export type Keyword = {displayName: string; aliases: string[]};
+export type Keyword = {displayName: string; proficient: boolean; aliases: string[]};
 /** Counts the amount of times a keyword appears in the passed text. */
 function countKeywords(sourceText: string, keywords: Keyword[]) {
-  const map = new Map<string, {count: number; aliases: string[]}>();
+  const map = new Map<string, {instances: number; proficient: boolean; aliases: string[]}>();
   for (const words of keywords) {
     const regEx = createKeywordsRegEx(words.aliases);
     const instances = (sourceText.match(regEx) || []).length;
-    map.set(words.displayName, {count: instances, aliases: words.aliases});
+    map.set(words.displayName, {instances: instances, proficient: words.proficient, aliases: words.aliases});
   }
 
   return map;
@@ -26,9 +26,15 @@ export type KeywordDisplayCollectionProps = {
   /** The list of data used to generate the displays */
   displays: Display[];
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onCreate: (collectionName: string, displayName: string, aliases: string[]) => void;
+  onCreate: (collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
   /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
-  onUpdate: (collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) => void;
+  onUpdate: (
+    collectionName: string,
+    displayName: string,
+    newDisplayName: string,
+    proficient: boolean,
+    newAliases: string[]
+  ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
   onDelete: (collectionName: string, displayName: string) => void;
 };

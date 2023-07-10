@@ -55,6 +55,7 @@ export async function getCollectionKeywords() {
       keywords: {
         select: {
           displayName: true,
+          proficient: true,
           aliases: {
             select: {
               alias: true,
@@ -104,11 +105,17 @@ export async function getKeywordAliases(displayName: string) {
 }
 
 /** Create a keyword and its aliases */
-export async function createKeywordAndAliases(displayName: string, aliases: {alias: string}[], collection: string) {
+export async function createKeywordAndAliases(
+  displayName: string,
+  proficient: boolean,
+  aliases: {alias: string}[],
+  collection: string
+) {
   await prisma.keyword.create({
     data: {
       displayName: displayName,
       keywordsTitle: collection,
+      proficient: proficient,
       aliases: {
         create: aliases,
       },
@@ -117,7 +124,12 @@ export async function createKeywordAndAliases(displayName: string, aliases: {ali
 }
 
 /** Rename a keyword and update its aliases */
-export async function updateKeywordAndAliases(displayName: string, newAliases: string[], newDisplayName?: string) {
+export async function updateKeywordAndAliases(
+  displayName: string,
+  proficient: boolean,
+  newAliases: string[],
+  newDisplayName?: string
+) {
   /**
    * SECTION START ----------
    * Necessary because prisma doesnt support createMany on sqlite which I am using.
@@ -145,6 +157,7 @@ export async function updateKeywordAndAliases(displayName: string, newAliases: s
     },
     data: {
       displayName: newDisplayName == null ? displayName : newDisplayName,
+      proficient: proficient,
       aliases: {
         deleteMany: {
           alias: {
