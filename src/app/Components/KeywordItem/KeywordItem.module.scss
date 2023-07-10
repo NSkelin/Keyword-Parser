@@ -1,19 +1,22 @@
-.item {
+.container {
+  position: relative;
   list-style: none;
+  padding: 10px 20px;
+
   display: flex;
   justify-content: space-between;
-  padding: 10px 20px;
-  width: 100%;
-  position: relative;
+  span {
+    position: relative;
+  }
 }
 .highlight {
   position: absolute;
+  height: 100%;
   top: 0;
   left: 0;
-  height: 100%;
 }
-.right {
-  z-index: 1;
+.containerEnd {
+  position: relative;
   display: flex;
   gap: 10px;
   span {

@@ -1,6 +1,5 @@
 import {PrismaClient} from "@prisma/client";
 
-// eslint-disable-next-line no-undef
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
@@ -10,7 +9,7 @@ if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 export default prisma;
 
-// gets each alias for every collection
+/** Gets collection(s) by title but flattens the keywords into an array aliases. */
 export async function getCollectionAliases(collectionTitles?: string[] | string) {
   const data = await prisma.keywordCollection.findMany({
     include: {
@@ -32,6 +31,8 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
         : {title: {in: collectionTitles}},
   });
 
+  // Flatten the keywords.
+  // {...rest, keywords: {aliases: [ { alias: string } ] } } -----> {...rest, keywords: string[]}
   const formattedData = data.map(({keywords, color, ...rest}) => {
     return {
       ...rest,
@@ -45,7 +46,7 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
   return formattedData;
 }
 
-// gets each keyword and its aliases for every collection
+/** Gets every collection but flattens the each keywords aliases into an array. */
 export async function getCollectionKeywords() {
   const data = await prisma.keywordCollection.findMany({
     select: {
@@ -64,10 +65,12 @@ export async function getCollectionKeywords() {
     },
   });
 
+  // Flatten the aliases.
+  // {...rest, aliases: [ { alias: string } ] } } -----> {...rest, aliases: string[]}
   const formattedData = data.map(({keywords, color, ...rest}) => {
     return {
       ...rest,
-      color: color == null ? undefined : color,
+      highlightColor: color == null ? undefined : color,
       keywords: keywords.map(({aliases, ...rest}) => {
         return {
           ...rest,
@@ -82,9 +85,7 @@ export async function getCollectionKeywords() {
   return formattedData;
 }
 
-/**
- * Gets all the aliases for a given keyword
- */
+/** Gets all the aliases for a given keyword */
 export async function getKeywordAliases(displayName: string) {
   const data = await prisma.keywordAlias.findMany({
     where: {
@@ -95,14 +96,14 @@ export async function getKeywordAliases(displayName: string) {
     },
   });
 
+  // Flatten aliases
+  // [ { alias: string } ] -----> string[]
   const aliases = data.map(({alias}) => alias);
 
   return aliases;
 }
 
-/**
- * Create a keyword and its aliases
- */
+/** Create a keyword and its aliases */
 export async function createKeywordAndAliases(displayName: string, aliases: {alias: string}[], collection: string) {
   await prisma.keyword.create({
     data: {
@@ -115,9 +116,7 @@ export async function createKeywordAndAliases(displayName: string, aliases: {ali
   });
 }
 
-/**
- * Rename a keyword and update its aliases
- */
+/** Rename a keyword and update its aliases */
 export async function updateKeywordAndAliases(displayName: string, newAliases: string[], newDisplayName?: string) {
   /**
    * SECTION START ----------
@@ -159,9 +158,7 @@ export async function updateKeywordAndAliases(displayName: string, newAliases: s
   return;
 }
 
-/**
- * Delete a keyword and its aliases.
- */
+/** Delete a keyword and its aliases. */
 export async function deleteKeywordAndAliases(displayName: string) {
   const deleteAliases = prisma.keywordAlias.deleteMany({
     where: {
