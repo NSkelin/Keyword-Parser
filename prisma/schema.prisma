@@ -18,6 +18,7 @@ model keywordCollection {
 
 model keyword {
   displayName   String            @id
+  proficient    Boolean           @default(false)
   aliases       keywordAlias[]
   keywords      keywordCollection @relation(fields: [keywordsTitle], references: [title])
   keywordsTitle String
