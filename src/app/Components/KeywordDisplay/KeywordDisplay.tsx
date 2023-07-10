@@ -40,10 +40,6 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
   const keywordsList = [...keywords].map(([key, {instances, proficient}]) => {
     return {name: key, instances: instances, proficient: proficient};
   });
-  const keywordSummary = keywordsList.reduce<string[]>((accumulator, {name, instances}) => {
-    if (instances > 0) accumulator.push(name);
-    return accumulator;
-  }, []);
 
   /** Opens and sets the KeywordEditor dialog for creating new keywords. */
   function openCreate() {
@@ -89,7 +85,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
       <div>
         <input type={"color"}></input>
         <button onClick={openCreate}>Add keyword +</button>
-        <KeywordSummary keywords={keywordSummary} />
+        <KeywordSummary keywords={keywordsList} />
       </div>
       <h2>{title}</h2>
       <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={highlightColor} />
