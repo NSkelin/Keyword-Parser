@@ -36,8 +36,10 @@ function KeywordItem({
   return (
     <li className={styles.container} style={itemStyle}>
       <div style={{backgroundColor: highlightColor, width: `${highlightPercent}%`}} className={styles.highlight}></div>
-      {proficient ? "P" : ""}
-      <span>{name}</span>
+      <span>
+        {proficient ? "-P- " : ""}
+        {name}
+      </span>
       <div className={styles.containerEnd}>
         <button onClick={() => onEdit(name)}>Edit</button>
         <span>{instances}</span>
