@@ -6,7 +6,6 @@ import {createKeywordsRegEx} from "utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
 import styles from "./KeywordParser.module.scss";
 import {Display} from "../KeywordDisplayCollection";
-import KeywordSummary from "../KeywordSummary/KeywordSummary";
 
 type HighlightColorProps = {
   /** The highlight color */
@@ -72,9 +71,6 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
     return;
   }
 
-  const t = displays.find((display) => display.title === "Hard Skills")?.keywords;
-  const t2 = t?.map(({displayName}) => displayName);
-
   return (
     <>
       <section className={styles.HighlightAreaWrap}>
@@ -90,7 +86,6 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
         onDelete={handleDeleteKeyword}
         onUpdate={handleUpdateKeyword}
       />
-      {t2 ? <KeywordSummary keywords={t2} /> : <></>}
     </>
   );
 }
