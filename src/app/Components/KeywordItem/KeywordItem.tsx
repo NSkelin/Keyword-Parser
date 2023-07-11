@@ -5,7 +5,7 @@ export type KeywordItemProps = {
   /** The color for the background fill. */
   highlightColor?: CSSProperties["backgroundColor"];
   /** The name of the keyword. */
-  name: string;
+  displayName: string;
   /** A number that represents how many times this keyword appeared in a search. */
   instances?: number;
   /**
@@ -21,7 +21,7 @@ export type KeywordItemProps = {
 /** Renders a single list item \<li> */
 function KeywordItem({
   highlightColor = "lightblue",
-  name,
+  displayName,
   instances = 0,
   highlightPercent = 0,
   onEdit,
@@ -38,10 +38,10 @@ function KeywordItem({
       <div style={{backgroundColor: highlightColor, width: `${highlightPercent}%`}} className={styles.highlight}></div>
       <span>
         {proficient ? "-P- " : ""}
-        {name}
+        {displayName}
       </span>
       <div className={styles.containerEnd}>
-        <button onClick={() => onEdit(name)}>Edit</button>
+        <button onClick={() => onEdit(displayName)}>Edit</button>
         <span>{instances}</span>
       </div>
     </li>

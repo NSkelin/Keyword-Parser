@@ -1,20 +1,8 @@
 import React, {CSSProperties} from "react";
 import styles from "./KeywordDisplayCollection.module.scss";
 import KeywordDisplay from "../KeywordDisplay";
-import {createKeywordsRegEx} from "utils";
 
-export type Keyword = {displayName: string; proficient: boolean; aliases: string[]};
-/** Counts the amount of times a keyword appears in the passed text. */
-function countKeywords(sourceText: string, keywords: Keyword[]) {
-  const map = new Map<string, {instances: number; proficient: boolean; aliases: string[]}>();
-  for (const words of keywords) {
-    const regEx = createKeywordsRegEx(words.aliases);
-    const instances = (sourceText.match(regEx) || []).length;
-    map.set(words.displayName, {instances: instances, proficient: words.proficient, aliases: words.aliases});
-  }
-
-  return map;
-}
+export type Keyword = {displayName: string; instances: number; proficient: boolean; aliases: string[]};
 export type Display = {
   title: string;
   keywords: Keyword[];
@@ -44,7 +32,7 @@ function KeywordDisplayCollection({text, displays, onCreate, onUpdate, onDelete}
     return (
       <KeywordDisplay
         key={title}
-        keywords={countKeywords(text, keywords)}
+        keywords={keywords}
         title={title}
         highlightColor={highlightColor}
         onCreate={onCreate}

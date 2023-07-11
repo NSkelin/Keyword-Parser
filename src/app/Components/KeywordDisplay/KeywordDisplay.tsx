@@ -7,10 +7,8 @@ import KeywordSummary from "../KeywordSummary/KeywordSummary";
 export type KeywordDisplayProps = {
   /** The title used to represent this section of keywords. */
   title?: string;
-  /** A hashmap containing all the keywords to display.
-   * The hashmaps key represents a keywords name, and the value is an object containing the keywords details.
-   */
-  keywords: Map<string, {instances: number; proficient: boolean; aliases: string[]}>;
+  /** The keywords to display */
+  keywords: {displayName: string; instances: number; proficient: boolean; aliases: string[]}[];
   /** The color used for each keywords highlight color */
   highlightColor?: CSSProperties["backgroundColor"];
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
@@ -37,8 +35,8 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
   const [aliases, setAliases] = useState<string[]>([]);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit" | undefined>("Create");
 
-  const keywordsList = [...keywords].map(([key, {instances, proficient}]) => {
-    return {name: key, instances: instances, proficient: proficient};
+  const keywordsList = keywords.map(({displayName, instances, proficient}) => {
+    return {displayName: displayName, instances: instances, proficient: proficient};
   });
 
   /** Opens and sets the KeywordEditor dialog for creating new keywords. */
@@ -56,7 +54,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
       setEditorDisplayName(name);
       setEditorId(name);
       setEditorMode("Edit");
-      const keyword = keywords.get(name);
+      const keyword = keywords.find((keyword) => keyword.displayName === name);
       if (keyword?.aliases != null) {
         setEditorProficient(keyword.proficient);
         setAliases(keyword.aliases);

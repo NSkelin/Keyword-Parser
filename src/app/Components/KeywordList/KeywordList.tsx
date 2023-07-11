@@ -4,22 +4,22 @@ import styles from "./KeywordList.module.scss";
 
 /** Creates the \<KeywordItem /> elements for rendering. */
 function createListItems(
-  keywords: {name: string; instances: number; proficient: boolean}[],
+  keywords: {displayName: string; instances: number; proficient: boolean}[],
   highlightColor: CSSProperties["backgroundColor"],
   onEdit: (name: string) => void
 ) {
   // the sum of all keywords instances, used to calculate the highlight percentage for each individual keyword.
   const sum = keywords.reduce((total, {instances}) => (total += instances), 0);
 
-  return keywords.map(({name, instances, proficient}) => {
+  return keywords.map(({displayName, instances, proficient}) => {
     const highlightPercent = (instances / sum) * 100;
 
     return (
       <KeywordItem
         highlightColor={highlightColor}
         highlightPercent={highlightPercent}
-        name={name}
-        key={name}
+        displayName={displayName}
+        key={displayName}
         instances={instances}
         onEdit={onEdit}
         proficient={proficient}
@@ -29,8 +29,8 @@ function createListItems(
 }
 
 /** Sorts the list in descending order, followed by alphabetically for numbers that are the same. */
-function sortList(keywords: {name: string; instances: number; proficient: boolean}[]) {
-  return keywords.sort(({name: aName, instances: aNumber}, {name: bName, instances: bNumber}) => {
+function sortList(keywords: {displayName: string; instances: number; proficient: boolean}[]) {
+  return keywords.sort(({displayName: aName, instances: aNumber}, {displayName: bName, instances: bNumber}) => {
     if (aNumber === bNumber) {
       if (aName < bName) return -1;
       return 1;
@@ -41,7 +41,7 @@ function sortList(keywords: {name: string; instances: number; proficient: boolea
 
 export type KeywordListProps = {
   /** The keywords used to make the list. */
-  keywords: {name: string; instances: number; proficient: boolean}[];
+  keywords: {displayName: string; instances: number; proficient: boolean}[];
   /** The highlight color to be used for every keyword in this list. */
   highlightColor?: CSSProperties["backgroundColor"];
   /** A callback for when a keyword items edit button is clicked. */

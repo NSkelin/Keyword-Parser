@@ -24,9 +24,14 @@ export type KeywordParserProps = {
 };
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
 function KeywordParser({initialDisplays}: KeywordParserProps) {
-  const [value, setValue] = useState("");
+  const [textAreaInput, setTextAreaInput] = useState("");
   const [displays, setDisplays] = useImmer(initialDisplays);
-  const onChange = (value: string) => setValue(value);
+
+  /** Updates the textAreaInput state and counts each keywords instances in the new textArea state. */
+  function handleTextAreaChange(textAreaInput: string) {
+    setTextAreaInput(textAreaInput);
+    countKeywordInstances(textAreaInput);
+  }
 
   // Creates the highlight array that tells HighlightWithinTextArea what to highlight.
   const highlights = displays.map(({keywords, highlightColor}) => {
@@ -41,7 +46,7 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
     setDisplays((draft) => {
       draft
         .find((collection) => collection.title === collectionName)
-        ?.keywords.push({displayName: displayName, proficient: proficient, aliases: aliases});
+        ?.keywords.push({displayName: displayName, instances: 0, proficient: proficient, aliases: aliases});
     });
     return;
   }
@@ -78,16 +83,30 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
     return;
   }
 
+  /** Counts how many times each keyword (and its aliases) appear inside the highlightable textArea and saves it to state.
+   * Saves each keywords count individually as the instance property, does not save the total.*/
+  function countKeywordInstances(sourceText: string) {
+    setDisplays((draft) => {
+      for (const display of draft) {
+        for (const keyword of display.keywords) {
+          const regEx = createKeywordsRegEx(keyword.aliases);
+          keyword.instances = (sourceText.match(regEx) || []).length;
+        }
+      }
+      return;
+    });
+  }
+
   return (
     <>
       <section className={styles.HighlightAreaWrap}>
         <h2>Text to parse</h2>
         <div className={styles.textArea}>
-          <HighlightWithinTextarea value={value} highlight={highlights} onChange={onChange} />
+          <HighlightWithinTextarea value={textAreaInput} highlight={highlights} onChange={handleTextAreaChange} />
         </div>
       </section>
       <KeywordDisplayCollection
-        text={value}
+        text={textAreaInput}
         displays={displays}
         onCreate={handleCreateKeyword}
         onDelete={handleDeleteKeyword}
