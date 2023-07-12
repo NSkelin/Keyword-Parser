@@ -5,7 +5,6 @@ import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {createKeywordsRegEx} from "utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
 import styles from "./KeywordParser.module.scss";
-import {Display} from "../KeywordDisplayCollection";
 
 type HighlightColorProps = {
   /** The highlight color */
@@ -20,12 +19,28 @@ const HighlightColor = ({color, children}: HighlightColorProps) => {
 
 export type KeywordParserProps = {
   /** The initial set of data for displays to ...display. */
-  initialDisplays: Display[];
+  initialDisplays: {
+    title: string;
+    keywords: {displayName: string; proficient: boolean; aliases: string[]}[];
+    highlightColor: CSSProperties["backgroundColor"];
+  }[];
 };
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
 function KeywordParser({initialDisplays}: KeywordParserProps) {
   const [textAreaInput, setTextAreaInput] = useState("");
-  const [displays, setDisplays] = useImmer(initialDisplays);
+  const [displays, setDisplays] = useImmer(inits());
+
+  // Create a new displays object and adds instances property to each keyword.
+  function inits() {
+    return initialDisplays.map(({keywords, ...rest}) => {
+      return {
+        ...rest,
+        keywords: keywords.map(({...rest}) => {
+          return {...rest, instances: 0};
+        }),
+      };
+    });
+  }
 
   /** Updates the textAreaInput state and counts each keywords instances in the new textArea state. */
   function handleTextAreaChange(textAreaInput: string) {
