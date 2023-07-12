@@ -121,7 +121,6 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
         </div>
       </section>
       <KeywordDisplayCollection
-        text={textAreaInput}
         displays={displays}
         onCreate={handleCreateKeyword}
         onDelete={handleDeleteKeyword}
