@@ -35,8 +35,9 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
   const [aliases, setAliases] = useState<string[]>([]);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit" | undefined>("Create");
 
-  const keywordsList = keywords.map(({displayName, instances, proficient}) => {
-    return {displayName: displayName, instances: instances, proficient: proficient};
+  // Create a new array as the old one is readonly. Passes the list to <KeywordList /> which requires a mutable list (to sort it).
+  const keywordsList = keywords.map(({...rest}) => {
+    return {...rest};
   });
 
   /** Opens and sets the KeywordEditor dialog for creating new keywords. */
@@ -83,7 +84,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
       <div>
         <input type={"color"}></input>
         <button onClick={openCreate}>Add keyword +</button>
-        <KeywordSummary keywords={keywordsList} />
+        <KeywordSummary keywords={keywords} />
       </div>
       <h2>{title}</h2>
       <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={highlightColor} />
