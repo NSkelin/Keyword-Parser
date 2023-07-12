@@ -98,7 +98,7 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
   }
 
   return (
-    <>
+    <section className={styles.contentWrap}>
       <section className={styles.HighlightAreaWrap}>
         <h2>Text to parse</h2>
         <div className={styles.textArea}>
@@ -112,7 +112,7 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
         onDelete={handleDeleteKeyword}
         onUpdate={handleUpdateKeyword}
       />
-    </>
+    </section>
   );
 }
 
