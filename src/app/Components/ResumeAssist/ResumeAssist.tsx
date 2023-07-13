@@ -3,6 +3,9 @@ import styles from "./ResumeAssist.module.scss";
 import BulletList from "../BulletList/BulletList";
 import KeywordSummary from "../KeywordSummary/KeywordSummary";
 import {createKeywordsRegEx, getAliases, getFoundProficientKeywords, getUniqueMatches} from "utils";
+import {useImmer} from "use-immer";
+import {enableMapSet} from "immer";
+enableMapSet();
 
 type Position = {title: string; start: string; end?: string; company: string};
 type Bullet = {ID: number; bullet: string};
@@ -18,6 +21,7 @@ export type ResumeAssistProps = {
  * will be displayed or hidden. This assists in choosing the most suitable bullet points for the given keywords.
  */
 function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
+  const [overrides, setOverrides] = useImmer<Map<number, boolean>>(new Map());
   const exp = createHistorySections(experience);
   const edu = createHistorySections(education);
 
@@ -35,10 +39,20 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
             {`${position.start} - ${position.end ? position.end : "now"}`}
           </div>
           <i>{position.company}</i>
-          <BulletList bullets={bullets} keywords={aliases} />
+          <BulletList bullets={bullets} keywords={aliases} overrides={overrides} onOverride={handleOverride} />
         </section>
       );
     });
+  }
+
+  function handleOverride(ID: number, state: boolean) {
+    setOverrides((draft) => {
+      draft.set(ID, state);
+    });
+  }
+
+  function resetOverride() {
+    setOverrides(new Map());
   }
 
   // get all active bullets
@@ -46,11 +60,16 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
 
   function getActiveBullets(workSummary: {position: Position; bullets: Bullet[]}[]) {
     for (const workSection of workSummary) {
-      for (const {bullet} of workSection.bullets) {
+      for (const {bullet, ID} of workSection.bullets) {
         const filteredkeywords = getFoundProficientKeywords(keywords);
         const aliases = getAliases(filteredkeywords);
         const regEx = createKeywordsRegEx(aliases);
-        if (regEx.test(bullet)) {
+        const override = overrides.get(ID);
+        if (override != null) {
+          if (override) {
+            activeBullets.push(bullet);
+          }
+        } else if (regEx.test(bullet)) {
           activeBullets.push(bullet);
         }
       }
@@ -83,6 +102,7 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
           {keywords: secondaryKeywords, color: "red"},
         ]}
       />
+      <button onClick={resetOverride}>Reset overrides</button>
       <section>
         <h2>Experience </h2>
         {exp}
