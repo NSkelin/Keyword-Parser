@@ -2,7 +2,6 @@ import {CSSProperties, useRef, useState} from "react";
 import KeywordList from "../KeywordList/KeywordList";
 import styles from "./KeywordDisplay.module.scss";
 import KeywordEditor from "../KeywordEditor/KeywordEditor";
-import KeywordSummary from "../KeywordSummary/KeywordSummary";
 
 export type KeywordDisplayProps = {
   /** The title used to represent this section of keywords. */
@@ -84,7 +83,6 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
       <div>
         <input type={"color"}></input>
         <button onClick={openCreate}>Add keyword +</button>
-        <KeywordSummary keywords={keywords} />
       </div>
       <h2>{title}</h2>
       <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={highlightColor} />
