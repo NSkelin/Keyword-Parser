@@ -1,18 +1,21 @@
 import React from "react";
 import styles from "./KeywordSummary.module.scss";
 
-export type KeywordSummaryProps = {keywords: {displayName: string; instances: number; proficient: boolean}[]};
+export type KeywordSummaryProps = {keywords: {keywords: string[]; color: string}[]};
 function KeywordSummary({keywords}: KeywordSummaryProps) {
-  const keywordSummary = keywords.reduce<string[]>((accumulator, {displayName, instances, proficient}) => {
-    if (instances > 0 && proficient) {
-      accumulator.push(displayName);
-    }
-    return accumulator;
-  }, []);
-  const keywordsString = keywordSummary.join(", ");
+  const keywordsString = keywords.map(({keywords, color}, index) => {
+    return (
+      <span key={index} style={{color: color}}>
+        {keywords.join(", ") + ", "}
+      </span>
+    );
+  });
 
   function handleClick() {
-    navigator.clipboard.writeText(keywordsString);
+    const keywordsString = keywords.map(({keywords}) => {
+      return keywords.join(", ");
+    });
+    navigator.clipboard.writeText(keywordsString.join(", ") + ".");
   }
   return (
     <section>
