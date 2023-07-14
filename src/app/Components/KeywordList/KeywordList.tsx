@@ -29,10 +29,10 @@ function createListItems(
 }
 
 /** Sorts the list in descending order, followed by alphabetically for numbers that are the same. */
-function sortList(keywords: {displayName: string; instances: number; proficient: boolean}[]) {
+export function sortList(keywords: {displayName: string; instances: number; proficient: boolean}[]) {
   return keywords.sort(({displayName: aName, instances: aNumber}, {displayName: bName, instances: bNumber}) => {
     if (aNumber === bNumber) {
-      if (aName < bName) return -1;
+      if (aName.toLocaleLowerCase() < bName.toLocaleLowerCase()) return -1;
       return 1;
     } else if (aNumber > bNumber) return -1;
     return 1;
