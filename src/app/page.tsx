@@ -1,4 +1,4 @@
-import {getCollectionKeywords} from "utils/prisma";
+import {getCollectionKeywords} from "src/app/database";
 import KeywordParser from "./Components/KeywordParser/KeywordParser";
 import RegExDisplayCollection from "./Components/RegExDisplayCollection/RegExDisplayCollection";
 import styles from "./page.module.scss";

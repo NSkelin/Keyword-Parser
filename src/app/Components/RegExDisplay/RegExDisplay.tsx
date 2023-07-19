@@ -1,7 +1,7 @@
 import React, {createElement} from "react";
 import styles from "./RegExDisplay.module.scss";
 import {createKeywordsRegEx} from "utils";
-import {getCollectionAliases} from "utils/prisma";
+import {getCollectionAliases} from "src/app/database";
 
 interface RegExDisplayProps {
   /** The Keyword collection to generate a regEx from. */
