@@ -158,7 +158,17 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
   }, []);
 
   // Get the name of all the keywords that are present in each enabled bullet.
-  const bulletMatches = getUniqueMatches(activeBullets.join(" "), getAliases(keywords));
+  // const bulletMatches = getUniqueMatches(activeBullets.join(" "), getAliases(keywords));
+  const bulletMatches = keywords.reduce<string[]>((accumulator, {displayName, aliases}) => {
+    const text = activeBullets.join(" ");
+    const regEx = createKeywordsRegEx(aliases);
+
+    if (regEx.test(text)) {
+      accumulator.push(displayName);
+    }
+
+    return accumulator;
+  }, []);
 
   // Get the keywords that are not requested by the job description but are in the enabled bullets.
   const secondaryKeywords = bulletMatches.filter((val) => !primaryKeywords.includes(val));
