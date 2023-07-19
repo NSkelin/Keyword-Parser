@@ -2,11 +2,17 @@ import React from "react";
 import styles from "./ResumeAssist.module.scss";
 import BulletList from "../BulletList/BulletList";
 import KeywordSummary from "../KeywordSummary/KeywordSummary";
-import {createKeywordsRegEx, getAliases, getFoundProficientKeywords, getUniqueMatches} from "@/app/utils";
+import {createKeywordsRegEx, getAliases, getFoundProficientKeywords, getInstancedKeywords, getUniqueMatches} from "@/app/utils";
 import {useImmer} from "use-immer";
 import {enableMapSet} from "immer";
 enableMapSet();
 
+interface Keyword {
+  displayName: string;
+  instances: number;
+  proficient: boolean;
+  aliases: string[];
+}
 interface Position {
   title: string;
   start: string;
@@ -21,6 +27,8 @@ interface Bullet {
   required?: boolean;
   /** Determines if this bullet can be used to fill out a section if its lacking. */
   fill?: boolean;
+  /** A filter that controls if the bullet is allowed to be shown. Checks the list for keywords that must be present before allowing it to appear. False means no filter, True means all keywords found must exist. */
+  restrict?: string[] | boolean;
 }
 export interface ResumeAssistProps {
   /** The list of job experiences you have. */
@@ -28,7 +36,7 @@ export interface ResumeAssistProps {
   /** A list of your education. */
   education: {position: Position; bullets: Bullet[]}[];
   /** The keywords used to determine which skills & bullets to display. */
-  keywords: {displayName: string; instances: number; proficient: boolean; aliases: string[]}[];
+  keywords: Keyword[];
 }
 /** Renders a resume look-a-like to help with actual resume creation. Based on the keywords sent in, each experience / educations bullet points
  * will be displayed or hidden. This assists in choosing the most suitable bullet points for the given keywords.
@@ -38,6 +46,32 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
   const activeBullets: string[] = [];
   const exp = createHistorySections(experience);
   const edu = createHistorySections(education);
+
+  /** Checks if the keywords in the job description pass the bullets restrictions  */
+  function passBulletRestrictions(restrict: boolean | string[] | undefined, bullet: string) {
+    // search every word in the array and check if it is currently in the job description
+    function everyWordExists(arr: string[]) {
+      const foundKeywords = getInstancedKeywords(keywords);
+
+      if (arr.every((word) => foundKeywords.some((obj) => obj.displayName === word))) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    if (restrict === true) {
+      // check if all keywords in the bullet are in the job description
+      const bulletKeywords = getUniqueMatches(bullet, getAliases(keywords));
+      return everyWordExists(bulletKeywords);
+    } else if (Array.isArray(restrict) && restrict.length > 0) {
+      // check if the job description contains the selected restrictions
+      return everyWordExists(restrict);
+    } else {
+      // no restrictions
+      return true;
+    }
+  }
 
   // Create the bullets for each section. Only show bullets that contain the requested keywords
   // that the user is also proficient at.
@@ -51,7 +85,7 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
       const autofillBullets: Bullet[] = [];
 
       // groups the bullets into on of: enabled | disabled | autofill.
-      for (const {ID, bullet, required, fill} of bullets) {
+      for (const {ID, bullet, required, fill, restrict} of bullets) {
         const regEx = createKeywordsRegEx(aliases);
         const override = overrides.get(ID);
 
@@ -67,7 +101,11 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
           enabledBullets.push({ID, bullet});
         } else if (regEx.test(bullet)) {
           // bullet contains any of the keywords
-          enabledBullets.push({ID, bullet});
+          if (passBulletRestrictions(restrict, bullet)) {
+            enabledBullets.push({ID, bullet});
+          } else {
+            disabledBullets.push({ID, bullet});
+          }
         } else if (fill === true) {
           // bullet can be used as filler
           autofillBullets.push({ID, bullet});
