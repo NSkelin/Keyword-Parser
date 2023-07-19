@@ -28,6 +28,17 @@ export function getFoundProficientKeywords(keywords: Keyword[]) {
   }, []);
 }
 
+/** Returns all keywords that exist in the job description. */
+export function getInstancedKeywords(keywords: Keyword[]) {
+  return keywords.reduce<Keyword[]>((accumulator, keyword) => {
+    const {instances} = keyword;
+    if (instances > 0) {
+      accumulator.push(keyword);
+    }
+    return accumulator;
+  }, []);
+}
+
 /** Searchs a string and returns an array of every word that matches the sent in words. */
 export function getMatches(textToMatch: string, wordsToMatch: string[]) {
   const regEx = createKeywordsRegEx(wordsToMatch);
