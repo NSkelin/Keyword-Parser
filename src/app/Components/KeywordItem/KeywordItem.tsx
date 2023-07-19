@@ -1,7 +1,7 @@
 import {CSSProperties} from "react";
 import styles from "./KeywordItem.module.scss";
 
-export type KeywordItemProps = {
+export interface KeywordItemProps {
   /** The color for the background fill. */
   highlightColor?: CSSProperties["backgroundColor"];
   /** The name of the keyword. */
@@ -17,7 +17,7 @@ export type KeywordItemProps = {
   onEdit: (name: string) => void;
   /** Controls if a proficiency tag is shown next to the name. */
   proficient?: boolean;
-};
+}
 /** Renders a single list item \<li> */
 function KeywordItem({
   highlightColor = "lightblue",

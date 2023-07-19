@@ -3,7 +3,7 @@ import KeywordList from "../KeywordList/KeywordList";
 import styles from "./KeywordDisplay.module.scss";
 import KeywordEditor from "../KeywordEditor/KeywordEditor";
 
-export type KeywordDisplayProps = {
+export interface KeywordDisplayProps {
   /** The title used to represent this section of keywords. */
   title?: string;
   /** The keywords to display */
@@ -18,11 +18,11 @@ export type KeywordDisplayProps = {
     displayName: string,
     newDisplayName: string,
     proficient: boolean,
-    newAliases: string[]
+    newAliases: string[],
   ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
   onDelete: (collectionName: string, displayName: string) => void;
-};
+}
 /** Displays a Keyword list with a group title for the keywords and
  * a fully functional editor to add, edit, or remove keywords.
  */

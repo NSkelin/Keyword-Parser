@@ -1,30 +1,30 @@
 "use client";
-import React, {ReactNode, useState, CSSProperties} from "react";
-import {useImmer} from "use-immer";
+import {CSSProperties, ReactNode, useState} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
+import {useImmer} from "use-immer";
 import {createKeywordsRegEx} from "utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
 import styles from "./KeywordParser.module.scss";
 
-type HighlightColorProps = {
+interface HighlightColorProps {
   /** The highlight color */
   color: CSSProperties["backgroundColor"];
   /** React child elements. Required to allow HighlightWithinTextArea to pass in text to be highlighted. */
   children?: ReactNode;
-};
+}
 /** A React component meant only to allow passing custom highlight colors to the HighlightWithinTextArea component. */
 const HighlightColor = ({color, children}: HighlightColorProps) => {
   return <mark style={{backgroundColor: color}}>{children}</mark>;
 };
 
-export type KeywordParserProps = {
+export interface KeywordParserProps {
   /** The initial set of data for displays to ...display. */
   initialDisplays: {
     title: string;
     keywords: {displayName: string; proficient: boolean; aliases: string[]}[];
     highlightColor: CSSProperties["backgroundColor"];
   }[];
-};
+}
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
 function KeywordParser({initialDisplays}: KeywordParserProps) {
   const [textAreaInput, setTextAreaInput] = useState("");
@@ -72,7 +72,7 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
     displayName: string,
     newDisplayName: string,
     proficient: boolean,
-    newAliases: string[]
+    newAliases: string[],
   ) {
     setDisplays((draft) => {
       const collection = draft.find((collection) => collection.title === collectionName);
@@ -105,7 +105,7 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
       for (const display of draft) {
         for (const keyword of display.keywords) {
           const regEx = createKeywordsRegEx(keyword.aliases);
-          keyword.instances = (sourceText.match(regEx) || []).length;
+          keyword.instances = (sourceText.match(regEx) ?? []).length;
         }
       }
       return;

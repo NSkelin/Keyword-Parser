@@ -14,11 +14,11 @@ export function validateInput(input: string | string[]) {
   }
 }
 
-type KeywordEditorRef = {
+interface KeywordEditorRef {
   showModal: () => void;
-};
+}
 
-export type KeywordEditorProps = {
+export interface KeywordEditorProps {
   /** The original displayName property before any editing occurs. Acts as the ID when updating the database.
    * Only used in edit mode so technically optional if you dont plan on using edit mode.  */
   displayNameID: string;
@@ -48,11 +48,11 @@ export type KeywordEditorProps = {
     displayName: string,
     newDisplayName: string,
     proficient: boolean,
-    newAliases: string[]
+    newAliases: string[],
   ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
   onDelete: (collectionName: string, displayName: string) => void;
-};
+}
 /** A \<dialog> form used to add / edit / delete keywords. */
 const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function KeywordEditor(
   {
@@ -69,7 +69,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
     onUpdate,
     onDelete,
   }: KeywordEditorProps,
-  ref
+  ref,
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -85,7 +85,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
         },
       };
     },
-    []
+    [],
   );
 
   /** Closes the dialog. Uses the dialogs built in close() method. */

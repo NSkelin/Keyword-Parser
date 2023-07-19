@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./KeywordSummary.module.scss";
 
-export type KeywordSummaryProps = {keywords: {keywords: string[]; color: string}[]};
+export interface KeywordSummaryProps {
+  keywords: {keywords: string[]; color: string}[];
+}
 function KeywordSummary({keywords}: KeywordSummaryProps) {
   const keywordsString = keywords.map(({keywords, color}, index) => {
     return (
@@ -15,8 +16,22 @@ function KeywordSummary({keywords}: KeywordSummaryProps) {
     const keywordsString = keywords.map(({keywords}) => {
       return keywords.join(", ");
     });
-    navigator.clipboard.writeText(keywordsString.join(", ") + ".");
+    navigator.clipboard.writeText(keywordsString.join(", ") + ".").then(
+      () => {
+        // TODO ~
+        // Success ~
+        // Popup notifying successful copy
+        return;
+      },
+      () => {
+        // TODO ~
+        // Failed ~
+        // Popup notifying failed copy
+        return;
+      },
+    );
   }
+
   return (
     <section>
       <div>{keywordsString}</div>

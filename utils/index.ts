@@ -6,7 +6,12 @@ export function createKeywordsRegEx(keywords: string[] | string) {
     return new RegExp(`\\b${keywords.join("\\b|\\b")}\\b`, "gi");
   }
 }
-type Keyword = {displayName: string; instances: number; proficient: boolean; aliases: string[]};
+interface Keyword {
+  displayName: string;
+  instances: number;
+  proficient: boolean;
+  aliases: string[];
+}
 /** Returns the keywords aliases. */
 export function getAliases(keywords: Keyword[]) {
   return keywords.flatMap(({aliases}) => aliases);

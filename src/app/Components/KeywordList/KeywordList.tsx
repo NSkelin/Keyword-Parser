@@ -6,7 +6,7 @@ import styles from "./KeywordList.module.scss";
 function createListItems(
   keywords: {displayName: string; instances: number; proficient: boolean}[],
   highlightColor: CSSProperties["backgroundColor"],
-  onEdit: (name: string) => void
+  onEdit: (name: string) => void,
 ) {
   // the sum of all keywords instances, used to calculate the highlight percentage for each individual keyword.
   const sum = keywords.reduce((total, {instances}) => (total += instances), 0);
@@ -39,14 +39,14 @@ export function sortList(keywords: {displayName: string; instances: number; prof
   });
 }
 
-export type KeywordListProps = {
+export interface KeywordListProps {
   /** The keywords used to make the list. */
   keywords: {displayName: string; instances: number; proficient: boolean}[];
   /** The highlight color to be used for every keyword in this list. */
   highlightColor?: CSSProperties["backgroundColor"];
   /** A callback for when a keyword items edit button is clicked. */
   onEdit: (name: string) => void;
-};
+}
 /** Renders a sorted list of keywords. The list is sorted in descending order followed by alphabetical*/
 function KeywordList({keywords, highlightColor = "lightblue", onEdit}: KeywordListProps) {
   const sortedKeywords = sortList(keywords);

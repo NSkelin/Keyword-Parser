@@ -1,7 +1,7 @@
 import {createKeywordsRegEx} from "utils";
 import styles from "./BulletList.module.scss";
 
-export type BulletListProps = {
+export interface BulletListProps {
   /** The list of strings or bullets to render. */
   bullets: {ID: number; bullet: string}[];
   /** The strings that each bullet will be matched against to decide if it should be enabled or disabled. */
@@ -10,7 +10,7 @@ export type BulletListProps = {
   overrides: Map<number, boolean>;
   /** Callback for when a bullet gets overridden, used to update state. */
   onOverride: (ID: number, state: boolean) => void;
-};
+}
 /** Renders a list of strings or bullets. Bullets that do not have a match with the passed in keywords are rendered as crossed out. */
 function BulletList({bullets, keywords, overrides, onOverride}: BulletListProps) {
   const enabledBullets: {ID: number; bullet: string}[] = [];
@@ -35,7 +35,20 @@ function BulletList({bullets, keywords, overrides, onOverride}: BulletListProps)
   // copies displayed bullets to the clipboard when clicked.
   function copyBulletsToClipboard() {
     const bulletsToCopy = enabledBullets.map(({bullet}) => bullet).join("\n");
-    navigator.clipboard.writeText(bulletsToCopy);
+    navigator.clipboard.writeText(bulletsToCopy).then(
+      () => {
+        // TODO ~
+        // Success ~
+        // Popup notifying successful copy
+        return;
+      },
+      () => {
+        // TODO ~
+        // Failed ~
+        // Popup notifying failed copy
+        return;
+      },
+    );
   }
 
   return (

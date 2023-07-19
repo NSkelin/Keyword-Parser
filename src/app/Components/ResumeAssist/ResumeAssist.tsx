@@ -7,16 +7,24 @@ import {useImmer} from "use-immer";
 import {enableMapSet} from "immer";
 enableMapSet();
 
-type Position = {title: string; start: string; end?: string; company: string};
-type Bullet = {ID: number; bullet: string};
-export type ResumeAssistProps = {
+interface Position {
+  title: string;
+  start: string;
+  end?: string;
+  company: string;
+}
+interface Bullet {
+  ID: number;
+  bullet: string;
+}
+export interface ResumeAssistProps {
   /** The list of job experiences you have. */
   experience: {position: Position; bullets: Bullet[]}[];
   /** A list of your education. */
   education: {position: Position; bullets: Bullet[]}[];
   /** The keywords used to determine which skills & bullets to display. */
   keywords: {displayName: string; instances: number; proficient: boolean; aliases: string[]}[];
-};
+}
 /** Renders a resume look-a-like to help with actual resume creation. Based on the keywords sent in, each experience / educations bullet points
  * will be displayed or hidden. This assists in choosing the most suitable bullet points for the given keywords.
  */
