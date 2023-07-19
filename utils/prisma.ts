@@ -36,7 +36,7 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
   const formattedData = data.map(({keywords, color, ...rest}) => {
     return {
       ...rest,
-      color: color == null ? undefined : color,
+      color: color ?? undefined,
       keywords: keywords.flatMap((keyword) => {
         return keyword.aliases.map((obj) => obj.alias);
       }),
@@ -71,7 +71,7 @@ export async function getCollectionKeywords() {
   const formattedData = data.map(({keywords, color, ...rest}) => {
     return {
       ...rest,
-      highlightColor: color == null ? undefined : color,
+      highlightColor: color ?? undefined,
       keywords: keywords.map(({aliases, ...rest}) => {
         return {
           ...rest,
@@ -109,7 +109,7 @@ export async function createKeywordAndAliases(
   displayName: string,
   proficient: boolean,
   aliases: {alias: string}[],
-  collection: string
+  collection: string,
 ) {
   await prisma.keyword.create({
     data: {
@@ -128,7 +128,7 @@ export async function updateKeywordAndAliases(
   displayName: string,
   proficient: boolean,
   newAliases: string[],
-  newDisplayName?: string
+  newDisplayName?: string,
 ) {
   /**
    * SECTION START ----------
@@ -156,7 +156,7 @@ export async function updateKeywordAndAliases(
       displayName: displayName,
     },
     data: {
-      displayName: newDisplayName == null ? displayName : newDisplayName,
+      displayName: newDisplayName ?? displayName,
       proficient: proficient,
       aliases: {
         deleteMany: {
