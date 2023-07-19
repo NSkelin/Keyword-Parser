@@ -16,6 +16,8 @@ interface Position {
 interface Bullet {
   ID: number;
   bullet: string;
+  /** Determines if this bullet will always appear / be inserted into the list regardless of any filters. */
+  required?: boolean;
 }
 export interface ResumeAssistProps {
   /** The list of job experiences you have. */
