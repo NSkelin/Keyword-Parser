@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react";
-import KeywordEditor from "./KeywordEditor";
 import {useRef} from "react";
+import KeywordEditor from "./KeywordEditor";
 
 const meta: Meta<typeof KeywordEditor> = {
   component: KeywordEditor,
@@ -8,7 +8,7 @@ const meta: Meta<typeof KeywordEditor> = {
 export default meta;
 type Story = StoryObj<typeof KeywordEditor>;
 
-const Testtter = () => {
+const Mock = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   return (
@@ -20,6 +20,8 @@ const Testtter = () => {
         collection={"collection"}
         displayName={"displayName"}
         displayNameID="oldDisplayName"
+        proficient={false}
+        onProficientChange={() => {}}
         onAliasesChange={() => {}}
         onDisplayNameChange={() => {}}
         onCreate={() => {}}
@@ -31,5 +33,5 @@ const Testtter = () => {
 };
 
 export const Default: Story = {
-  render: () => <Testtter />,
+  render: () => <Mock />,
 };
