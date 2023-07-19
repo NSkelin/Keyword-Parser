@@ -15,6 +15,7 @@ interface Position {
 }
 interface Bullet {
   ID: number;
+  /** The text that will be displayed. */
   bullet: string;
   /** Determines if this bullet will always appear / be inserted into the list regardless of any filters. */
   required?: boolean;
@@ -34,16 +35,59 @@ export interface ResumeAssistProps {
  */
 function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
   const [overrides, setOverrides] = useImmer<Map<number, boolean>>(new Map());
+  const activeBullets: string[] = [];
   const exp = createHistorySections(experience);
   const edu = createHistorySections(education);
 
   // Create the bullets for each section. Only show bullets that contain the requested keywords
   // that the user is also proficient at.
   function createHistorySections(arr: {position: Position; bullets: Bullet[]}[]) {
-    const filteredkeywords = getFoundProficientKeywords(keywords);
-    const aliases = getAliases(filteredkeywords);
+    const proficientKeywords = getFoundProficientKeywords(keywords);
+    const aliases = getAliases(proficientKeywords);
 
     return arr.map(({position, bullets}) => {
+      const enabledBullets: Bullet[] = [];
+      const disabledBullets: Bullet[] = [];
+      const autofillBullets: Bullet[] = [];
+
+      // groups the bullets into on of: enabled | disabled | autofill.
+      for (const {ID, bullet, required, fill} of bullets) {
+        const regEx = createKeywordsRegEx(aliases);
+        const override = overrides.get(ID);
+
+        // Decide if the bullet should be enabled, disabled, or used to autofill.
+        if (override === true) {
+          // user enabled bullet
+          enabledBullets.push({ID, bullet});
+        } else if (override === false) {
+          // user disabled bullet
+          disabledBullets.push({ID, bullet});
+        } else if (required === true) {
+          // bullet is required by default
+          enabledBullets.push({ID, bullet});
+        } else if (regEx.test(bullet)) {
+          // bullet contains any of the keywords
+          enabledBullets.push({ID, bullet});
+        } else if (fill === true) {
+          // bullet can be used as filler
+          autofillBullets.push({ID, bullet});
+        } else {
+          disabledBullets.push({ID, bullet});
+        }
+      }
+
+      // fills the enabledBullets list with the autofillBullets until a certain length is reached, then adds the remaining to the disabledBullets list.
+      for (const bullet of autofillBullets) {
+        if (enabledBullets.length < 4) {
+          enabledBullets.push(bullet);
+        } else if (enabledBullets.length >= 4) {
+          disabledBullets.push(bullet);
+        }
+      }
+
+      // save enabled bullets from all sections.
+      for (const {bullet} of enabledBullets) activeBullets.push(bullet);
+
       return (
         <section key={position.title} className={styles.history}>
           <div className={styles.position}>
@@ -51,7 +95,7 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
             {`${position.start} - ${position.end ? position.end : "now"}`}
           </div>
           <i>{position.company}</i>
-          <BulletList bullets={bullets} keywords={aliases} overrides={overrides} onOverride={handleOverride} />
+          <BulletList enabledBullets={enabledBullets} disabledBullets={disabledBullets} onOverride={handleOverride} />
         </section>
       );
     });
@@ -67,31 +111,7 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
     setOverrides(new Map());
   }
 
-  // get all active bullets
-  const activeBullets: string[] = [];
-
-  function getActiveBullets(workSummary: {position: Position; bullets: Bullet[]}[]) {
-    for (const workSection of workSummary) {
-      for (const {bullet, ID} of workSection.bullets) {
-        const filteredkeywords = getFoundProficientKeywords(keywords);
-        const aliases = getAliases(filteredkeywords);
-        const regEx = createKeywordsRegEx(aliases);
-        const override = overrides.get(ID);
-        if (override != null) {
-          if (override) {
-            activeBullets.push(bullet);
-          }
-        } else if (regEx.test(bullet)) {
-          activeBullets.push(bullet);
-        }
-      }
-    }
-  }
-
-  getActiveBullets(experience);
-  getActiveBullets(education);
-
-  // Get all keywords by name that have a match and the user is proficient in.
+  // Get the name of all keywords that the job requests, and the user is proficient in.
   const primaryKeywords = keywords.reduce<string[]>((accumulator, {displayName, instances, proficient}) => {
     if (instances > 0 && proficient) {
       accumulator.push(displayName);
@@ -99,10 +119,10 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
     return accumulator;
   }, []);
 
-  // get all the keywords that can be found in any of the bullets.
+  // Get the name of all the keywords that are present in each enabled bullet.
   const bulletMatches = getUniqueMatches(activeBullets.join(" "), getAliases(keywords));
 
-  // Get the secondary keywords by removing any primary keywords found in bulletMatches.
+  // Get the keywords that are not requested by the job description but are in the enabled bullets.
   const secondaryKeywords = bulletMatches.filter((val) => !primaryKeywords.includes(val));
 
   return (
