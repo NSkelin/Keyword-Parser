@@ -1,6 +1,6 @@
 import React, {createElement} from "react";
 import styles from "./RegExDisplay.module.scss";
-import {createKeywordsRegEx} from "utils";
+import {createKeywordsRegEx} from "@/app/utils";
 import {getCollectionAliases} from "src/app/database";
 
 interface RegExDisplayProps {

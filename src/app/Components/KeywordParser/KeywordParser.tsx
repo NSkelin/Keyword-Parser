@@ -2,7 +2,7 @@
 import {CSSProperties, ReactNode, useState} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {useImmer} from "use-immer";
-import {createKeywordsRegEx} from "utils";
+import {createKeywordsRegEx} from "@/app/utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
 import styles from "./KeywordParser.module.scss";
 

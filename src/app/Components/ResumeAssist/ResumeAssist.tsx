@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./ResumeAssist.module.scss";
 import BulletList from "../BulletList/BulletList";
 import KeywordSummary from "../KeywordSummary/KeywordSummary";
-import {createKeywordsRegEx, getAliases, getFoundProficientKeywords, getUniqueMatches} from "utils";
+import {createKeywordsRegEx, getAliases, getFoundProficientKeywords, getUniqueMatches} from "@/app/utils";
 import {useImmer} from "use-immer";
 import {enableMapSet} from "immer";
 enableMapSet();

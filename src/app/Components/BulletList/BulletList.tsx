@@ -1,4 +1,4 @@
-import {createKeywordsRegEx} from "utils";
+import {createKeywordsRegEx} from "@/app/utils";
 import styles from "./BulletList.module.scss";
 
 export interface BulletListProps {
