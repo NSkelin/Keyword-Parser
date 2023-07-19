@@ -1,13 +1,4 @@
-import {PrismaClient} from "@prisma/client";
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-const prisma = globalForPrisma.prisma ?? new PrismaClient();
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-export default prisma;
+import prisma from "./client";
 
 /** Gets collection(s) by title but flattens the keywords into an array aliases. */
 export async function getCollectionAliases(collectionTitles?: string[] | string) {
