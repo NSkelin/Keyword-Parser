@@ -45,11 +45,22 @@ export function getMatches(textToMatch: string, wordsToMatch: string[]) {
   return textToMatch.match(regEx);
 }
 
-/** Searchs a string and returns an array of every unique word that matches the sent in words.
- * Similar to getMatches(), but does not return duplicate matches.
+/** Calls getMatches but removes all duplicate matches from the search before returning the result.
+ *
+ * The search is case insensitive and will return an array of words following the case sensitivity of the wordsToMatch array sent in.
  */
 export function getUniqueMatches(textToMatch: string, wordsToMatch: string[]) {
-  const regEx = createKeywordsRegEx(wordsToMatch);
-  const matches = textToMatch.match(regEx);
-  return [...new Set(matches)];
+  const matches = getMatches(textToMatch, wordsToMatch);
+
+  if (matches === null) return [];
+
+  // search each word for a match and return the original word.
+  const uniqueMatches = wordsToMatch.reduce<string[]>((accumulator, word) => {
+    if (matches.some((e) => e.toLowerCase() === word.toLowerCase())) {
+      accumulator.push(word);
+    }
+    return accumulator;
+  }, []);
+
+  return uniqueMatches;
 }
