@@ -1,4 +1,4 @@
-/** Creates a regular expression out of one or more keywords. Used for highlighting keywords. */
+/** Creates a regular expression capable of matching all the keywords sent in. */
 export function createKeywordsRegEx(keywords: string[] | string) {
   if (typeof keywords === "string") {
     return new RegExp(`\\b${keywords}\\b`, "gi");
