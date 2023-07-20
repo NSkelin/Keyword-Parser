@@ -1,4 +1,4 @@
-import {deleteKeywordAndAliases, updateKeywordAndAliases} from "utils/prisma";
+import {deleteKeywordAndAliases, updateKeywordAndAliases} from "@/app/database";
 
 export async function DELETE(req: Request, {params}: {params: {collection: string; keyword: string}}) {
   try {

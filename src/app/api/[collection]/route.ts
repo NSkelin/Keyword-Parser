@@ -1,4 +1,4 @@
-import {createKeywordAndAliases} from "utils/prisma";
+import {createKeywordAndAliases} from "@/app/database";
 
 interface data {
   displayName: string;
