@@ -27,7 +27,7 @@ describe("getCollectionAliases", () => {
       ],
     },
   ];
-  test("should return formatted data with aliases when collection titles are provided as an array", async () => {
+  it("should return formatted data with aliases when collection titles are provided as an array", async () => {
     prismaMock.keywordCollection.findMany.mockResolvedValue(mockData);
 
     const result = await getCollectionAliases(["Collection 1"]);
@@ -41,7 +41,7 @@ describe("getCollectionAliases", () => {
     ]);
   });
 
-  test("should return formatted data with aliases when collection titles are provided as a string", async () => {
+  it("should return formatted data with aliases when collection titles are provided as a string", async () => {
     prismaMock.keywordCollection.findMany.mockResolvedValue(mockData);
 
     const result = await getCollectionAliases("Collection 1");
@@ -55,7 +55,7 @@ describe("getCollectionAliases", () => {
     ]);
   });
 
-  test("should return empty array when no collection titles are provided", async () => {
+  it("should return empty array when no collection titles are provided", async () => {
     prismaMock.keywordCollection.findMany.mockResolvedValue([]);
 
     const result = await getCollectionAliases();
