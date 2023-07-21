@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./ResumeAssist.module.scss";
 import BulletList from "../BulletList/BulletList";
 import KeywordSummary from "../KeywordSummary/KeywordSummary";
-import {createKeywordsRegEx, getAliases, getFoundProficientKeywords, getInstancedKeywords, getUniqueMatches} from "@/app/utils";
+import {createKeywordsRegEx, getAliases, getInstancedKeywords, getUniqueMatches} from "@/app/utils";
 import {useImmer} from "use-immer";
 import {enableMapSet} from "immer";
 enableMapSet();
@@ -76,8 +76,8 @@ function ResumeAssist({experience, education, keywords}: ResumeAssistProps) {
   // Create the bullets for each section. Only show bullets that contain the requested keywords
   // that the user is also proficient at.
   function createHistorySections(arr: {position: Position; bullets: Bullet[]}[]) {
-    const proficientKeywords = getFoundProficientKeywords(keywords);
-    const aliases = getAliases(proficientKeywords);
+    const instancedKeywords = getInstancedKeywords(keywords);
+    const aliases = getAliases(instancedKeywords);
 
     return arr.map(({position, bullets}) => {
       const enabledBullets: Bullet[] = [];
