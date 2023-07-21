@@ -30,3 +30,36 @@ model keywordAlias {
   keyword            keyword @relation(fields: [keywordDisplayName], references: [displayName])
   keywordDisplayName String
 }
+
+model resumeSection {
+  title    String     @id // Work Experience, Education, Projects, etc.
+  position position[]
+}
+
+model position {
+  id                 Int           @id @default(autoincrement())
+  section            resumeSection @relation(fields: [resumeSectionTitle], references: [title])
+  title              String
+  subtTitle          String
+  startDate          DateTime
+  endDate            DateTime
+  bullets            bullet[]
+  resumeSectionTitle String
+}
+
+model bullet {
+  id         Int                 @id @default(autoincrement())
+  point      String
+  required   Boolean
+  fill       Boolean
+  restrict   bulletRestriction[]
+  position   position?           @relation(fields: [positionId], references: [id])
+  positionId Int?
+}
+
+model bulletRestriction {
+  id          Int     @id @default(autoincrement())
+  restriction String
+  bullet      bullet? @relation(fields: [bulletId], references: [id])
+  bulletId    Int?
+}
