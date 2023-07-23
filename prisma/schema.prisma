@@ -22,6 +22,8 @@ model keyword {
   aliases       keywordAlias[]
   keywords      keywordCollection @relation(fields: [keywordsTitle], references: [title])
   keywordsTitle String
+  bullet        bullet?           @relation(fields: [bulletId], references: [id])
+  bulletId      Int?
 }
 
 model keywordAlias {
@@ -48,18 +50,11 @@ model position {
 }
 
 model bullet {
-  id           Int                 @id @default(autoincrement())
-  point        String
-  required     Boolean
-  fill         Boolean
-  restrictions bulletRestriction[]
-  position     position?           @relation(fields: [positionId], references: [id])
-  positionId   Int?
-}
-
-model bulletRestriction {
-  id          Int     @id @default(autoincrement())
-  restriction String
-  bullet      bullet? @relation(fields: [bulletId], references: [id])
-  bulletId    Int?
+  id         Int       @id @default(autoincrement())
+  point      String
+  default    Boolean // display this bullet by default?
+  fill       Boolean
+  required   keyword[] // keywords required to exist before display is allowed
+  position   position? @relation(fields: [positionId], references: [id])
+  positionId Int?
 }
