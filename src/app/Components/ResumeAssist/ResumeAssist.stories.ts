@@ -12,153 +12,224 @@ type Story = StoryObj<typeof ResumeAssist>;
 
 export const Default: Story = {
   args: {
-    experience: [
+    sectionData: [
       {
-        position: {
-          title: "ad",
-          start: "Sep.2013",
-          end: "Feb.2018",
-          company: "Zoinage",
-        },
-        bullets: [
+        title: "Education",
+        positions: [
           {
-            ID: 0,
-            bullet: "Magna do eiusmod minim Lorem.",
-          },
-          {
-            ID: 1,
-            bullet: "Occaecat quis est cillum eiusmod duis non quis dolore fugiat.",
-          },
-          {
-            ID: 2,
-            bullet: "Et laborum irure anim Lorem sunt.",
-          },
-          {
-            ID: 3,
-            bullet: "Exercitation sunt laboris minim aliquip sint.",
-          },
-          {
-            ID: 4,
-            bullet: "Incididunt adipisicing et exercitation commodo id sint consequat aute.",
-          },
-          {
-            ID: 5,
-            bullet: "In commodo ea adipisicing nulla ullamco anim minim dolore officia et magna officia.",
-          },
-          {
-            ID: 6,
-            bullet: "Ex eu in laboris cupidatat amet magna nulla pariatur ea sint mollit.",
-          },
-          {
-            ID: 7,
-            bullet: "Irure reprehenderit dolor excepteur voluptate exercitation cupidatat minim excepteur nostrud pariatur ad.",
-          },
-          {
-            ID: 8,
-            bullet: "Non ad reprehenderit laboris Lorem commodo et qui ullamco tempor.",
-          },
-          {
-            ID: 9,
-            bullet: "Do nostrud ea culpa exercitation.",
+            id: 1,
+            title: "ad",
+            subTitle: "Zoinage",
+            startDate: new Date(2013),
+            endDate: new Date(2018),
+            bullets: [
+              {
+                id: 0,
+                point: "Magna do eiusmod minim Lorem.",
+                required: false,
+                fill: false,
+                restrictions: [
+                  {
+                    id: 1,
+                    restriction: "",
+                    bulletId: null,
+                  },
+                ],
+                positionId: null,
+              },
+              {
+                id: 0,
+                point: "Magna do eiusmod minim Lorem.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 1,
+                point: "Occaecat quis est cillum eiusmod duis non quis dolore fugiat.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 2,
+                point: "Et laborum irure anim Lorem sunt.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 3,
+                point: "Exercitation sunt laboris minim aliquip sint.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 4,
+                point: "Incididunt adipisicing et exercitation commodo id sint consequat aute.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 5,
+                point: "In commodo ea adipisicing nulla ullamco anim minim dolore officia et magna officia.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 6,
+                point: "Ex eu in laboris cupidatat amet magna nulla pariatur ea sint mollit.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 7,
+                point:
+                  "Irure reprehenderit dolor excepteur voluptate exercitation cupidatat minim excepteur nostrud pariatur ad.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 8,
+                point: "Non ad reprehenderit laboris Lorem commodo et qui ullamco tempor.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 9,
+                point: "Do nostrud ea culpa exercitation.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+            ],
+            resumeSectionTitle: "",
           },
         ],
       },
       {
-        position: {
-          title: "cillum",
-          start: "Jan.2015",
-          end: "May.2018",
-          company: "Newcube",
-        },
-        bullets: [
+        title: "Work Experience",
+        positions: [
           {
-            ID: 10,
-            bullet: "Do sit adipisicing ullamco sunt in aliquip qui magna sit.",
-          },
-          {
-            ID: 11,
-            bullet: "Anim anim proident eiusmod tempor in cillum.",
-          },
-          {
-            ID: 12,
-            bullet: "Do enim eu pariatur Lorem ut veniam qui mollit non duis cillum ut.",
-          },
-          {
-            ID: 13,
-            bullet: "Cillum quis excepteur consectetur in reprehenderit in esse amet ipsum eiusmod dolore.",
-          },
-          {
-            ID: 14,
-            bullet: "Minim ea est voluptate laborum duis labore nostrud non laboris voluptate.",
-          },
-          {
-            ID: 15,
-            bullet: "Minim est voluptate minim tempor deserunt adipisicing.",
-          },
-          {
-            ID: 16,
-            bullet: "Ea Lorem dolor deserunt non magna labore nulla et enim ut dolor.",
-          },
-          {
-            ID: 17,
-            bullet: "Consectetur consectetur tempor enim proident ullamco tempor.",
-          },
-          {
-            ID: 18,
-            bullet: "Magna qui cupidatat mollit minim nulla eu sit culpa ad qui eu sit consequat sint.",
-          },
-          {
-            ID: 19,
-            bullet: "Ullamco non et sunt elit ipsum minim cupidatat excepteur fugiat labore est sint eu veniam.",
-          },
-          {
-            ID: 20,
-            bullet: "Officia excepteur non sunt et.",
-          },
-          {
-            ID: 21,
-            bullet: "In eiusmod dolor laboris deserunt et magna.",
-          },
-          {
-            ID: 22,
-            bullet: "Sit proident proident qui quis est irure ad eiusmod excepteur nisi elit enim.",
-          },
-          {
-            ID: 23,
-            bullet: "Laboris commodo labore labore voluptate dolor proident nulla et id.",
-          },
-        ],
-      },
-    ],
-    education: [
-      {
-        position: {
-          title: "deserunt",
-          start: "Feb.2015",
-          end: "Aug.2018",
-          company: "Slumberia",
-        },
-        bullets: [
-          {
-            ID: 24,
-            bullet:
-              "Cupidatat eiusmod non veniam reprehenderit sunt ullamco dolor ea eu aliquip ea incididunt voluptate reprehenderit.",
-          },
-          {
-            ID: 25,
-            bullet: "Id consectetur enim nostrud adipisicing pariatur tempor.",
-          },
-          {
-            ID: 26,
-            bullet: "Dolore duis cillum voluptate labore reprehenderit aliquip tempor in et ipsum eu fugiat.",
-          },
-          {
-            ID: 27,
-            bullet: "Occaecat pariatur laborum quis cupidatat officia labore aute exercitation.",
-          },
-          {
-            ID: 28,
-            bullet: "In laborum veniam cupidatat elit fugiat ut amet est enim ipsum ut.",
+            id: 1,
+            title: "cillum",
+            subTitle: "Newcube",
+            startDate: new Date(2015),
+            endDate: new Date(2018),
+            bullets: [
+              {
+                id: 0,
+                point: "Magna do eiusmod minim Lorem.",
+                required: false,
+                fill: false,
+                restrictions: [
+                  {
+                    id: 1,
+                    restriction: "",
+                    bulletId: null,
+                  },
+                ],
+                positionId: null,
+              },
+              {
+                id: 0,
+                point: "Magna do eiusmod minim Lorem.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 1,
+                point: "Occaecat quis est cillum eiusmod duis non quis dolore fugiat.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 2,
+                point: "Et laborum irure anim Lorem sunt.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 3,
+                point: "Exercitation sunt laboris minim aliquip sint.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 4,
+                point: "Incididunt adipisicing et exercitation commodo id sint consequat aute.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 5,
+                point: "In commodo ea adipisicing nulla ullamco anim minim dolore officia et magna officia.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 6,
+                point: "Ex eu in laboris cupidatat amet magna nulla pariatur ea sint mollit.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 7,
+                point:
+                  "Irure reprehenderit dolor excepteur voluptate exercitation cupidatat minim excepteur nostrud pariatur ad.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 8,
+                point: "Non ad reprehenderit laboris Lorem commodo et qui ullamco tempor.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+              {
+                id: 9,
+                point: "Do nostrud ea culpa exercitation.",
+                required: false,
+                fill: false,
+                restrictions: [],
+                positionId: null,
+              },
+            ],
+            resumeSectionTitle: "",
           },
         ],
       },
