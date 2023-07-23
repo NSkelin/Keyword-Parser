@@ -178,3 +178,21 @@ export async function deleteKeywordAndAliases(displayName: string) {
   await prisma.$transaction([deleteAliases, deleteKeyword]);
   return;
 }
+
+export async function getResumeAssistData() {
+  const data = await prisma.resumeSection.findMany({
+    include: {
+      positions: {
+        include: {
+          bullets: {
+            include: {
+              restrictions: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return data;
+}
