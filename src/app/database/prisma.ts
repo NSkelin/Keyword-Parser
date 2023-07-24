@@ -186,7 +186,11 @@ export async function getResumeAssistData() {
         include: {
           bullets: {
             include: {
-              restrictions: true,
+              required: {
+                include: {
+                  aliases: true
+                }
+              },
             },
           },
         },

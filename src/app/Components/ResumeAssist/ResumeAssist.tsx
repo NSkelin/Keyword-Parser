@@ -5,7 +5,7 @@ import KeywordSummary from "../KeywordSummary/KeywordSummary";
 import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/app/utils";
 import {useImmer} from "use-immer";
 import {enableMapSet} from "immer";
-import {Prisma, bulletRestriction} from "@prisma/client";
+import {Prisma} from "@prisma/client";
 enableMapSet();
 
 // Database structure
@@ -15,29 +15,46 @@ type SectionData = Prisma.resumeSectionGetPayload<{
       include: {
         bullets: {
           include: {
-            restrictions: true;
-          };
-        };
-      };
-    };
-  };
+            required: {
+              include: {
+                aliases: true
+              }
+            },
+          },
+        },
+      },
+    },
+  },
 }>[];
 // Database structure
 type PositionData = Prisma.positionGetPayload<{
-  include: {
-    bullets: {
       include: {
-        restrictions: true;
-      };
-    };
-  };
+        bullets: {
+          include: {
+            required: {
+              include: {
+                aliases: true
+              }
+            },
+          },
+        },
+      },
 }>;
 // Database structure
 type BulletData = Prisma.bulletGetPayload<{
   include: {
-    restrictions: true;
-  };
+    required: {
+      include: {
+        aliases: true
+      }
+    },
+  },
 }>;
+type RequiredKeywords = Prisma.keywordGetPayload<{
+  include: {
+    aliases: true
+  }
+}>
 
 interface Keyword {
   displayName: string;
@@ -75,13 +92,18 @@ function ResumeAssist({keywords, sectionData}: ResumeAssistProps) {
    *
    * This is to confirm that the job description has each keyword the user deems necessary for a bullet to be rendered.
    */
-  function compareRestrictions(restrict: bulletRestriction[]) {
-    const restrictions = restrict.map(({restriction}) => restriction);
-    const instancedKeywords = getInstancedKeywords(keywords);
+  function compareRestrictions(requiredKeywords: RequiredKeywords[]) {
+    if (requiredKeywords.length > 0) {
+      const aliases = requiredKeywords.flatMap(({aliases}) => {
+        return aliases.map(({alias}) => {
+            return alias;
+          });
+      });
+      // const aliases = requiredKeywords.map(({restriction}) => restriction);
+      const instancedKeywords = getInstancedKeywords(keywords);
 
-    if (restrict.length > 0) {
       // For each restriction, search the instancedKeywords for the first match.
-      return restrictions.every((word) => instancedKeywords.some((obj) => obj.displayName === word));
+      return aliases.every((alias) => instancedKeywords.some((keyword) => keyword.displayName === alias));
     } else {
       // No restrictions, so it passes by default.
       return true;
@@ -129,7 +151,7 @@ function ResumeAssist({keywords, sectionData}: ResumeAssistProps) {
     const autofillBullets: Bullet[] = [];
 
     // groups the bullets into one of the following: enabled | disabled | autofill.
-    for (const {id, point, required, fill, restrictions} of bullets) {
+    for (const {id, point, fill, default: includeByDefault, required} of bullets) {
       const regEx = createKeywordsRegEx(aliases);
       const override = overrides.get(id);
 
@@ -140,12 +162,12 @@ function ResumeAssist({keywords, sectionData}: ResumeAssistProps) {
       } else if (override === false) {
         // user disabled bullet
         disabledBullets.push({ID: id, bullet: point});
-      } else if (required === true) {
+      } else if (includeByDefault === true) {
         // bullet is required by default
         enabledBullets.push({ID: id, bullet: point});
       } else if (regEx.test(point)) {
         // bullet contains any of the keywords
-        if (compareRestrictions(restrictions)) {
+        if (compareRestrictions(required)) {
           enabledBullets.push({ID: id, bullet: point});
         } else {
           disabledBullets.push({ID: id, bullet: point});
