@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is an assistant that helps with parsing and counting keywords.
 
 ## Getting Started
 
-First, run the development server:
+First, run prisma studio:
+
+```bash
+npx prisma studio
+```
+
+Open [http://localhost:5555](http://localhost:5555) with your browser to see the result.
+
+In prisma studio, add and fill in atleast one row to the keywordCollection model. These act as groups for your keywords and currently can only be created through prisma studio.
+Keywords can be adding in app.
+
+Once done, save your changes and run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser and on the right you can add new keywords to each group you made in prisma studio. Once done, you are ready to use the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+When you first open the app it will consist of two sections, one on the left and one of the right.
+Paste the text you wish to parse on the left text area. On the right, you will see all of your keyword groups where you may create, update, or delete as many keywords as you want.
 
-## Learn More
+After pasting text into the text area on the left, the keywords inside the text will be automatically highlighted based on the keywords you add.
+On the right your keywords will also be highlighted and sorted by quantity found in the text area.
 
-To learn more about Next.js, take a look at the following resources:
+![image](https://github.com/NSkelin/Keyword-Parser/assets/31994545/53595512-8447-4529-aadb-692d124278ed)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
