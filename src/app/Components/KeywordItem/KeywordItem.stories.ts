@@ -12,6 +12,6 @@ export const Default: Story = {
   args: {
     instances: 5,
     highlightPercent: 20,
-    name: "keyword",
+    displayName: "keyword",
   },
 };

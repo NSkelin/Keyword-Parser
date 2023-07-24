@@ -10,7 +10,7 @@ type Story = StoryObj<typeof BulletList>;
 
 export const Default: Story = {
   args: {
-    bullets: [
+    enabledBullets: [
       {
         ID: 0,
         bullet: "Proident voluptate reprehenderit adipisicing tempor tempor sint ea ullamco.",
@@ -35,6 +35,8 @@ export const Default: Story = {
         ID: 5,
         bullet: "Commodo non mollit incididunt commodo cupidatat ad esse dolore qui id.",
       },
+    ],
+    disabledBullets: [
       {
         ID: 6,
         bullet: "Laboris culpa nostrud laborum consequat enim cillum.",
@@ -72,7 +74,5 @@ export const Default: Story = {
         bullet: "Ipsum in voluptate veniam consectetur quis.",
       },
     ],
-    keywords: ["ipsum", "ullamco", "do", "cupidatat", "consequat", "quis", "sunt", "reprehenderit", "officia", "adipisicing"],
-    overrides: new Map(),
   },
 };
