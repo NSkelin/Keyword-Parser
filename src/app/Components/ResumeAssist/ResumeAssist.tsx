@@ -233,7 +233,8 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
     }, []);
 
     // Get the keywords that are not requested by the job description but are in the enabled bullets.
-    const secondaryKeywords = bulletMatches.filter((val) => !primaryKeywords.includes(val));
+    const words = primaryKeywords.map(({word}) => word);
+    const secondaryKeywords = bulletMatches.filter(({word}) => !words.includes(word));
 
     return {title: title, keywords: [...primaryKeywords, ...secondaryKeywords]};
   });
