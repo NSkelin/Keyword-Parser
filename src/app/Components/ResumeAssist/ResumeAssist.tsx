@@ -17,44 +17,44 @@ type SectionData = Prisma.resumeSectionGetPayload<{
           include: {
             required: {
               include: {
-                aliases: true
-              }
-            },
-          },
-        },
-      },
-    },
-  },
+                aliases: true;
+              };
+            };
+          };
+        };
+      };
+    };
+  };
 }>[];
 // Database structure
 type PositionData = Prisma.positionGetPayload<{
+  include: {
+    bullets: {
       include: {
-        bullets: {
+        required: {
           include: {
-            required: {
-              include: {
-                aliases: true
-              }
-            },
-          },
-        },
-      },
+            aliases: true;
+          };
+        };
+      };
+    };
+  };
 }>;
 // Database structure
 type BulletData = Prisma.bulletGetPayload<{
   include: {
     required: {
       include: {
-        aliases: true
-      }
-    },
-  },
+        aliases: true;
+      };
+    };
+  };
 }>;
 type RequiredKeywords = Prisma.keywordGetPayload<{
   include: {
-    aliases: true
-  }
-}>
+    aliases: true;
+  };
+}>;
 
 interface Keyword {
   displayName: string;
@@ -75,7 +75,7 @@ interface Bullet {
 }
 export interface ResumeAssistProps {
   /** The keywords used to determine which skills & bullets to display. */
-  keywords: Keyword[];
+  keywordCollections: {title: string; keywords: Keyword[]}[];
   /** All the data required to render a resumes sections (education, experience, etc), its positions, and their individual bullets. */
   sectionData: SectionData;
 }
@@ -83,8 +83,9 @@ export interface ResumeAssistProps {
  *
  * Automatically chooses bullet points based off the keywords found in the job description and creates a summary of the skills / keywords found in all displayed bullet points.
  */
-function ResumeAssist({keywords, sectionData}: ResumeAssistProps) {
+function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
   const [overrides, setOverrides] = useImmer<Map<number, boolean>>(new Map());
+  const keywords: Keyword[] = keywordCollections.flatMap(({keywords}) => keywords);
   const activeBullets: string[] = [];
   const resumeSections = createSections(sectionData);
 
@@ -96,8 +97,8 @@ function ResumeAssist({keywords, sectionData}: ResumeAssistProps) {
     if (requiredKeywords.length > 0) {
       const aliases = requiredKeywords.flatMap(({aliases}) => {
         return aliases.map(({alias}) => {
-            return alias;
-          });
+          return alias;
+        });
       });
       // const aliases = requiredKeywords.map(({restriction}) => restriction);
       const instancedKeywords = getInstancedKeywords(keywords);
@@ -206,39 +207,41 @@ function ResumeAssist({keywords, sectionData}: ResumeAssistProps) {
     setOverrides(new Map());
   }
 
-  // Get the name of all keywords that the job requests, and the user is proficient in.
-  const primaryKeywords = keywords.reduce<string[]>((accumulator, {displayName, instances, proficient}) => {
-    if (instances > 0 && proficient) {
-      accumulator.push(displayName);
-    }
-    return accumulator;
-  }, []);
+  const collections = keywordCollections.map(({title, keywords}) => {
+    // Get the name of all keywords that the job requests, and the user is proficient in.
+    const primaryKeywords = keywords.reduce<{word: string; color: string}[]>(
+      (accumulator, {displayName, instances, proficient}) => {
+        if (instances > 0 && proficient) {
+          accumulator.push({word: displayName, color: "green"});
+        }
+        return accumulator;
+      },
+      [],
+    );
 
-  // Get the name of all the keywords that are present in each enabled bullet.
-  // const bulletMatches = getUniqueMatches(activeBullets.join(" "), getAliases(keywords));
-  const bulletMatches = keywords.reduce<string[]>((accumulator, {displayName, aliases}) => {
-    const text = activeBullets.join(" ");
-    const regEx = createKeywordsRegEx(aliases);
+    // Get the name of all the keywords that are present in each enabled bullet.
+    // const bulletMatches = getUniqueMatches(activeBullets.join(" "), getAliases(keywords));
+    const bulletMatches = keywords.reduce<{word: string; color: string}[]>((accumulator, {displayName, aliases}) => {
+      const text = activeBullets.join(" ");
+      const regEx = createKeywordsRegEx(aliases);
 
-    if (regEx.test(text)) {
-      accumulator.push(displayName);
-    }
+      if (regEx.test(text)) {
+        accumulator.push({word: displayName, color: "red"});
+      }
 
-    return accumulator;
-  }, []);
+      return accumulator;
+    }, []);
 
-  // Get the keywords that are not requested by the job description but are in the enabled bullets.
-  const secondaryKeywords = bulletMatches.filter((val) => !primaryKeywords.includes(val));
+    // Get the keywords that are not requested by the job description but are in the enabled bullets.
+    const secondaryKeywords = bulletMatches.filter((val) => !primaryKeywords.includes(val));
+
+    return {title: title, keywords: [...primaryKeywords, ...secondaryKeywords]};
+  });
 
   return (
     <section className={styles.container}>
       <h2>Skills</h2>
-      <KeywordSummary
-        keywords={[
-          {keywords: primaryKeywords, color: "green"},
-          {keywords: secondaryKeywords, color: "red"},
-        ]}
-      />
+      <KeywordSummary collections={collections} />
       <button onClick={resetOverride}>Reset overrides</button>
       {resumeSections}
     </section>

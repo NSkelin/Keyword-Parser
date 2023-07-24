@@ -1,22 +1,32 @@
 import React from "react";
 
 export interface KeywordSummaryProps {
-  keywords: {keywords: string[]; color: string}[];
+  collections: {title: string; keywords: {word: string; color: string}[]}[];
 }
-function KeywordSummary({keywords}: KeywordSummaryProps) {
-  const keywordsString = keywords.map(({keywords, color}, index) => {
-    return (
-      <span key={index} style={{color: color}}>
-        {keywords.join(", ") + ", "}
+function KeywordSummary({collections}: KeywordSummaryProps) {
+  const keywordsString = collections.map(({title, keywords}, index) => {
+    const wordsColored = keywords.map(({word, color}) => (
+      <span key={word} style={{color: color}}>
+        {" "}
+        {word}{" "}
       </span>
+    ));
+    return (
+      <div key={index}>
+        <b>{title}:</b>
+        {wordsColored}
+      </div>
     );
   });
 
   function handleClick() {
-    const keywordsString = keywords.map(({keywords}) => {
-      return keywords.join(", ");
+    const keywordsString = collections.map(({title, keywords}) => {
+      const wordsArray = keywords.map(({word}) => word);
+      const wordsString = wordsArray.join(", ") + ".";
+      return `${title}: ${wordsString}`;
     });
-    navigator.clipboard.writeText(keywordsString.join(", ") + ".").then(
+
+    navigator.clipboard.writeText(keywordsString.join("\n")).then(
       () => {
         // TODO ~
         // Success ~
