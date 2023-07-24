@@ -11,6 +11,7 @@
     margin-bottom: 20px;
   }
   flex: 1;
+  max-width: 49%;
 }
 .textArea {
   flex: 1;
@@ -20,7 +21,7 @@
 }
 .contentWrap {
   display: flex;
-  gap: 100px;
+  justify-content: space-between;
   height: 80vh;
   margin-bottom: 20px;
 }

@@ -45,7 +45,11 @@ function KeywordDisplayCollection({displays, onCreate, onUpdate, onDelete}: Keyw
     );
   });
 
-  return <section className={styles.displayCollection}>{displaysList}</section>;
+  return (
+    <section className={styles.displayCollection}>
+      <div className={styles.overflowContainer}>{displaysList}</div>
+    </section>
+  );
 }
 
 export default KeywordDisplayCollection;
