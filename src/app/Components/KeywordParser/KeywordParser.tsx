@@ -4,7 +4,27 @@ import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {useImmer} from "use-immer";
 import {createKeywordsRegEx} from "@/app/utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
+import ResumeAssist from "../ResumeAssist/ResumeAssist";
 import styles from "./KeywordParser.module.scss";
+import {Prisma} from "@prisma/client";
+
+type sectionData = Prisma.resumeSectionGetPayload<{
+  include: {
+    positions: {
+      include: {
+        bullets: {
+          include: {
+            required: {
+              include: {
+                aliases: true;
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+}>[];
 
 interface HighlightColorProps {
   /** The highlight color */
@@ -24,9 +44,10 @@ export interface KeywordParserProps {
     keywords: {displayName: string; proficient: boolean; aliases: string[]}[];
     highlightColor: CSSProperties["backgroundColor"];
   }[];
+  sectionData: sectionData;
 }
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
-function KeywordParser({initialDisplays}: KeywordParserProps) {
+function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   const [textAreaInput, setTextAreaInput] = useState("");
   const [displays, setDisplays] = useImmer(inits());
 
@@ -113,20 +134,28 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
   }
 
   return (
-    <section className={styles.contentWrap}>
-      <section className={styles.HighlightAreaWrap}>
-        <h2>Text to parse</h2>
-        <div className={styles.textArea}>
-          <HighlightWithinTextarea value={textAreaInput} highlight={highlights} onChange={handleTextAreaChange} />
-        </div>
+    <>
+      <section className={styles.contentWrap}>
+        <section className={styles.HighlightAreaWrap}>
+          <h2>Text to parse</h2>
+          <div className={styles.textArea}>
+            <HighlightWithinTextarea value={textAreaInput} highlight={highlights} onChange={handleTextAreaChange} />
+          </div>
+        </section>
+        <KeywordDisplayCollection
+          displays={displays}
+          onCreate={handleCreateKeyword}
+          onDelete={handleDeleteKeyword}
+          onUpdate={handleUpdateKeyword}
+        />
       </section>
-      <KeywordDisplayCollection
-        displays={displays}
-        onCreate={handleCreateKeyword}
-        onDelete={handleDeleteKeyword}
-        onUpdate={handleUpdateKeyword}
+      <ResumeAssist
+        sectionData={sectionData}
+        keywordCollections={displays.map(({title, keywords}) => {
+          return {title: title, keywords: keywords};
+        })}
       />
-    </section>
+    </>
   );
 }
 
