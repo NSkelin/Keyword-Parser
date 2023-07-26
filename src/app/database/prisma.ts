@@ -1,13 +1,4 @@
-import {PrismaClient} from "@prisma/client";
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-const prisma = globalForPrisma.prisma ?? new PrismaClient();
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-export default prisma;
+import prisma from "./client";
 
 /** Gets collection(s) by title but flattens the keywords into an array aliases. */
 export async function getCollectionAliases(collectionTitles?: string[] | string) {
@@ -36,7 +27,7 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
   const formattedData = data.map(({keywords, color, ...rest}) => {
     return {
       ...rest,
-      color: color == null ? undefined : color,
+      color: color ?? undefined,
       keywords: keywords.flatMap((keyword) => {
         return keyword.aliases.map((obj) => obj.alias);
       }),
@@ -55,6 +46,7 @@ export async function getCollectionKeywords() {
       keywords: {
         select: {
           displayName: true,
+          proficient: true,
           aliases: {
             select: {
               alias: true,
@@ -70,7 +62,7 @@ export async function getCollectionKeywords() {
   const formattedData = data.map(({keywords, color, ...rest}) => {
     return {
       ...rest,
-      highlightColor: color == null ? undefined : color,
+      highlightColor: color ?? undefined,
       keywords: keywords.map(({aliases, ...rest}) => {
         return {
           ...rest,
@@ -104,11 +96,17 @@ export async function getKeywordAliases(displayName: string) {
 }
 
 /** Create a keyword and its aliases */
-export async function createKeywordAndAliases(displayName: string, aliases: {alias: string}[], collection: string) {
+export async function createKeywordAndAliases(
+  displayName: string,
+  proficient: boolean,
+  aliases: {alias: string}[],
+  collection: string,
+) {
   await prisma.keyword.create({
     data: {
       displayName: displayName,
       keywordsTitle: collection,
+      proficient: proficient,
       aliases: {
         create: aliases,
       },
@@ -117,7 +115,12 @@ export async function createKeywordAndAliases(displayName: string, aliases: {ali
 }
 
 /** Rename a keyword and update its aliases */
-export async function updateKeywordAndAliases(displayName: string, newAliases: string[], newDisplayName?: string) {
+export async function updateKeywordAndAliases(
+  displayName: string,
+  proficient: boolean,
+  newAliases: string[],
+  newDisplayName?: string,
+) {
   /**
    * SECTION START ----------
    * Necessary because prisma doesnt support createMany on sqlite which I am using.
@@ -144,7 +147,8 @@ export async function updateKeywordAndAliases(displayName: string, newAliases: s
       displayName: displayName,
     },
     data: {
-      displayName: newDisplayName == null ? displayName : newDisplayName,
+      displayName: newDisplayName ?? displayName,
+      proficient: proficient,
       aliases: {
         deleteMany: {
           alias: {
@@ -173,4 +177,26 @@ export async function deleteKeywordAndAliases(displayName: string) {
 
   await prisma.$transaction([deleteAliases, deleteKeyword]);
   return;
+}
+
+export async function getResumeAssistData() {
+  const data = await prisma.resumeSection.findMany({
+    include: {
+      positions: {
+        include: {
+          bullets: {
+            include: {
+              required: {
+                include: {
+                  aliases: true
+                }
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return data;
 }

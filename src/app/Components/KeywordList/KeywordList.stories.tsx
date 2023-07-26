@@ -18,13 +18,46 @@ type Story = StoryObj<typeof KeywordList>;
 export const Default: Story = {
   args: {
     keywords: [
-      ["itemA", 5],
-      ["itemB", 3],
-      ["itemC", 6],
-      ["itemA", 1],
-      ["itemA", 1],
-      ["itemB", 1],
-      ["itemB", 1],
+      {
+        instances: 10,
+        proficient: true,
+        displayName: "Katie",
+      },
+      {
+        instances: 9,
+        proficient: false,
+        displayName: "John",
+      },
+      {
+        instances: 3,
+        proficient: false,
+        displayName: "Dillard",
+      },
+      {
+        instances: 0,
+        proficient: false,
+        displayName: "Phoebe",
+      },
+      {
+        instances: 7,
+        proficient: true,
+        displayName: "Mckinney",
+      },
+      {
+        instances: 5,
+        proficient: false,
+        displayName: "Baker",
+      },
+      {
+        instances: 8,
+        proficient: true,
+        displayName: "Cote",
+      },
+      {
+        instances: 2,
+        proficient: true,
+        displayName: "Lillie",
+      },
     ],
   },
 };

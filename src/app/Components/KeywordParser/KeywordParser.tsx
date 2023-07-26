@@ -1,32 +1,73 @@
 "use client";
-import React, {ReactNode, useState, CSSProperties} from "react";
-import {useImmer} from "use-immer";
+import {CSSProperties, ReactNode, useState} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
-import {createKeywordsRegEx} from "utils";
+import {useImmer} from "use-immer";
+import {createKeywordsRegEx} from "@/app/utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
+import ResumeAssist from "../ResumeAssist/ResumeAssist";
 import styles from "./KeywordParser.module.scss";
-import {Display} from "../KeywordDisplayCollection";
+import {Prisma} from "@prisma/client";
 
-type HighlightColorProps = {
+type sectionData = Prisma.resumeSectionGetPayload<{
+  include: {
+    positions: {
+      include: {
+        bullets: {
+          include: {
+            required: {
+              include: {
+                aliases: true;
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+}>[];
+
+interface HighlightColorProps {
   /** The highlight color */
   color: CSSProperties["backgroundColor"];
   /** React child elements. Required to allow HighlightWithinTextArea to pass in text to be highlighted. */
   children?: ReactNode;
-};
+}
 /** A React component meant only to allow passing custom highlight colors to the HighlightWithinTextArea component. */
 const HighlightColor = ({color, children}: HighlightColorProps) => {
   return <mark style={{backgroundColor: color}}>{children}</mark>;
 };
 
-export type KeywordParserProps = {
+export interface KeywordParserProps {
   /** The initial set of data for displays to ...display. */
-  initialDisplays: Display[];
-};
+  initialDisplays: {
+    title: string;
+    keywords: {displayName: string; proficient: boolean; aliases: string[]}[];
+    highlightColor: CSSProperties["backgroundColor"];
+  }[];
+  sectionData: sectionData;
+}
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
-function KeywordParser({initialDisplays}: KeywordParserProps) {
-  const [value, setValue] = useState("");
-  const [displays, setDisplays] = useImmer(initialDisplays);
-  const onChange = (value: string) => setValue(value);
+function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
+  const [textAreaInput, setTextAreaInput] = useState("");
+  const [displays, setDisplays] = useImmer(inits());
+
+  // Create a new displays object and adds instances property to each keyword.
+  function inits() {
+    return initialDisplays.map(({keywords, ...rest}) => {
+      return {
+        ...rest,
+        keywords: keywords.map(({...rest}) => {
+          return {...rest, instances: 0};
+        }),
+      };
+    });
+  }
+
+  /** Updates the textAreaInput state and counts each keywords instances in the new textArea state. */
+  function handleTextAreaChange(textAreaInput: string) {
+    setTextAreaInput(textAreaInput);
+    countKeywordInstances(textAreaInput);
+  }
 
   // Creates the highlight array that tells HighlightWithinTextArea what to highlight.
   const highlights = displays.map(({keywords, highlightColor}) => {
@@ -37,23 +78,30 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
   });
 
   /** Adds a given displays keyword to state. */
-  function handleCreateKeyword(collectionName: string, displayName: string, aliases: string[]) {
+  function handleCreateKeyword(collectionName: string, displayName: string, proficient: boolean, aliases: string[]) {
     setDisplays((draft) => {
       draft
         .find((collection) => collection.title === collectionName)
-        ?.keywords.push({displayName: displayName, aliases: aliases});
+        ?.keywords.push({displayName: displayName, instances: 0, proficient: proficient, aliases: aliases});
     });
     return;
   }
 
   /** Updates states representation of a given displays keyword. */
-  function handleUpdateKeyword(collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) {
+  function handleUpdateKeyword(
+    collectionName: string,
+    displayName: string,
+    newDisplayName: string,
+    proficient: boolean,
+    newAliases: string[],
+  ) {
     setDisplays((draft) => {
       const collection = draft.find((collection) => collection.title === collectionName);
       const keyword = collection?.keywords.find((keyword) => keyword.displayName === displayName);
       if (keyword) {
         keyword.aliases = newAliases;
         keyword.displayName = newDisplayName;
+        keyword.proficient = proficient;
       }
     });
     return;
@@ -71,20 +119,41 @@ function KeywordParser({initialDisplays}: KeywordParserProps) {
     return;
   }
 
+  /** Counts how many times each keyword (and its aliases) appear inside the highlightable textArea and saves it to state.
+   * Saves each keywords count individually as the instance property, does not save the total.*/
+  function countKeywordInstances(sourceText: string) {
+    setDisplays((draft) => {
+      for (const display of draft) {
+        for (const keyword of display.keywords) {
+          const regEx = createKeywordsRegEx(keyword.aliases);
+          keyword.instances = (sourceText.match(regEx) ?? []).length;
+        }
+      }
+      return;
+    });
+  }
+
   return (
     <>
-      <section className={styles.HighlightAreaWrap}>
-        <h2>Text to parse</h2>
-        <div className={styles.textArea}>
-          <HighlightWithinTextarea value={value} highlight={highlights} onChange={onChange} />
-        </div>
+      <section className={styles.contentWrap}>
+        <section className={styles.HighlightAreaWrap}>
+          <h2>Text to parse</h2>
+          <div className={styles.textArea}>
+            <HighlightWithinTextarea value={textAreaInput} highlight={highlights} onChange={handleTextAreaChange} />
+          </div>
+        </section>
+        <KeywordDisplayCollection
+          displays={displays}
+          onCreate={handleCreateKeyword}
+          onDelete={handleDeleteKeyword}
+          onUpdate={handleUpdateKeyword}
+        />
       </section>
-      <KeywordDisplayCollection
-        text={value}
-        displays={displays}
-        onCreate={handleCreateKeyword}
-        onDelete={handleDeleteKeyword}
-        onUpdate={handleUpdateKeyword}
+      <ResumeAssist
+        sectionData={sectionData}
+        keywordCollections={displays.map(({title, keywords}) => {
+          return {title: title, keywords: keywords};
+        })}
       />
     </>
   );

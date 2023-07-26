@@ -3,6 +3,13 @@ import KeywordItem from "./KeywordItem";
 
 const meta: Meta<typeof KeywordItem> = {
   component: KeywordItem,
+  decorators: [
+    (Story) => (
+      <div style={{width: "200px"}}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
@@ -12,6 +19,6 @@ export const Default: Story = {
   args: {
     instances: 5,
     highlightPercent: 20,
-    name: "keyword",
+    displayName: "keyword",
   },
 };

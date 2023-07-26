@@ -18,9 +18,12 @@ model keywordCollection {
 
 model keyword {
   displayName   String            @id
+  proficient    Boolean           @default(false)
   aliases       keywordAlias[]
   keywords      keywordCollection @relation(fields: [keywordsTitle], references: [title])
   keywordsTitle String
+  bullet        bullet?           @relation(fields: [bulletId], references: [id])
+  bulletId      Int?
 }
 
 model keywordAlias {
@@ -28,4 +31,30 @@ model keywordAlias {
   alias              String
   keyword            keyword @relation(fields: [keywordDisplayName], references: [displayName])
   keywordDisplayName String
+}
+
+model resumeSection {
+  title     String     @id // Work Experience, Education, Projects, etc.
+  positions position[]
+}
+
+model position {
+  id                 Int           @id @default(autoincrement())
+  section            resumeSection @relation(fields: [resumeSectionTitle], references: [title])
+  title              String
+  subTitle           String
+  startDate          DateTime
+  endDate            DateTime?
+  bullets            bullet[]
+  resumeSectionTitle String
+}
+
+model bullet {
+  id         Int       @id @default(autoincrement())
+  point      String
+  default    Boolean // display this bullet by default?
+  fill       Boolean
+  required   keyword[] // keywords required to exist before display is allowed
+  position   position? @relation(fields: [positionId], references: [id])
+  positionId Int?
 }

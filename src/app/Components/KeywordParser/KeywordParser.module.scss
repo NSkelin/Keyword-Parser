@@ -11,10 +11,17 @@
     margin-bottom: 20px;
   }
   flex: 1;
+  max-width: 49%;
 }
 .textArea {
   flex: 1;
   overflow: auto;
   padding-top: 10px;
   border-top: 2px solid gray;
+}
+.contentWrap {
+  display: flex;
+  justify-content: space-between;
+  height: 80vh;
+  margin-bottom: 20px;
 }

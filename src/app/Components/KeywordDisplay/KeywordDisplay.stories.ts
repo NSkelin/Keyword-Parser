@@ -10,12 +10,39 @@ type Story = StoryObj<typeof KeywordDisplay>;
 
 export const Default: Story = {
   args: {
-    title: "My keywords",
-    keywords: new Map<string, {count: number; aliases: string[]}>([
-      ["word", {count: 5, aliases: ["word1", "word2"]}],
-      ["yakuza", {count: 3, aliases: ["yakuza1", "yakuza2"]}],
-      ["phone", {count: 3, aliases: ["phone1", "phone2"]}],
-    ]),
+    title: "qui quis",
+    keywords: [
+      {
+        displayName: "Bradshaw",
+        instances: 4,
+        proficient: false,
+        aliases: ["esse", "cillum"],
+      },
+      {
+        displayName: "Vaughn",
+        instances: 1,
+        proficient: false,
+        aliases: ["dolor", "amet"],
+      },
+      {
+        displayName: "Yolanda",
+        instances: 1,
+        proficient: true,
+        aliases: ["ad", "deserunt", "nulla", "nisi", "amet"],
+      },
+      {
+        displayName: "Rose",
+        instances: 10,
+        proficient: true,
+        aliases: ["proident", "ipsum", "Lorem", "eiusmod"],
+      },
+      {
+        displayName: "Dejesus",
+        instances: 3,
+        proficient: true,
+        aliases: ["cupidatat", "veniam", "eu", "incididunt", "elit"],
+      },
+    ],
     highlightColor: "lightgoldenrodyellow",
   },
 };

@@ -14,11 +14,11 @@ export function validateInput(input: string | string[]) {
   }
 }
 
-type KeywordEditorRef = {
+interface KeywordEditorRef {
   showModal: () => void;
-};
+}
 
-export type KeywordEditorProps = {
+export interface KeywordEditorProps {
   /** The original displayName property before any editing occurs. Acts as the ID when updating the database.
    * Only used in edit mode so technically optional if you dont plan on using edit mode.  */
   displayNameID: string;
@@ -26,6 +26,8 @@ export type KeywordEditorProps = {
   displayName: string;
   /** The collection the currently edited keyword is apart of. Used to call the REST api. */
   collection: string;
+  /** Controls if the proficient checkbox input is checked or not. */
+  proficient: boolean;
   /** The list of aliases shown under the aliases \<input>. Each alias is represented by a clickable box underneath
    * the input allowing users to delete existing keywords easily. Requires onAliasesChange to function properly. */
   aliases: string[];
@@ -36,28 +38,38 @@ export type KeywordEditorProps = {
   onAliasesChange: (aliases: string[]) => void;
   /** A callback for the displayName \<input> onChange event. The displayName property is the \<input>s value so the result must be stored in state. */
   onDisplayNameChange: ChangeEventHandler<HTMLInputElement>;
+  /** A callback for the proficient checkbox onChange event. The proficient property is the \<input>s checked value so the result must be stored in state. */
+  onProficientChange: ChangeEventHandler<HTMLInputElement>;
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onCreate: (collectionName: string, displayName: string, aliases: string[]) => void;
+  onCreate: (collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
   /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
-  onUpdate: (collectionName: string, displayName: string, newDisplayName: string, newAliases: string[]) => void;
+  onUpdate: (
+    collectionName: string,
+    displayName: string,
+    newDisplayName: string,
+    proficient: boolean,
+    newAliases: string[],
+  ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
   onDelete: (collectionName: string, displayName: string) => void;
-};
+}
 /** A \<dialog> form used to add / edit / delete keywords. */
 const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function KeywordEditor(
   {
     displayNameID,
     displayName,
     collection,
+    proficient,
     aliases,
     mode = "Create",
     onAliasesChange,
     onDisplayNameChange,
+    onProficientChange,
     onCreate,
     onUpdate,
     onDelete,
   }: KeywordEditorProps,
-  ref
+  ref,
 ) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -73,7 +85,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
         },
       };
     },
-    []
+    [],
   );
 
   /** Closes the dialog. Uses the dialogs built in close() method. */
@@ -95,12 +107,12 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({displayName: displayName, aliases: aliases}),
+      body: JSON.stringify({displayName: displayName, proficient: proficient, aliases: aliases}),
     })
       .then((response) => {
         if (response.ok) {
           handleDialogClose();
-          onCreate(collection, displayName, aliases);
+          onCreate(collection, displayName, proficient, aliases);
         } else {
           console.error("Failed to add keyword");
         }
@@ -122,12 +134,12 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({newDisplayName: displayName, newAliases: aliases}),
+      body: JSON.stringify({newDisplayName: displayName, proficient, newAliases: aliases}),
     })
       .then((response) => {
         if (response.ok) {
           handleDialogClose();
-          onUpdate(collection, displayNameID, displayName, aliases);
+          onUpdate(collection, displayNameID, displayName, proficient, aliases);
         } else {
           console.error("Failed to update keyword");
         }
@@ -190,6 +202,10 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
           <label>
             Display Name
             <input type="text" value={displayName} onChange={onDisplayNameChange} />
+          </label>
+          <label>
+            Proficient
+            <input type="checkbox" checked={proficient} onChange={onProficientChange}></input>
           </label>
           <CommaSeparatedInput label={"Aliases (comma-separated)"} savedInputs={aliases} onInputChange={onAliasesChange} />
         </div>

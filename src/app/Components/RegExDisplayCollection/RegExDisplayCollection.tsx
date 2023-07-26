@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./RegExDisplayCollection.module.scss";
 import RegExDisplay from "../RegExDisplay/RegExDisplay";
-import prisma from "utils/prisma";
+import prisma from "src/app/database/client";
 
 /** Renders a RegExDisplay for every collection in the database. Used for debugging. */
 async function RegExDisplayCollection() {

@@ -1,0 +1,22 @@
+.container {
+  background-color: white;
+  padding: 50px;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px gray;
+  max-width: 49%;
+  h2 {
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
+  }
+}
+
+.history {
+  margin: 10px 0;
+  i {
+    margin-right: 10px;
+  }
+}
+.position {
+  display: flex;
+  justify-content: space-between;
+}
