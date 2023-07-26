@@ -15,6 +15,11 @@ interface Keyword {
 }
 
 describe("createKeywordsRegEx", () => {
+  it("should throw an error if the keyword(s) are empty", () => {
+    expect(() => createKeywordsRegEx([])).toThrow();
+    expect(() => createKeywordsRegEx("")).toThrow();
+  });
+
   it("should find all single keyword in the text", () => {
     const keywords = ["keyword1", "keyword2", "keyword3"];
     const regex = createKeywordsRegEx(keywords);

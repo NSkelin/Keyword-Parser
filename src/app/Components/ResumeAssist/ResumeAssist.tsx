@@ -153,7 +153,7 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
 
     // groups the bullets into one of the following: enabled | disabled | autofill.
     for (const {id, point, fill, default: includeByDefault, required} of bullets) {
-      const regEx = createKeywordsRegEx(aliases);
+      const regEx = aliases.length > 0 ? createKeywordsRegEx(aliases) : null;
       const override = overrides.get(id);
 
       // Decide if the bullet should be enabled, disabled, or used to autofill.
@@ -166,7 +166,7 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
       } else if (includeByDefault === true) {
         // bullet is required by default
         enabledBullets.push({ID: id, bullet: point});
-      } else if (regEx.test(point)) {
+      } else if (regEx !== null && regEx.test(point)) {
         // bullet contains any of the keywords
         if (compareRestrictions(required)) {
           enabledBullets.push({ID: id, bullet: point});
@@ -220,8 +220,8 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
     );
 
     // Get the name of all the keywords that are present in each enabled bullet.
-    // const bulletMatches = getUniqueMatches(activeBullets.join(" "), getAliases(keywords));
     const bulletMatches = keywords.reduce<{word: string; color: string}[]>((accumulator, {displayName, aliases}) => {
+      if (aliases.length < 1) return accumulator;
       const text = activeBullets.join(" ");
       const regEx = createKeywordsRegEx(aliases);
 

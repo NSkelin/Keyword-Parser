@@ -2,7 +2,7 @@
 import {CSSProperties, ReactNode, useState} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {useImmer} from "use-immer";
-import {createKeywordsRegEx} from "@/app/utils";
+import {createKeywordsRegEx, getAliases} from "@/app/utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
 import ResumeAssist from "../ResumeAssist/ResumeAssist";
 import styles from "./KeywordParser.module.scss";
@@ -68,14 +68,28 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
     setTextAreaInput(textAreaInput);
     countKeywordInstances(textAreaInput);
   }
+  interface highlights {
+    highlight: RegExp;
+    component: ({children}: {children: ReactNode}) => JSX.Element;
+  }
 
   // Creates the highlight array that tells HighlightWithinTextArea what to highlight.
-  const highlights = displays.map(({keywords, highlightColor}) => {
-    return {
-      highlight: createKeywordsRegEx(keywords.flatMap((keyword) => keyword.aliases)),
-      component: ({children}: {children: ReactNode}) => <HighlightColor color={highlightColor}>{children}</HighlightColor>,
-    };
-  });
+  // Tells HighlightWithinTextArea to highlight every alias from every keyword in every display.
+  function createTextAreaHighlights() {
+    const highlights = displays.reduce<highlights[]>((accumulator, {keywords, highlightColor}) => {
+      const keywordAliases = getAliases(keywords);
+      if (keywordAliases.length < 1) return accumulator;
+
+      const regex = createKeywordsRegEx(keywordAliases);
+      const highlightObj = {
+        highlight: regex,
+        component: ({children}: {children: ReactNode}) => <HighlightColor color={highlightColor}>{children}</HighlightColor>,
+      };
+      accumulator.push(highlightObj);
+      return accumulator;
+    }, []);
+    return highlights;
+  }
 
   /** Adds a given displays keyword to state. */
   function handleCreateKeyword(collectionName: string, displayName: string, proficient: boolean, aliases: string[]) {
@@ -139,7 +153,11 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
         <section className={styles.HighlightAreaWrap}>
           <h2>Text to parse</h2>
           <div className={styles.textArea}>
-            <HighlightWithinTextarea value={textAreaInput} highlight={highlights} onChange={handleTextAreaChange} />
+            <HighlightWithinTextarea
+              value={textAreaInput}
+              highlight={createTextAreaHighlights()}
+              onChange={handleTextAreaChange}
+            />
           </div>
         </section>
         <KeywordDisplayCollection

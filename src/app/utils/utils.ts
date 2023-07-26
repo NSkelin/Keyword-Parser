@@ -1,6 +1,8 @@
 /** Creates a regular expression capable of matching all the keywords sent in. */
 export function createKeywordsRegEx(keywords: string[] | string) {
-  if (typeof keywords === "string") {
+  if (keywords.length < 1) {
+    throw new Error("Keyword(s) cannot be empty");
+  } else if (typeof keywords === "string") {
     return new RegExp(`\\b${keywords}\\b`, "gi");
   } else {
     return new RegExp(`\\b${keywords.join("\\b|\\b")}\\b`, "gi");

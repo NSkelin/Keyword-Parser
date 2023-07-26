@@ -19,7 +19,7 @@ async function RegExDisplay({collection, headingLevel = 3}: RegExDisplayProps) {
   return (
     <>
       {Heading}
-      <p className={styles.background}>{createKeywordsRegEx(aliases).toString()}</p>
+      {aliases.length > 0 ? <p className={styles.background}>{createKeywordsRegEx(aliases).toString()}</p> : <></>}
     </>
   );
 }
