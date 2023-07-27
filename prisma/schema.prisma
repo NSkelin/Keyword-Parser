@@ -17,7 +17,8 @@ model keywordCollection {
 }
 
 model keyword {
-  displayName   String            @id
+  id            Int               @id @default(autoincrement())
+  displayName   String            @unique
   proficient    Boolean           @default(false)
   aliases       keywordAlias[]
   keywords      keywordCollection @relation(fields: [keywordsTitle], references: [title])
@@ -28,7 +29,7 @@ model keyword {
 
 model keywordAlias {
   id                 Int     @id @default(autoincrement())
-  alias              String
+  alias              String  @unique
   keyword            keyword @relation(fields: [keywordDisplayName], references: [displayName])
   keywordDisplayName String
 }
