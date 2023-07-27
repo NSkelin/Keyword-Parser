@@ -2,6 +2,7 @@ import {CSSProperties, useRef, useState} from "react";
 import KeywordList from "../KeywordList/KeywordList";
 import styles from "./KeywordDisplay.module.scss";
 import KeywordEditor from "../KeywordEditor/KeywordEditor";
+import Dialog from "../Dialog/Dialog";
 
 export interface KeywordDisplayProps {
   /** The title used to represent this section of keywords. */
@@ -65,21 +66,24 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
 
   return (
     <section className={styles.container}>
-      <KeywordEditor
-        ref={dialogRef}
-        aliases={aliases}
-        collection={title}
-        proficient={editorProficient}
-        displayNameID={editorId}
-        displayName={editorDisplayName}
-        mode={editorMode}
-        onAliasesChange={(aliases) => setAliases(aliases)}
-        onDisplayNameChange={(e) => setEditorDisplayName(e.target.value)}
-        onProficientChange={(e) => setEditorProficient(e.target.checked)}
-        onCreate={onCreate}
-        onUpdate={onUpdate}
-        onDelete={onDelete}
-      />
+      <Dialog ref={dialogRef}>
+        <KeywordEditor
+          aliases={aliases}
+          collection={title}
+          proficient={editorProficient}
+          displayNameID={editorId}
+          displayName={editorDisplayName}
+          mode={editorMode}
+          onAliasesChange={(aliases) => setAliases(aliases)}
+          onDisplayNameChange={(e) => setEditorDisplayName(e.target.value)}
+          onProficientChange={(e) => setEditorProficient(e.target.checked)}
+          onCreate={onCreate}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
+          onSubmit={() => dialogRef.current?.close()}
+          onCancel={() => dialogRef.current?.close()}
+        />
+      </Dialog>
       <div>
         <input type={"color"}></input>
         <button onClick={openCreate}>Add keyword +</button>

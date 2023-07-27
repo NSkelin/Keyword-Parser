@@ -1,4 +1,4 @@
-import React, {useRef, forwardRef, useImperativeHandle, ChangeEventHandler} from "react";
+import React, {ChangeEventHandler} from "react";
 import styles from "./KeywordEditor.module.scss";
 import CommaSeparatedInput from "../CommaSeparatedInput/CommaSeparatedInput";
 
@@ -12,10 +12,6 @@ export function validateInput(input: string | string[]) {
     if (input.length <= 1) return false;
     else return true;
   }
-}
-
-interface KeywordEditorRef {
-  showModal: () => void;
 }
 
 export interface KeywordEditorProps {
@@ -52,49 +48,28 @@ export interface KeywordEditorProps {
   ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
   onDelete: (collectionName: string, displayName: string) => void;
+  /** Called upon a successful creation / update / deletion. */
+  onSubmit?: () => void;
+  /** Called when the user clicks the cancel button */
+  onCancel?: () => void;
 }
 /** A \<dialog> form used to add / edit / delete keywords. */
-const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function KeywordEditor(
-  {
-    displayNameID,
-    displayName,
-    collection,
-    proficient,
-    aliases,
-    mode = "Create",
-    onAliasesChange,
-    onDisplayNameChange,
-    onProficientChange,
-    onCreate,
-    onUpdate,
-    onDelete,
-  }: KeywordEditorProps,
-  ref,
-) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  /** Exposes the dialogs showModal() function to the forwarded ref. Only exposed methods can be called. */
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        showModal() {
-          if (dialogRef.current) {
-            dialogRef.current.showModal();
-          }
-        },
-      };
-    },
-    [],
-  );
-
-  /** Closes the dialog. Uses the dialogs built in close() method. */
-  function handleDialogClose() {
-    if (dialogRef.current) {
-      dialogRef.current.close();
-    }
-  }
-
+function KeywordEditor({
+  displayNameID,
+  displayName,
+  collection,
+  proficient,
+  aliases,
+  mode = "Create",
+  onAliasesChange,
+  onDisplayNameChange,
+  onProficientChange,
+  onCreate,
+  onUpdate,
+  onDelete,
+  onSubmit,
+  onCancel,
+}: KeywordEditorProps) {
   /**
    * Handles the response to a user creating a keyword, by verifying input, and handling errors.
    * Sends the request to the REST api and upon success closes the editor and calls the passed in callback function.
@@ -111,7 +86,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
     })
       .then((response) => {
         if (response.ok) {
-          handleDialogClose();
+          if (onSubmit) onSubmit();
           onCreate(collection, displayName, proficient, aliases);
         } else {
           console.error("Failed to add keyword");
@@ -138,7 +113,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
     })
       .then((response) => {
         if (response.ok) {
-          handleDialogClose();
+          if (onSubmit) onSubmit();
           onUpdate(collection, displayNameID, displayName, proficient, aliases);
         } else {
           console.error("Failed to update keyword");
@@ -160,7 +135,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
     })
       .then((response) => {
         if (response.ok) {
-          handleDialogClose();
+          if (onSubmit) onSubmit();
           onDelete(collection, displayName);
         } else {
           console.error("Failed to delete keyword");
@@ -178,7 +153,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
       return (
         <>
           <button onClick={handleCreate}>Create</button>
-          <button onClick={handleDialogClose}>Cancel</button>
+          <button onClick={onCancel}>Cancel</button>
         </>
       );
     } else if (mode === "Edit") {
@@ -187,7 +162,7 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
           <button onClick={handleUpdate}>Save</button>
           <div>
             <button onClick={handleDelete}>Delete</button>
-            <button onClick={handleDialogClose}>Cancel</button>
+            <button onClick={onCancel}>Cancel</button>
           </div>
         </>
       );
@@ -195,24 +170,22 @@ const KeywordEditor = forwardRef<KeywordEditorRef, KeywordEditorProps>(function 
   };
 
   return (
-    <dialog ref={dialogRef} className={styles.dialog}>
-      <div className={styles.container}>
-        <div className={styles.inputs}>
-          <h2>{title}</h2>
-          <label>
-            Display Name
-            <input type="text" value={displayName} onChange={onDisplayNameChange} />
-          </label>
-          <label>
-            Proficient
-            <input type="checkbox" checked={proficient} onChange={onProficientChange}></input>
-          </label>
-          <CommaSeparatedInput label={"Aliases (comma-separated)"} savedInputs={aliases} onInputChange={onAliasesChange} />
-        </div>
-        <div className={styles.actionBar}>{buttons()}</div>
+    <div className={styles.container}>
+      <div className={styles.inputs}>
+        <h2>{title}</h2>
+        <label>
+          Display Name
+          <input type="text" value={displayName} onChange={onDisplayNameChange} />
+        </label>
+        <label>
+          Proficient
+          <input type="checkbox" checked={proficient} onChange={onProficientChange}></input>
+        </label>
+        <CommaSeparatedInput label={"Aliases (comma-separated)"} savedInputs={aliases} onInputChange={onAliasesChange} />
       </div>
-    </dialog>
+      <div className={styles.actionBar}>{buttons()}</div>
+    </div>
   );
-});
+}
 
 export default KeywordEditor;
