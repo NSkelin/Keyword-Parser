@@ -1,12 +1,13 @@
 "use client";
 import {CSSProperties, ReactNode, useState} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
-import {useImmer} from "use-immer";
+import {useImmerReducer} from "use-immer";
 import {createKeywordsRegEx, getAliases} from "@/app/utils";
 import KeywordDisplayCollection from "../KeywordDisplayCollection";
 import ResumeAssist from "../ResumeAssist/ResumeAssist";
 import styles from "./KeywordParser.module.scss";
 import {Prisma} from "@prisma/client";
+import {keywordsReducer} from "./reducer";
 
 type sectionData = Prisma.resumeSectionGetPayload<{
   include: {
@@ -49,7 +50,7 @@ export interface KeywordParserProps {
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
 function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   const [textAreaInput, setTextAreaInput] = useState("");
-  const [displays, setDisplays] = useImmer(inits());
+  const [displays, dispatch] = useImmerReducer(keywordsReducer, inits());
 
   // Create a new displays object and adds instances property to each keyword.
   function inits() {
@@ -93,12 +94,13 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
 
   /** Adds a given displays keyword to state. */
   function handleCreateKeyword(collectionName: string, displayName: string, proficient: boolean, aliases: string[]) {
-    setDisplays((draft) => {
-      draft
-        .find((collection) => collection.title === collectionName)
-        ?.keywords.push({displayName: displayName, instances: 0, proficient: proficient, aliases: aliases});
+    dispatch({
+      type: "create",
+      aliases: aliases,
+      collectionName: collectionName,
+      displayName: displayName,
+      proficient: proficient,
     });
-    return;
   }
 
   /** Updates states representation of a given displays keyword. */
@@ -109,42 +111,43 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
     proficient: boolean,
     newAliases: string[],
   ) {
-    setDisplays((draft) => {
-      const collection = draft.find((collection) => collection.title === collectionName);
-      const keyword = collection?.keywords.find((keyword) => keyword.displayName === displayName);
-      if (keyword) {
-        keyword.aliases = newAliases;
-        keyword.displayName = newDisplayName;
-        keyword.proficient = proficient;
-      }
+    dispatch({
+      type: "update",
+      collectionName: collectionName,
+      displayName: displayName,
+      newAliases: newAliases,
+      newDisplayName: newDisplayName,
+      proficient: proficient,
     });
-    return;
   }
 
   /** Deletes a given displays keyword from state. */
   function handleDeleteKeyword(collectionName: string, displayName: string) {
-    setDisplays((draft) => {
-      const collection = draft.find((collection) => collection.title === collectionName);
-      const index = collection?.keywords.findIndex((keyword) => keyword.displayName === displayName);
-      if (index !== -1 && index != null) {
-        collection?.keywords.splice(index, 1);
-      }
+    dispatch({
+      type: "delete",
+      collectionName: collectionName,
+      displayName: displayName,
     });
-    return;
   }
 
   /** Counts how many times each keyword (and its aliases) appear inside the highlightable textArea and saves it to state.
    * Saves each keywords count individually as the instance property, does not save the total.*/
   function countKeywordInstances(sourceText: string) {
-    setDisplays((draft) => {
-      for (const display of draft) {
-        for (const keyword of display.keywords) {
-          const regEx = createKeywordsRegEx(keyword.aliases);
-          keyword.instances = (sourceText.match(regEx) ?? []).length;
+    for (const display of displays) {
+      for (const keyword of display.keywords) {
+        const regEx = createKeywordsRegEx(keyword.aliases);
+        const instances = (sourceText.match(regEx) ?? []).length;
+        if (keyword.instances != instances) {
+          dispatch({
+            type: "update",
+            collectionName: display.title,
+            displayName: keyword.displayName,
+            instances: instances,
+          });
         }
       }
-      return;
-    });
+    }
+    return;
   }
 
   return (
