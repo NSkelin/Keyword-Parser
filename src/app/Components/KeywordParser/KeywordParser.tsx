@@ -14,7 +14,7 @@ type sectionData = Prisma.resumeSectionGetPayload<{
       include: {
         bullets: {
           include: {
-            required: {
+            requiredKeywords: {
               include: {
                 aliases: true;
               };

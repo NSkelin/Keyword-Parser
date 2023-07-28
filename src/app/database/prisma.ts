@@ -24,10 +24,10 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
 
   // Flatten the keywords.
   // {...rest, keywords: {aliases: [ { alias: string } ] } } -----> {...rest, keywords: string[]}
-  const formattedData = data.map(({keywords, color, ...rest}) => {
+  const formattedData = data.map(({keywords, highlightColor, ...rest}) => {
     return {
       ...rest,
-      color: color ?? undefined,
+      highlightColor: highlightColor ?? undefined,
       keywords: keywords.flatMap((keyword) => {
         return keyword.aliases.map((obj) => obj.alias);
       }),
@@ -42,7 +42,7 @@ export async function getCollectionKeywords() {
   const data = await prisma.keywordCollection.findMany({
     select: {
       title: true,
-      color: true,
+      highlightColor: true,
       keywords: {
         select: {
           displayName: true,
@@ -59,10 +59,10 @@ export async function getCollectionKeywords() {
 
   // Flatten the aliases.
   // {...rest, aliases: [ { alias: string } ] } } -----> {...rest, aliases: string[]}
-  const formattedData = data.map(({keywords, color, ...rest}) => {
+  const formattedData = data.map(({keywords, highlightColor, ...rest}) => {
     return {
       ...rest,
-      highlightColor: color ?? undefined,
+      highlightColor: highlightColor ?? undefined,
       keywords: keywords.map(({aliases, ...rest}) => {
         return {
           ...rest,
@@ -186,10 +186,10 @@ export async function getResumeAssistData() {
         include: {
           bullets: {
             include: {
-              required: {
+              requiredKeywords: {
                 include: {
-                  aliases: true
-                }
+                  aliases: true,
+                },
               },
             },
           },

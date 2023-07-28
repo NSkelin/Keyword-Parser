@@ -11,9 +11,9 @@ datasource db {
 }
 
 model keywordCollection {
-  title    String    @id
-  color    String?
-  keywords keyword[]
+  title          String    @id
+  highlightColor String?
+  keywords       keyword[]
 }
 
 model keyword {
@@ -51,11 +51,11 @@ model position {
 }
 
 model bullet {
-  id         Int       @id @default(autoincrement())
-  point      String
-  default    Boolean // display this bullet by default?
-  fill       Boolean
-  required   keyword[] // keywords required to exist before display is allowed
-  position   position? @relation(fields: [positionId], references: [id])
-  positionId Int?
+  id               Int       @id @default(autoincrement())
+  point            String
+  includeByDefault Boolean // display this bullet by default?
+  fill             Boolean
+  requiredKeywords keyword[] // keywords required to exist before display is allowed
+  position         position? @relation(fields: [positionId], references: [id])
+  positionId       Int?
 }

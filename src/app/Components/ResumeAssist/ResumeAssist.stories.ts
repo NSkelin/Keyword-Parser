@@ -13,161 +13,135 @@ export const Default: Story = {
   args: {
     sectionData: [
       {
-        title: "elit nostrud",
+        title: "cillum aliqua",
         positions: [
           {
             id: 1,
-            title: "ipsum aliqua",
-            subTitle: "cillum excepteur excepteur",
-            startDate: new Date(2000),
-            endDate: new Date(2001),
-            resumeSectionTitle: "labore",
+            title: "anim est",
+            subTitle: "ipsum culpa adipisicing",
+            startDate: new Date(1996),
+            endDate: new Date(2015),
+            resumeSectionTitle: "amet",
             bullets: [
               {
                 id: 1,
-                point: "Ipsum esse labore aute pariatur culpa est eu ut excepteur pariatur veniam magna commodo amet.",
-                default: false,
+                point: "Reprehenderit minim ullamco id anim ut.",
+                includeByDefault: true,
+                fill: true,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "adipisicing",
+                        keywordDisplayName: "cillum",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "ea",
+                    proficient: false,
+                    keywordsTitle: "velit",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Id eu tempor quis consequat.",
+                includeByDefault: false,
                 fill: false,
                 positionId: 1,
-                required: [
+                requiredKeywords: [
                   {
                     aliases: [
                       {
                         id: 1,
-                        alias: "sint",
-                        keywordDisplayName: "in",
-                      },
-                      {
-                        id: 1,
-                        alias: "laborum",
-                        keywordDisplayName: "veniam",
-                      },
-                      {
-                        id: 1,
-                        alias: "et",
-                        keywordDisplayName: "laborum",
+                        alias: "deserunt",
+                        keywordDisplayName: "nisi",
                       },
                     ],
-                    displayName: "elit",
-                    proficient: false,
-                    keywordsTitle: "anim",
+                    id: 1,
+                    displayName: "reprehenderit",
+                    proficient: true,
+                    keywordsTitle: "enim",
                     bulletId: 1,
                   },
                 ],
               },
               {
                 id: 1,
-                point: "Tempor consectetur eiusmod laboris et fugiat commodo reprehenderit tempor minim sit nulla minim.",
-                default: true,
+                point: "Aute irure commodo aliquip eiusmod sunt aute do est sunt nisi mollit.",
+                includeByDefault: true,
                 fill: true,
                 positionId: 1,
-                required: [
+                requiredKeywords: [
                   {
                     aliases: [
                       {
                         id: 1,
-                        alias: "Lorem",
-                        keywordDisplayName: "culpa",
-                      },
-                      {
-                        id: 1,
-                        alias: "ad",
-                        keywordDisplayName: "fugiat",
+                        alias: "exercitation",
+                        keywordDisplayName: "ipsum",
                       },
                     ],
+                    id: 1,
                     displayName: "velit",
                     proficient: true,
-                    keywordsTitle: "excepteur",
+                    keywordsTitle: "fugiat",
                     bulletId: 1,
                   },
                 ],
               },
               {
                 id: 1,
-                point: "Laborum tempor mollit velit irure occaecat est mollit sunt.",
-                default: false,
-                fill: true,
+                point: "Non mollit incididunt deserunt non anim aute nostrud veniam.",
+                includeByDefault: true,
+                fill: false,
                 positionId: 1,
-                required: [
+                requiredKeywords: [
                   {
                     aliases: [
                       {
                         id: 1,
-                        alias: "amet",
-                        keywordDisplayName: "qui",
+                        alias: "aute",
+                        keywordDisplayName: "commodo",
                       },
                       {
                         id: 1,
                         alias: "magna",
-                        keywordDisplayName: "elit",
+                        keywordDisplayName: "in",
                       },
                       {
                         id: 1,
-                        alias: "laborum",
-                        keywordDisplayName: "esse",
+                        alias: "eu",
+                        keywordDisplayName: "fugiat",
                       },
                     ],
-                    displayName: "incididunt",
+                    id: 1,
+                    displayName: "consequat",
                     proficient: false,
-                    keywordsTitle: "ullamco",
+                    keywordsTitle: "cillum",
                     bulletId: 1,
                   },
                 ],
               },
-            ],
-          },
-        ],
-      },
-      {
-        title: "proident fugiat",
-        positions: [
-          {
-            id: 1,
-            title: "deserunt nisi",
-            subTitle: "amet deserunt in",
-            startDate: new Date(2000),
-            endDate: new Date(2001),
-            resumeSectionTitle: "nulla",
-            bullets: [
               {
                 id: 1,
-                point: "Veniam eiusmod duis consequat sunt deserunt et.",
-                default: false,
+                point: "Est aliquip magna eiusmod esse incididunt.",
+                includeByDefault: true,
                 fill: true,
                 positionId: 1,
-                required: [
+                requiredKeywords: [
                   {
                     aliases: [
                       {
                         id: 1,
-                        alias: "ut",
-                        keywordDisplayName: "adipisicing",
+                        alias: "consectetur",
+                        keywordDisplayName: "consequat",
                       },
                     ],
-                    displayName: "est",
-                    proficient: true,
-                    keywordsTitle: "irure",
-                    bulletId: 1,
-                  },
-                ],
-              },
-              {
-                id: 1,
-                point:
-                  "Consectetur dolor reprehenderit ipsum aliquip aliqua consectetur laborum deserunt aliqua ullamco nisi Lorem enim.",
-                default: false,
-                fill: false,
-                positionId: 1,
-                required: [
-                  {
-                    aliases: [
-                      {
-                        id: 1,
-                        alias: "pariatur",
-                        keywordDisplayName: "eiusmod",
-                      },
-                    ],
-                    displayName: "qui",
+                    id: 1,
+                    displayName: "mollit",
                     proficient: false,
                     keywordsTitle: "veniam",
                     bulletId: 1,
@@ -176,76 +150,23 @@ export const Default: Story = {
               },
               {
                 id: 1,
-                point: "Sint nostrud nisi Lorem veniam fugiat commodo ipsum voluptate velit dolor occaecat ut ex laborum.",
-                default: true,
-                fill: true,
+                point: "Nulla cillum voluptate ullamco ea consectetur cupidatat amet et exercitation ipsum.",
+                includeByDefault: false,
+                fill: false,
                 positionId: 1,
-                required: [
+                requiredKeywords: [
                   {
                     aliases: [
                       {
                         id: 1,
-                        alias: "culpa",
-                        keywordDisplayName: "pariatur",
-                      },
-                      {
-                        id: 1,
-                        alias: "ex",
-                        keywordDisplayName: "dolor",
+                        alias: "consequat",
+                        keywordDisplayName: "incididunt",
                       },
                     ],
-                    displayName: "veniam",
-                    proficient: false,
-                    keywordsTitle: "pariatur",
-                    bulletId: 1,
-                  },
-                ],
-              },
-              {
-                id: 1,
-                point: "Et eu exercitation amet dolor velit non qui officia velit laboris mollit.",
-                default: true,
-                fill: true,
-                positionId: 1,
-                required: [
-                  {
-                    aliases: [
-                      {
-                        id: 1,
-                        alias: "mollit",
-                        keywordDisplayName: "id",
-                      },
-                      {
-                        id: 1,
-                        alias: "aute",
-                        keywordDisplayName: "in",
-                      },
-                    ],
-                    displayName: "culpa",
-                    proficient: false,
-                    keywordsTitle: "ut",
-                    bulletId: 1,
-                  },
-                ],
-              },
-              {
-                id: 1,
-                point: "Laboris in aliqua deserunt esse irure velit anim velit in reprehenderit aliqua qui eiusmod ipsum.",
-                default: true,
-                fill: true,
-                positionId: 1,
-                required: [
-                  {
-                    aliases: [
-                      {
-                        id: 1,
-                        alias: "fugiat",
-                        keywordDisplayName: "pariatur",
-                      },
-                    ],
-                    displayName: "ut",
-                    proficient: false,
-                    keywordsTitle: "dolor",
+                    id: 1,
+                    displayName: "amet",
+                    proficient: true,
+                    keywordsTitle: "sint",
                     bulletId: 1,
                   },
                 ],
@@ -255,120 +176,338 @@ export const Default: Story = {
         ],
       },
       {
-        title: "nisi in",
+        title: "in mollit",
         positions: [
           {
             id: 1,
-            title: "exercitation anim",
-            subTitle: "dolore aliqua id",
-            startDate: new Date(2000),
-            endDate: new Date(2001),
-            resumeSectionTitle: "voluptate",
+            title: "excepteur consequat",
+            subTitle: "aute dolore amet",
+            startDate: new Date(1976),
+            endDate: new Date(2000),
+            resumeSectionTitle: "et",
             bullets: [
               {
                 id: 1,
-                point: "Dolore eu eu id quis exercitation eu aliqua dolore esse.",
-                default: false,
+                point: "Do fugiat incididunt labore aliqua id dolore elit do in consequat minim fugiat minim ullamco.",
+                includeByDefault: false,
                 fill: true,
                 positionId: 1,
-                required: [
+                requiredKeywords: [
                   {
                     aliases: [
                       {
                         id: 1,
-                        alias: "in",
-                        keywordDisplayName: "pariatur",
+                        alias: "pariatur",
+                        keywordDisplayName: "excepteur",
                       },
                       {
                         id: 1,
-                        alias: "tempor",
-                        keywordDisplayName: "consequat",
-                      },
-                      {
-                        id: 1,
-                        alias: "deserunt",
-                        keywordDisplayName: "qui",
+                        alias: "labore",
+                        keywordDisplayName: "commodo",
                       },
                     ],
-                    displayName: "cillum",
-                    proficient: false,
-                    keywordsTitle: "eu",
+                    id: 1,
+                    displayName: "consectetur",
+                    proficient: true,
+                    keywordsTitle: "esse",
                     bulletId: 1,
                   },
                 ],
               },
               {
                 id: 1,
-                point: "Veniam consectetur reprehenderit irure do.",
-                default: false,
+                point: "Tempor esse et elit magna ullamco quis exercitation adipisicing elit esse est.",
+                includeByDefault: false,
                 fill: true,
                 positionId: 1,
-                required: [
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "exercitation",
+                        keywordDisplayName: "qui",
+                      },
+                      {
+                        id: 1,
+                        alias: "eiusmod",
+                        keywordDisplayName: "sunt",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "magna",
+                    proficient: true,
+                    keywordsTitle: "cillum",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Nisi proident do Lorem sint ad proident elit ullamco sint.",
+                includeByDefault: false,
+                fill: true,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "nisi",
+                        keywordDisplayName: "ullamco",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "dolore",
+                    proficient: false,
+                    keywordsTitle: "minim",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "In sit pariatur consectetur ullamco proident ipsum et consectetur.",
+                includeByDefault: true,
+                fill: false,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "laboris",
+                        keywordDisplayName: "aliquip",
+                      },
+                      {
+                        id: 1,
+                        alias: "sint",
+                        keywordDisplayName: "aliquip",
+                      },
+                      {
+                        id: 1,
+                        alias: "id",
+                        keywordDisplayName: "do",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "qui",
+                    proficient: false,
+                    keywordsTitle: "minim",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Culpa aute adipisicing tempor tempor esse tempor irure consectetur elit do sit veniam Lorem.",
+                includeByDefault: false,
+                fill: true,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "pariatur",
+                        keywordDisplayName: "exercitation",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "enim",
+                    proficient: false,
+                    keywordsTitle: "cillum",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Irure esse commodo deserunt reprehenderit officia in consectetur laborum esse anim in.",
+                includeByDefault: false,
+                fill: false,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "dolore",
+                        keywordDisplayName: "consequat",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "fugiat",
+                    proficient: true,
+                    keywordsTitle: "cillum",
+                    bulletId: 1,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "proident occaecat",
+        positions: [
+          {
+            id: 1,
+            title: "excepteur adipisicing",
+            subTitle: "tempor nisi deserunt",
+            startDate: new Date(1970),
+            endDate: new Date(1975),
+            resumeSectionTitle: "ex",
+            bullets: [
+              {
+                id: 1,
+                point: "Cupidatat eu reprehenderit non veniam labore et nulla est labore consectetur enim.",
+                includeByDefault: true,
+                fill: true,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "laborum",
+                        keywordDisplayName: "duis",
+                      },
+                      {
+                        id: 1,
+                        alias: "elit",
+                        keywordDisplayName: "est",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "sit",
+                    proficient: true,
+                    keywordsTitle: "pariatur",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Exercitation et dolore pariatur aliqua anim.",
+                includeByDefault: false,
+                fill: false,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "non",
+                        keywordDisplayName: "sint",
+                      },
+                      {
+                        id: 1,
+                        alias: "excepteur",
+                        keywordDisplayName: "reprehenderit",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "labore",
+                    proficient: false,
+                    keywordsTitle: "pariatur",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Elit mollit esse occaecat nulla ut dolor anim nisi esse veniam eu elit irure veniam.",
+                includeByDefault: false,
+                fill: true,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "do",
+                        keywordDisplayName: "culpa",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "fugiat",
+                    proficient: false,
+                    keywordsTitle: "irure",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Minim ex amet dolore nisi ad exercitation voluptate Lorem sit.",
+                includeByDefault: true,
+                fill: false,
+                positionId: 1,
+                requiredKeywords: [
                   {
                     aliases: [
                       {
                         id: 1,
                         alias: "incididunt",
-                        keywordDisplayName: "ex",
+                        keywordDisplayName: "culpa",
+                      },
+                      {
+                        id: 1,
+                        alias: "aliqua",
+                        keywordDisplayName: "dolor",
                       },
                     ],
-                    displayName: "proident",
+                    id: 1,
+                    displayName: "Lorem",
                     proficient: false,
-                    keywordsTitle: "aute",
+                    keywordsTitle: "ullamco",
                     bulletId: 1,
                   },
                 ],
               },
               {
                 id: 1,
-                point: "Minim enim do qui ex ipsum eu quis consequat nulla veniam mollit sunt.",
-                default: true,
-                fill: true,
-                positionId: 1,
-                required: [
-                  {
-                    aliases: [
-                      {
-                        id: 1,
-                        alias: "quis",
-                        keywordDisplayName: "voluptate",
-                      },
-                      {
-                        id: 1,
-                        alias: "nisi",
-                        keywordDisplayName: "do",
-                      },
-                      {
-                        id: 1,
-                        alias: "nostrud",
-                        keywordDisplayName: "mollit",
-                      },
-                    ],
-                    displayName: "sunt",
-                    proficient: false,
-                    keywordsTitle: "proident",
-                    bulletId: 1,
-                  },
-                ],
-              },
-              {
-                id: 1,
-                point: "Laboris ad sint nulla Lorem enim ex dolor est aliqua.",
-                default: true,
+                point: "Fugiat esse consequat in duis eu officia aliqua in in eiusmod excepteur.",
+                includeByDefault: true,
                 fill: false,
                 positionId: 1,
-                required: [
+                requiredKeywords: [
                   {
                     aliases: [
                       {
                         id: 1,
-                        alias: "sit",
-                        keywordDisplayName: "eu",
+                        alias: "nulla",
+                        keywordDisplayName: "aliqua",
                       },
                     ],
-                    displayName: "id",
+                    id: 1,
+                    displayName: "proident",
                     proficient: true,
-                    keywordsTitle: "magna",
+                    keywordsTitle: "minim",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Sunt sunt sunt exercitation est officia ullamco culpa aliqua aliqua.",
+                includeByDefault: true,
+                fill: false,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "velit",
+                        keywordDisplayName: "nulla",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "dolor",
+                    proficient: false,
+                    keywordsTitle: "esse",
                     bulletId: 1,
                   },
                 ],

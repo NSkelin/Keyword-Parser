@@ -15,7 +15,7 @@ type SectionData = Prisma.resumeSectionGetPayload<{
       include: {
         bullets: {
           include: {
-            required: {
+            requiredKeywords: {
               include: {
                 aliases: true;
               };
@@ -31,7 +31,7 @@ type PositionData = Prisma.positionGetPayload<{
   include: {
     bullets: {
       include: {
-        required: {
+        requiredKeywords: {
           include: {
             aliases: true;
           };
@@ -43,7 +43,7 @@ type PositionData = Prisma.positionGetPayload<{
 // Database structure
 type BulletData = Prisma.bulletGetPayload<{
   include: {
-    required: {
+    requiredKeywords: {
       include: {
         aliases: true;
       };
@@ -152,7 +152,7 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
     const autofillBullets: Bullet[] = [];
 
     // groups the bullets into one of the following: enabled | disabled | autofill.
-    for (const {id, point, fill, default: includeByDefault, required} of bullets) {
+    for (const {id, point, fill, includeByDefault, requiredKeywords} of bullets) {
       const regEx = aliases.length > 0 ? createKeywordsRegEx(aliases) : null;
       const override = overrides.get(id);
 
@@ -168,7 +168,7 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
         enabledBullets.push({ID: id, bullet: point});
       } else if (regEx !== null && regEx.test(point)) {
         // bullet contains any of the keywords
-        if (compareRestrictions(required)) {
+        if (compareRestrictions(requiredKeywords)) {
           enabledBullets.push({ID: id, bullet: point});
         } else {
           disabledBullets.push({ID: id, bullet: point});
