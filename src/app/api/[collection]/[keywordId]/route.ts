@@ -1,8 +1,8 @@
 import {deleteKeywordAndAliases, updateKeywordAndAliases} from "@/app/database";
 
-export async function DELETE(req: Request, {params}: {params: {collection: string; keyword: number}}) {
+export async function DELETE(req: Request, {params}: {params: {collection: string; keywordId: number}}) {
   try {
-    const keywordId = Number(params.keyword);
+    const keywordId = Number(params.keywordId);
 
     if (typeof keywordId === "number") {
       await deleteKeywordAndAliases(keywordId);
@@ -16,7 +16,7 @@ export async function DELETE(req: Request, {params}: {params: {collection: strin
   }
 }
 
-export async function PUT(req: Request, {params}: {params: {collection: string; keyword: string}}) {
+export async function PUT(req: Request, {params}: {params: {collection: string; keywordId: string}}) {
   interface data {
     newDisplayName: string;
     newAliases: string[];
@@ -47,7 +47,7 @@ export async function PUT(req: Request, {params}: {params: {collection: string; 
     if (data == null) return new Response("Failed", {status: 400});
 
     const {newDisplayName, newAliases, proficient} = data;
-    const keywordId = Number(params.keyword);
+    const keywordId = Number(params.keywordId);
 
     await updateKeywordAndAliases(keywordId, proficient, newAliases, newDisplayName);
     return new Response("Success");
