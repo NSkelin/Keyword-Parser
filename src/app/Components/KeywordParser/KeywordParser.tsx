@@ -67,7 +67,7 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   /** Updates the textAreaInput state and counts each keywords instances in the new textArea state. */
   function handleTextAreaChange(textAreaInput: string) {
     setTextAreaInput(textAreaInput);
-    countKeywordInstances(textAreaInput);
+    countAllKeywordsInstances(textAreaInput);
   }
   interface highlights {
     highlight: RegExp;
@@ -107,6 +107,7 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
       collectionName: collectionName,
       displayName: displayName,
       proficient: proficient,
+      instances: countInstances(aliases),
     });
   }
 
@@ -125,6 +126,7 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
       newAliases: newAliases,
       newDisplayName: newDisplayName,
       proficient: newProficiency,
+      instances: countInstances(newAliases),
     });
   }
 
@@ -137,13 +139,19 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
     });
   }
 
+  /** Searches the text area's input for each alias and returns the total count found. */
+  function countInstances(aliases: string[], sourceText = textAreaInput) {
+    const regEx = createKeywordsRegEx(aliases);
+    const instances = (sourceText.match(regEx) ?? []).length;
+    return instances;
+  }
+
   /** Counts how many times each keyword (and its aliases) appear inside the highlightable textArea and saves it to state.
    * Saves each keywords count individually as the instance property, does not save the total.*/
-  function countKeywordInstances(sourceText: string) {
+  function countAllKeywordsInstances(sourceText: string) {
     for (const display of displays) {
       for (const keyword of display.keywords) {
-        const regEx = createKeywordsRegEx(keyword.aliases);
-        const instances = (sourceText.match(regEx) ?? []).length;
+        const instances = countInstances(keyword.aliases, sourceText);
         if (keyword.instances != instances) {
           dispatch({
             type: "update",

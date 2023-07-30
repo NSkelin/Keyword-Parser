@@ -8,6 +8,7 @@ interface CreateAction {
   displayName: string;
   proficient: boolean;
   aliases: string[];
+  instances: number;
 }
 
 interface UpdateAction {
@@ -42,7 +43,7 @@ export function keywordsReducer(draft: Display[], action: CreateAction | UpdateA
       const newKeyword = {
         id: action.keywordId,
         displayName: action.displayName,
-        instances: 0,
+        instances: action.instances,
         proficient: action.proficient,
         aliases: action.aliases,
       };
