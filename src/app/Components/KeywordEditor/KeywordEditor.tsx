@@ -1,6 +1,21 @@
-import React, {ChangeEventHandler} from "react";
-import styles from "./KeywordEditor.module.scss";
+import {ChangeEventHandler} from "react";
 import CommaSeparatedInput from "../CommaSeparatedInput/CommaSeparatedInput";
+import styles from "./KeywordEditor.module.scss";
+
+export interface SubmissionCallbacks {
+  /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
+  onCreate: (keywordId: number, collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
+  /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
+  onUpdate: (
+    keywordId: number,
+    collectionName: string,
+    newDisplayName: string,
+    newProficiency: boolean,
+    newAliases: string[],
+  ) => void;
+  /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
+  onDelete: (keywordId: number, collectionName: string) => void;
+}
 
 export function validateInput(input: string | string[]) {
   if (Array.isArray(input)) {
@@ -14,7 +29,7 @@ export function validateInput(input: string | string[]) {
   }
 }
 
-export interface KeywordEditorProps {
+export interface KeywordEditorProps extends SubmissionCallbacks {
   /** A keywords unique identifier.
    * Only used in edit mode so technically optional if you dont plan on using edit mode.  */
   id: number;
@@ -36,18 +51,6 @@ export interface KeywordEditorProps {
   onDisplayNameChange: ChangeEventHandler<HTMLInputElement>;
   /** A callback for the proficient checkbox onChange event. The proficient property is the \<input>s checked value so the result must be stored in state. */
   onProficientChange: ChangeEventHandler<HTMLInputElement>;
-  /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onCreate: (keywordId: number, collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
-  /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
-  onUpdate: (
-    collectionName: string,
-    keywordId: number,
-    newDisplayName: string,
-    proficient: boolean,
-    newAliases: string[],
-  ) => void;
-  /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
-  onDelete: (collectionName: string, keywordId: number) => void;
   /** Called upon a successful creation / update / deletion. */
   onSubmit?: () => void;
   /** Called when the user clicks the cancel button */
@@ -121,7 +124,7 @@ function KeywordEditor({
       .then((response) => {
         if (response.ok) {
           if (onSubmit) onSubmit();
-          onUpdate(collection, id, displayName, proficient, aliases);
+          onUpdate(id, collection, displayName, proficient, aliases);
         } else {
           console.error("Failed to update keyword");
         }
@@ -143,7 +146,7 @@ function KeywordEditor({
       .then((response) => {
         if (response.ok) {
           if (onSubmit) onSubmit();
-          onDelete(collection, id);
+          onDelete(id, collection);
         } else {
           console.error("Failed to delete keyword");
         }

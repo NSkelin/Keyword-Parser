@@ -1,30 +1,19 @@
+import type {Keyword} from "@/app/utils/types";
 import {CSSProperties, useRef, useState} from "react";
+import Dialog from "../Dialog/Dialog";
+import KeywordEditor, {SubmissionCallbacks} from "../KeywordEditor/KeywordEditor";
 import KeywordList from "../KeywordList/KeywordList";
 import styles from "./KeywordDisplay.module.scss";
-import KeywordEditor from "../KeywordEditor/KeywordEditor";
-import Dialog from "../Dialog/Dialog";
-import type {Keyword} from "@/app/utils/types";
 
-export interface KeywordDisplayProps {
+export interface KeywordDisplayProps extends SubmissionCallbacks {
   /** The title used to represent this section of keywords. */
   title?: string;
   /** The keywords to display */
   keywords: Keyword[];
   /** The color used for each keywords highlight color */
   highlightColor?: CSSProperties["backgroundColor"];
-  /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onCreate: (keywordId: number, collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
-  /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
-  onUpdate: (
-    collectionName: string,
-    keywordId: number,
-    newDisplayName: string,
-    proficient: boolean,
-    newAliases: string[],
-  ) => void;
-  /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
-  onDelete: (collectionName: string, keywordId: number) => void;
 }
+
 /** Displays a Keyword list with a group title for the keywords and
  * a fully functional editor to add, edit, or remove keywords.
  */

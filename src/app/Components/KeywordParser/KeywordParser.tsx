@@ -112,10 +112,10 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
 
   /** Updates states representation of a given displays keyword. */
   function handleUpdateKeyword(
-    collectionName: string,
     keywordId: number,
+    collectionName: string,
     newDisplayName: string,
-    proficient: boolean,
+    newProficiency: boolean,
     newAliases: string[],
   ) {
     dispatch({
@@ -124,12 +124,12 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
       keywordId: keywordId,
       newAliases: newAliases,
       newDisplayName: newDisplayName,
-      proficient: proficient,
+      proficient: newProficiency,
     });
   }
 
   /** Deletes a given displays keyword from state. */
-  function handleDeleteKeyword(collectionName: string, keywordId: number) {
+  function handleDeleteKeyword(keywordId: number, collectionName: string) {
     dispatch({
       type: "delete",
       collectionName: collectionName,
