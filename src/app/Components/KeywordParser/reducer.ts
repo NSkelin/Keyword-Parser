@@ -54,7 +54,7 @@ export function keywordsReducer(draft: Display[], action: CreateAction | UpdateA
       const collection = draft.find((collection) => collection.title === action.collectionName);
       if (collection == null) throw new Error("Collection doesnt exist!");
 
-      const keyword = collection.keywords.find((keyword) => keyword.displayName === action.newDisplayName);
+      const keyword = collection.keywords.find((keyword) => keyword.id === action.keywordId);
       if (keyword == null) throw new Error("Keyword doesnt exist!");
 
       keyword.aliases = action.newAliases ?? keyword.aliases;
