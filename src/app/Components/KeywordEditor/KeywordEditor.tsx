@@ -15,9 +15,9 @@ export function validateInput(input: string | string[]) {
 }
 
 export interface KeywordEditorProps {
-  /** The original displayName property before any editing occurs. Acts as the ID when updating the database.
+  /** A keywords unique identifier.
    * Only used in edit mode so technically optional if you dont plan on using edit mode.  */
-  displayNameID: string;
+  id: number;
   /** The value for the \<input> representing the currently edited keywords displayName. */
   displayName: string;
   /** The collection the currently edited keyword is apart of. Used to call the REST api. */
@@ -37,17 +37,17 @@ export interface KeywordEditorProps {
   /** A callback for the proficient checkbox onChange event. The proficient property is the \<input>s checked value so the result must be stored in state. */
   onProficientChange: ChangeEventHandler<HTMLInputElement>;
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onCreate: (collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
+  onCreate: (keywordId: number, collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
   /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
   onUpdate: (
     collectionName: string,
-    displayName: string,
+    keywordId: number,
     newDisplayName: string,
     proficient: boolean,
     newAliases: string[],
   ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
-  onDelete: (collectionName: string, displayName: string) => void;
+  onDelete: (collectionName: string, keywordId: number) => void;
   /** Called upon a successful creation / update / deletion. */
   onSubmit?: () => void;
   /** Called when the user clicks the cancel button */
@@ -55,7 +55,7 @@ export interface KeywordEditorProps {
 }
 /** A \<dialog> form used to add / edit / delete keywords. */
 function KeywordEditor({
-  displayNameID,
+  id,
   displayName,
   collection,
   proficient,
@@ -86,10 +86,17 @@ function KeywordEditor({
     })
       .then((response) => {
         if (response.ok) {
-          if (onSubmit) onSubmit();
-          onCreate(collection, displayName, proficient, aliases);
+          return response.json();
         } else {
-          console.error("Failed to add keyword");
+          console.error("Bad response");
+        }
+      })
+      .then((jsonData: unknown) => {
+        if (typeof jsonData === "object" && jsonData != null && "id" in jsonData && typeof jsonData.id === "number") {
+          if (onSubmit) onSubmit();
+          onCreate(jsonData.id, collection, displayName, proficient, aliases);
+        } else {
+          console.error("Bad id");
         }
       })
       .catch((error) => {
@@ -104,7 +111,7 @@ function KeywordEditor({
    */
   function handleUpdate() {
     if (!validateInput(displayName) && !validateInput(aliases)) return;
-    fetch(`/api/${collection}/${displayNameID}`, {
+    fetch(`/api/${collection}/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -114,7 +121,7 @@ function KeywordEditor({
       .then((response) => {
         if (response.ok) {
           if (onSubmit) onSubmit();
-          onUpdate(collection, displayNameID, displayName, proficient, aliases);
+          onUpdate(collection, id, displayName, proficient, aliases);
         } else {
           console.error("Failed to update keyword");
         }
@@ -130,13 +137,13 @@ function KeywordEditor({
    * Allowing the app to use the data to update the state, update the database, etc.
    */
   function handleDelete() {
-    fetch(`/api/${collection}/${displayName}`, {
+    fetch(`/api/${collection}/${id}`, {
       method: "DELETE",
     })
       .then((response) => {
         if (response.ok) {
           if (onSubmit) onSubmit();
-          onDelete(collection, displayName);
+          onDelete(collection, id);
         } else {
           console.error("Failed to delete keyword");
         }

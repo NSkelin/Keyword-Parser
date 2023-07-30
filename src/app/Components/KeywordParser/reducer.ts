@@ -2,6 +2,7 @@ import {CSSProperties} from "react";
 
 interface CreateAction {
   type: "create";
+  keywordId: number;
   collectionName: string;
   displayName: string;
   proficient: boolean;
@@ -11,7 +12,7 @@ interface CreateAction {
 interface UpdateAction {
   type: "update";
   collectionName: string;
-  displayName: string;
+  keywordId: number;
   newDisplayName?: string;
   proficient?: boolean;
   newAliases?: string[];
@@ -21,12 +22,12 @@ interface UpdateAction {
 interface DeleteAction {
   type: "delete";
   collectionName: string;
-  displayName: string;
+  keywordId: number;
 }
 
 interface Display {
   title: string;
-  keywords: {displayName: string; proficient: boolean; instances: number; aliases: string[]}[];
+  keywords: {id: number; displayName: string; proficient: boolean; instances: number; aliases: string[]}[];
   highlightColor: CSSProperties["backgroundColor"];
 }
 
@@ -37,7 +38,13 @@ export function keywordsReducer(draft: Display[], action: CreateAction | UpdateA
       const collection = draft.find((collection) => collection.title === action.collectionName);
       if (collection == null) throw new Error("Collection doesnt exist!");
 
-      const newKeyword = {displayName: action.displayName, instances: 0, proficient: action.proficient, aliases: action.aliases};
+      const newKeyword = {
+        id: action.keywordId,
+        displayName: action.displayName,
+        instances: 0,
+        proficient: action.proficient,
+        aliases: action.aliases,
+      };
       collection.keywords.push(newKeyword);
       break;
     }
@@ -46,11 +53,11 @@ export function keywordsReducer(draft: Display[], action: CreateAction | UpdateA
       const collection = draft.find((collection) => collection.title === action.collectionName);
       if (collection == null) throw new Error("Collection doesnt exist!");
 
-      const keyword = collection.keywords.find((keyword) => keyword.displayName === action.displayName);
+      const keyword = collection.keywords.find((keyword) => keyword.displayName === action.newDisplayName);
       if (keyword == null) throw new Error("Keyword doesnt exist!");
 
       keyword.aliases = action.newAliases ?? keyword.aliases;
-      keyword.displayName = action.displayName ?? keyword.aliases;
+      keyword.displayName = action.newDisplayName ?? keyword.displayName;
       keyword.proficient = action.proficient ?? keyword.proficient;
       keyword.instances = action.instances ?? keyword.instances;
 
@@ -61,7 +68,7 @@ export function keywordsReducer(draft: Display[], action: CreateAction | UpdateA
       const collection = draft.find((collection) => collection.title === action.collectionName);
       if (collection == null) throw new Error("Collection doesnt exist!");
 
-      const index = collection.keywords.findIndex((keyword) => keyword.displayName === action.displayName);
+      const index = collection.keywords.findIndex((keyword) => keyword.id === action.keywordId);
       if (index !== -1 && index != null) {
         collection.keywords.splice(index, 1);
       }

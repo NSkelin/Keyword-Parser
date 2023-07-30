@@ -45,6 +45,7 @@ export async function getCollectionKeywords() {
       highlightColor: true,
       keywords: {
         select: {
+          id: true,
           displayName: true,
           proficient: true,
           aliases: {
@@ -102,7 +103,7 @@ export async function createKeywordAndAliases(
   aliases: {alias: string}[],
   collection: string,
 ) {
-  await prisma.keyword.create({
+  const newKeyword = await prisma.keyword.create({
     data: {
       displayName: displayName,
       keywordsTitle: collection,
@@ -112,21 +113,32 @@ export async function createKeywordAndAliases(
       },
     },
   });
+
+  return newKeyword.id;
 }
 
 /** Rename a keyword and update its aliases */
 export async function updateKeywordAndAliases(
-  displayName: string,
+  idToUpdate: number,
   proficient: boolean,
   newAliases: string[],
-  newDisplayName?: string,
+  newDisplayName: string,
 ) {
   /**
    * SECTION START ----------
    * Necessary because prisma doesnt support createMany on sqlite which I am using.
    */
   // Get all existing aliases
-  const oldAliases = await getKeywordAliases(displayName);
+  const keyword = await prisma.keyword.findFirst({
+    select: {
+      displayName: true,
+    },
+    where: {
+      id: idToUpdate,
+    },
+  });
+  if (keyword == null) throw new Error("cant find keyword!");
+  const oldAliases = await getKeywordAliases(keyword.displayName);
 
   // get all unique instances between new and old aliases, essentially get the new ones so i can create them.
   const filteredAliases = newAliases.filter((obj) => {
@@ -144,10 +156,10 @@ export async function updateKeywordAndAliases(
   // Update db
   await prisma.keyword.update({
     where: {
-      displayName: displayName,
+      id: idToUpdate,
     },
     data: {
-      displayName: newDisplayName ?? displayName,
+      displayName: newDisplayName,
       proficient: proficient,
       aliases: {
         deleteMany: {
@@ -163,15 +175,17 @@ export async function updateKeywordAndAliases(
 }
 
 /** Delete a keyword and its aliases. */
-export async function deleteKeywordAndAliases(displayName: string) {
+export async function deleteKeywordAndAliases(idToDelete: number) {
   const deleteAliases = prisma.keywordAlias.deleteMany({
     where: {
-      keywordDisplayName: displayName,
+      keyword: {
+        id: idToDelete,
+      },
     },
   });
   const deleteKeyword = prisma.keyword.delete({
     where: {
-      displayName: displayName,
+      id: idToDelete,
     },
   });
 

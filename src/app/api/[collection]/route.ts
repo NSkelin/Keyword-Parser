@@ -1,4 +1,5 @@
 import {createKeywordAndAliases} from "@/app/database";
+import {NextResponse} from "next/server";
 
 interface data {
   displayName: string;
@@ -36,9 +37,8 @@ export async function POST(req: Request, {params}: {params: {collection: string}
     const aliasObjs = aliases.map((alias) => {
       return {alias: alias};
     });
-    await createKeywordAndAliases(displayName, proficient, aliasObjs, collection);
-
-    return new Response("Success");
+    const newId = await createKeywordAndAliases(displayName, proficient, aliasObjs, collection);
+    return NextResponse.json({id: newId});
   } catch (error) {
     console.log(error);
     return new Response("Failed", {status: 400});

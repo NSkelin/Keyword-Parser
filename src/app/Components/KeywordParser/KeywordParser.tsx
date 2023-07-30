@@ -42,7 +42,7 @@ export interface KeywordParserProps {
   /** The initial set of data for displays to ...display. */
   initialDisplays: {
     title: string;
-    keywords: {displayName: string; proficient: boolean; aliases: string[]}[];
+    keywords: {id: number; displayName: string; proficient: boolean; aliases: string[]}[];
     highlightColor: CSSProperties["backgroundColor"];
   }[];
   sectionData: sectionData;
@@ -93,9 +93,16 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   }
 
   /** Adds a given displays keyword to state. */
-  function handleCreateKeyword(collectionName: string, displayName: string, proficient: boolean, aliases: string[]) {
+  function handleCreateKeyword(
+    keywordId: number,
+    collectionName: string,
+    displayName: string,
+    proficient: boolean,
+    aliases: string[],
+  ) {
     dispatch({
       type: "create",
+      keywordId: keywordId,
       aliases: aliases,
       collectionName: collectionName,
       displayName: displayName,
@@ -106,7 +113,7 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   /** Updates states representation of a given displays keyword. */
   function handleUpdateKeyword(
     collectionName: string,
-    displayName: string,
+    keywordId: number,
     newDisplayName: string,
     proficient: boolean,
     newAliases: string[],
@@ -114,7 +121,7 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
     dispatch({
       type: "update",
       collectionName: collectionName,
-      displayName: displayName,
+      keywordId: keywordId,
       newAliases: newAliases,
       newDisplayName: newDisplayName,
       proficient: proficient,
@@ -122,11 +129,11 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   }
 
   /** Deletes a given displays keyword from state. */
-  function handleDeleteKeyword(collectionName: string, displayName: string) {
+  function handleDeleteKeyword(collectionName: string, keywordId: number) {
     dispatch({
       type: "delete",
       collectionName: collectionName,
-      displayName: displayName,
+      keywordId: keywordId,
     });
   }
 
@@ -141,7 +148,7 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
           dispatch({
             type: "update",
             collectionName: display.title,
-            displayName: keyword.displayName,
+            keywordId: keyword.id,
             instances: instances,
           });
         }

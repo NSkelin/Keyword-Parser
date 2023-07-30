@@ -8,21 +8,21 @@ export interface KeywordDisplayProps {
   /** The title used to represent this section of keywords. */
   title?: string;
   /** The keywords to display */
-  keywords: {displayName: string; instances: number; proficient: boolean; aliases: string[]}[];
+  keywords: {id: number; displayName: string; instances: number; proficient: boolean; aliases: string[]}[];
   /** The color used for each keywords highlight color */
   highlightColor?: CSSProperties["backgroundColor"];
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onCreate: (collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
+  onCreate: (keywordId: number, collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
   /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
   onUpdate: (
     collectionName: string,
-    displayName: string,
+    keywordId: number,
     newDisplayName: string,
     proficient: boolean,
     newAliases: string[],
   ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
-  onDelete: (collectionName: string, displayName: string) => void;
+  onDelete: (collectionName: string, keywordId: number) => void;
 }
 /** Displays a Keyword list with a group title for the keywords and
  * a fully functional editor to add, edit, or remove keywords.
@@ -30,7 +30,7 @@ export interface KeywordDisplayProps {
 function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdate, onDelete}: KeywordDisplayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [editorDisplayName, setEditorDisplayName] = useState("");
-  const [editorId, setEditorId] = useState("");
+  const [editorId, setEditorId] = useState<number>(-1);
   const [editorProficient, setEditorProficient] = useState(false);
   const [aliases, setAliases] = useState<string[]>([]);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit" | undefined>("Create");
@@ -50,10 +50,12 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
   }
 
   /** Opens and sets the KeywordEditor dialog for editing existing keywords. */
-  function openEdit(name: string) {
+  function openEdit(id: number) {
     if (dialogRef.current) {
+      const name = keywords.find((keyword) => keyword.id === id)?.displayName;
+      if (name == null) return;
       setEditorDisplayName(name);
-      setEditorId(name);
+      setEditorId(id);
       setEditorMode("Edit");
       const keyword = keywords.find((keyword) => keyword.displayName === name);
       if (keyword?.aliases != null) {
@@ -71,7 +73,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
           aliases={aliases}
           collection={title}
           proficient={editorProficient}
-          displayNameID={editorId}
+          id={editorId}
           displayName={editorDisplayName}
           mode={editorMode}
           onAliasesChange={(aliases) => setAliases(aliases)}

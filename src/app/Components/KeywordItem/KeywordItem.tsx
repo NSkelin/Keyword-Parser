@@ -14,9 +14,11 @@ export interface KeywordItemProps {
    */
   highlightPercent?: number;
   /** A callback for when the edit button is clicked. */
-  onEdit: (name: string) => void;
+  onEdit: (id: number) => void;
   /** Controls if a proficiency tag is shown next to the name. */
   proficient?: boolean;
+  /** A unique identifier */
+  id: number;
 }
 /** Renders a single list item \<li> */
 function KeywordItem({
@@ -26,6 +28,7 @@ function KeywordItem({
   highlightPercent = 0,
   onEdit,
   proficient = false,
+  id,
 }: KeywordItemProps) {
   const emptyStyle: CSSProperties = {
     color: "gray",
@@ -41,7 +44,7 @@ function KeywordItem({
         {displayName}
       </span>
       <div className={styles.containerEnd}>
-        <button onClick={() => onEdit(displayName)}>Edit</button>
+        <button onClick={() => onEdit(id)}>Edit</button>
         <span>{instances}</span>
       </div>
     </li>
