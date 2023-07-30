@@ -50,7 +50,7 @@ export interface KeywordParserProps {
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
 function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   const [textAreaInput, setTextAreaInput] = useState("");
-  const [displays, dispatch] = useImmerReducer(keywordsReducer, inits());
+  const [displays, dispatch] = useImmerReducer(keywordsReducer, initialDisplays, inits);
 
   // Create a new displays object and adds instances property to each keyword.
   function inits() {
