@@ -1,13 +1,10 @@
+import type {Keyword} from "@/app/utils/types";
 import {CSSProperties} from "react";
 import KeywordItem from "../KeywordItem/KeywordItem";
 import styles from "./KeywordList.module.scss";
 
 /** Creates the \<KeywordItem /> elements for rendering. */
-function createListItems(
-  keywords: {id: number; displayName: string; instances: number; proficient: boolean}[],
-  highlightColor: CSSProperties["backgroundColor"],
-  onEdit: (id: number) => void,
-) {
+function createListItems(keywords: Keyword[], highlightColor: CSSProperties["backgroundColor"], onEdit: (id: number) => void) {
   // the sum of all keywords instances, used to calculate the highlight percentage for each individual keyword.
   const sum = keywords.reduce((total, {instances}) => (total += instances), 0);
 
@@ -30,7 +27,7 @@ function createListItems(
 }
 
 /** Sorts the list in descending order, followed by alphabetically for numbers that are the same. */
-export function sortList(keywords: {id: number; displayName: string; instances: number; proficient: boolean}[]) {
+export function sortList(keywords: Keyword[]) {
   return keywords.sort(({displayName: aName, instances: aNumber}, {displayName: bName, instances: bNumber}) => {
     if (aNumber === bNumber) {
       if (aName.toLocaleLowerCase() < bName.toLocaleLowerCase()) return -1;
@@ -42,7 +39,7 @@ export function sortList(keywords: {id: number; displayName: string; instances: 
 
 export interface KeywordListProps {
   /** The keywords used to make the list. */
-  keywords: {id: number; displayName: string; instances: number; proficient: boolean}[];
+  keywords: Keyword[];
   /** The highlight color to be used for every keyword in this list. */
   highlightColor?: CSSProperties["backgroundColor"];
   /** A callback for when a keyword items edit button is clicked. */

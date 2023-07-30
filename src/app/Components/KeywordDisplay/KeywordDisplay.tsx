@@ -3,12 +3,13 @@ import KeywordList from "../KeywordList/KeywordList";
 import styles from "./KeywordDisplay.module.scss";
 import KeywordEditor from "../KeywordEditor/KeywordEditor";
 import Dialog from "../Dialog/Dialog";
+import type {Keyword} from "@/app/utils/types";
 
 export interface KeywordDisplayProps {
   /** The title used to represent this section of keywords. */
   title?: string;
   /** The keywords to display */
-  keywords: {id: number; displayName: string; instances: number; proficient: boolean; aliases: string[]}[];
+  keywords: Keyword[];
   /** The color used for each keywords highlight color */
   highlightColor?: CSSProperties["backgroundColor"];
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */

@@ -1,4 +1,5 @@
 import {CSSProperties} from "react";
+import type {Keyword} from "@/app/utils/types";
 
 interface CreateAction {
   type: "create";
@@ -27,7 +28,7 @@ interface DeleteAction {
 
 interface Display {
   title: string;
-  keywords: {id: number; displayName: string; proficient: boolean; instances: number; aliases: string[]}[];
+  keywords: Keyword[];
   highlightColor: CSSProperties["backgroundColor"];
 }
 

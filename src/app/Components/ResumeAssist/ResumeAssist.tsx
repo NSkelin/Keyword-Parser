@@ -6,6 +6,7 @@ import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/app/utils
 import {useImmer} from "use-immer";
 import {enableMapSet} from "immer";
 import {Prisma} from "@prisma/client";
+import type {Keyword} from "@/app/utils/types";
 enableMapSet();
 
 // Database structure
@@ -56,12 +57,6 @@ type RequiredKeywords = Prisma.keywordGetPayload<{
   };
 }>;
 
-interface Keyword {
-  displayName: string;
-  instances: number;
-  proficient: boolean;
-  aliases: string[];
-}
 interface Bullet {
   ID: number;
   /** The text that will be displayed. */

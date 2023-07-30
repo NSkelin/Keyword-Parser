@@ -1,14 +1,8 @@
 import React, {CSSProperties} from "react";
 import styles from "./KeywordDisplayCollection.module.scss";
 import KeywordDisplay from "../KeywordDisplay";
+import type {Keyword} from "@/app/utils/types";
 
-export interface Keyword {
-  id: number;
-  displayName: string;
-  instances: number;
-  proficient: boolean;
-  aliases: string[];
-}
 export interface Display {
   title: string;
   keywords: Keyword[];
