@@ -1,6 +1,8 @@
 import {CSSProperties} from "react";
 import styles from "./KeywordItem.module.scss";
 
+export type OnEditProps = (id: number) => void;
+
 export interface KeywordItemProps {
   /** The color for the background fill. */
   highlightColor?: CSSProperties["backgroundColor"];
@@ -14,7 +16,7 @@ export interface KeywordItemProps {
    */
   highlightPercent?: number;
   /** A callback for when the edit button is clicked. */
-  onEdit: (id: number) => void;
+  onEdit: OnEditProps;
   /** Controls if a proficiency tag is shown next to the name. */
   proficient?: boolean;
   /** A unique identifier */

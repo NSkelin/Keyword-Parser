@@ -1,6 +1,6 @@
 import type {Keyword} from "@/app/utils/types";
 import {CSSProperties} from "react";
-import KeywordItem from "../KeywordItem/KeywordItem";
+import KeywordItem, {OnEditProps} from "../KeywordItem/KeywordItem";
 import styles from "./KeywordList.module.scss";
 
 /** Creates the \<KeywordItem /> elements for rendering. */
@@ -43,7 +43,7 @@ export interface KeywordListProps {
   /** The highlight color to be used for every keyword in this list. */
   highlightColor?: CSSProperties["backgroundColor"];
   /** A callback for when a keyword items edit button is clicked. */
-  onEdit: (id: number) => void;
+  onEdit: OnEditProps;
 }
 /** Renders a sorted list of keywords. The list is sorted in descending order followed by alphabetical*/
 function KeywordList({keywords, highlightColor = "lightblue", onEdit}: KeywordListProps) {
