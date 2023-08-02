@@ -1,12 +1,12 @@
-import {getCollectionAliases} from "./prisma";
+import {expect} from "@jest/globals";
 import {prismaMock} from "./clientMock";
-
+import {getCollectionAliases} from "./prisma";
 // Test case for the getCollectionAliases function
 describe("getCollectionAliases", () => {
   const mockData = [
     {
       title: "Collection 1",
-      color: "red",
+      highlightColor: "red",
       keywords: [
         {
           displayName: "Keyword 1",
@@ -35,7 +35,7 @@ describe("getCollectionAliases", () => {
     expect(result).toEqual([
       {
         title: "Collection 1",
-        color: "red",
+        highlightColor: "red",
         keywords: ["Alias 1", "Alias 2", "Alias 3", "Alias 4"],
       },
     ]);
@@ -49,7 +49,7 @@ describe("getCollectionAliases", () => {
     expect(result).toEqual([
       {
         title: "Collection 1",
-        color: "red",
+        highlightColor: "red",
         keywords: ["Alias 1", "Alias 2", "Alias 3", "Alias 4"],
       },
     ]);

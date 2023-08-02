@@ -9,10 +9,10 @@ type Story = StoryObj<typeof KeywordEditor>;
 
 export const Default: Story = {
   args: {
+    id: 0,
     aliases: ["alias1", "alias2", "alias3", "alias4"],
     collection: "collection",
     displayName: "displayName",
-    displayNameID: "oldDisplayName",
     proficient: false,
     onProficientChange: () => {},
     onAliasesChange: () => {},

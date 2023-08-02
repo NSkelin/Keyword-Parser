@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react";
-import ResumeAssist from "./ResumeAssist";
 import {enableMapSet} from "immer";
+import ResumeAssist from "./ResumeAssist";
 enableMapSet();
 
 const meta: Meta<typeof ResumeAssist> = {
@@ -523,60 +523,70 @@ export const Default: Story = {
         title: "Collection 1",
         keywords: [
           {
+            id: 1,
             displayName: "culpa",
             instances: 3,
             proficient: true,
             aliases: ["mollit"],
           },
           {
+            id: 2,
             displayName: "id",
             instances: 0,
             proficient: false,
             aliases: ["id"],
           },
           {
+            id: 3,
             displayName: "elit",
             instances: 2,
             proficient: true,
             aliases: ["deserunt"],
           },
           {
+            id: 4,
             displayName: "ex",
             instances: 0,
             proficient: true,
             aliases: ["irure"],
           },
           {
+            id: 5,
             displayName: "magna",
             instances: 2,
             proficient: false,
             aliases: ["Lorem"],
           },
           {
+            id: 6,
             displayName: "aliquip",
             instances: 2,
             proficient: true,
             aliases: ["fugiat"],
           },
           {
+            id: 7,
             displayName: "enim",
             instances: 3,
             proficient: true,
             aliases: ["laboris"],
           },
           {
+            id: 8,
             displayName: "occaecat",
             instances: 0,
             proficient: true,
             aliases: ["amet"],
           },
           {
+            id: 9,
             displayName: "nulla",
             instances: 3,
             proficient: true,
             aliases: ["nisi"],
           },
           {
+            id: 10,
             displayName: "do",
             instances: 1,
             proficient: true,
@@ -588,60 +598,70 @@ export const Default: Story = {
         title: "Collection 2",
         keywords: [
           {
+            id: 1,
             displayName: "culpa",
             instances: 3,
             proficient: true,
             aliases: ["mollit"],
           },
           {
+            id: 2,
             displayName: "id",
             instances: 0,
             proficient: false,
             aliases: ["id"],
           },
           {
+            id: 3,
             displayName: "elit",
             instances: 2,
             proficient: true,
             aliases: ["deserunt"],
           },
           {
+            id: 4,
             displayName: "ex",
             instances: 0,
             proficient: true,
             aliases: ["irure"],
           },
           {
+            id: 5,
             displayName: "magna",
             instances: 2,
             proficient: false,
             aliases: ["Lorem"],
           },
           {
+            id: 6,
             displayName: "aliquip",
             instances: 2,
             proficient: true,
             aliases: ["fugiat"],
           },
           {
+            id: 7,
             displayName: "enim",
             instances: 3,
             proficient: true,
             aliases: ["laboris"],
           },
           {
+            id: 8,
             displayName: "occaecat",
             instances: 0,
             proficient: true,
             aliases: ["amet"],
           },
           {
+            id: 9,
             displayName: "nulla",
             instances: 3,
             proficient: true,
             aliases: ["nisi"],
           },
           {
+            id: 10,
             displayName: "do",
             instances: 1,
             proficient: true,
