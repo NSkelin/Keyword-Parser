@@ -51,7 +51,11 @@ function KeywordList({keywords, highlightColor = "lightblue", onEdit}: KeywordLi
   const sortedKeywords = sortList(keywords);
   const listItems = createListItems(sortedKeywords, highlightColor, onEdit);
 
-  return <ol className={styles.list}>{listItems}</ol>;
+  return (
+    <ol data-cy="kw-itemList" className={styles.list}>
+      {listItems}
+    </ol>
+  );
 }
 
 export default KeywordList;

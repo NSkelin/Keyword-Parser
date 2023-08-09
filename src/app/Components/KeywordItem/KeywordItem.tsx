@@ -37,10 +37,15 @@ function KeywordItem({
     borderBottomColor: "lightgray",
   };
   const itemStyle = instances === 0 ? emptyStyle : undefined;
+  const highlightVisible = highlightPercent === 0 ? "none" : "block";
 
   return (
     <li className={styles.container} style={itemStyle}>
-      <div style={{backgroundColor: highlightColor, width: `${highlightPercent}%`}} className={styles.highlight}></div>
+      <div
+        data-cy="kw-itemHighlight"
+        style={{backgroundColor: highlightColor, width: `${highlightPercent}%`, display: highlightVisible}}
+        className={styles.highlight}
+      ></div>
       <span>
         {proficient ? "-P- " : ""}
         {displayName}
