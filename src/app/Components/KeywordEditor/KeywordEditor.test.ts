@@ -1,3 +1,4 @@
+import {expect} from "@jest/globals";
 import {validateInput} from "./KeywordEditor";
 
 it("Empty string returns false", () => {

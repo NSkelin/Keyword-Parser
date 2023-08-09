@@ -28,9 +28,23 @@
       }
     },
     {
-      "files": ["*.test.*"],
+      "files": ["*.test.*", "*.cy.*"],
       "rules": {
         "jest/consistent-test-it": ["error", {"fn": "it"}]
+      }
+    },
+    {
+      // false warning because .cy. files are cypress not jest.
+      "files": ["*.cy.*"],
+      "rules": {
+        "jest/expect-expect": "off"
+      }
+    },
+    {
+      // This is how cypress does it by default and im not changing it
+      "files": ["./cypress/support/component.ts"],
+      "rules": {
+        "@typescript-eslint/no-namespace": ["error", {"allowDeclarations": true}]
       }
     }
   ],

@@ -1,3 +1,4 @@
+import {expect} from "@jest/globals";
 import {sortList} from "./KeywordList";
 
 type Keywords = {displayName: string; instances: number; proficient: boolean}[];

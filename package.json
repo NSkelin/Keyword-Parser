@@ -9,7 +9,8 @@
     "lint": "next lint && eslint . && tsc --noEmit",
     "test": "jest --watch",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
@@ -36,6 +37,7 @@
     "@types/react-dom": "^18.2.4",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "cypress": "^12.17.2",
     "eslint": "^8.44.0",
     "eslint-config-next": "^13.4.4",
     "eslint-config-prettier": "^8.8.0",

@@ -1,12 +1,11 @@
 "use client";
+import {KeywordDisplayCollection, ResumeAssist} from "@/components";
+import {createKeywordsRegEx, getAliases} from "@/utils";
+import {Prisma} from "@prisma/client";
 import {CSSProperties, ReactNode, useState} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {useImmerReducer} from "use-immer";
-import {createKeywordsRegEx, getAliases} from "@/app/utils";
-import KeywordDisplayCollection from "../KeywordDisplayCollection";
-import ResumeAssist from "../ResumeAssist/ResumeAssist";
 import styles from "./KeywordParser.module.scss";
-import {Prisma} from "@prisma/client";
 import {keywordsReducer} from "./reducer";
 
 type sectionData = Prisma.resumeSectionGetPayload<{

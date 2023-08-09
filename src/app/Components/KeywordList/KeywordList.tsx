@@ -1,6 +1,7 @@
-import type {Keyword} from "@/app/utils/types";
+import {KeywordItem} from "@/components";
+import type {OnEditProps} from "@/components/KeywordItem";
+import type {Keyword} from "@/utils/types";
 import {CSSProperties} from "react";
-import KeywordItem, {OnEditProps} from "../KeywordItem/KeywordItem";
 import styles from "./KeywordList.module.scss";
 
 /** Creates the \<KeywordItem /> elements for rendering. */

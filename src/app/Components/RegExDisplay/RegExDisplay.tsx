@@ -1,7 +1,7 @@
+import {createKeywordsRegEx} from "@/utils";
 import React, {createElement} from "react";
-import styles from "./RegExDisplay.module.scss";
-import {createKeywordsRegEx} from "@/app/utils";
 import {getCollectionAliases} from "src/app/database";
+import styles from "./RegExDisplay.module.scss";
 
 interface RegExDisplayProps {
   /** The Keyword collection to generate a regEx from. */

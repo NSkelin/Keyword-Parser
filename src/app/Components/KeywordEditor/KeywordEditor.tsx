@@ -1,5 +1,5 @@
+import {CommaSeparatedInput} from "@/components";
 import {ChangeEventHandler} from "react";
-import CommaSeparatedInput from "../CommaSeparatedInput/CommaSeparatedInput";
 import styles from "./KeywordEditor.module.scss";
 
 export interface SubmissionCallbacks {

@@ -1,2 +1,2 @@
-export {default} from "./CommaInput";
-export * from "./CommaInput";
+export * from "./CommaSeparatedInput";
+export {default} from "./CommaSeparatedInput";

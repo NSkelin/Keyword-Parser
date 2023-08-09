@@ -1,5 +1,5 @@
+import type {Keyword} from "@/utils/types";
 import {CSSProperties} from "react";
-import type {Keyword} from "@/app/utils/types";
 
 interface CreateAction {
   type: "create";

@@ -1,12 +1,11 @@
-import React from "react";
-import styles from "./ResumeAssist.module.scss";
-import BulletList from "../BulletList/BulletList";
-import KeywordSummary from "../KeywordSummary/KeywordSummary";
-import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/app/utils";
-import {useImmer} from "use-immer";
-import {enableMapSet} from "immer";
+import {BulletList, KeywordSummary} from "@/components";
+import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/utils";
+import type {Keyword} from "@/utils/types";
 import {Prisma} from "@prisma/client";
-import type {Keyword} from "@/app/utils/types";
+import {enableMapSet} from "immer";
+import React from "react";
+import {useImmer} from "use-immer";
+import styles from "./ResumeAssist.module.scss";
 enableMapSet();
 
 // Database structure

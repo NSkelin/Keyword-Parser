@@ -1,7 +1,7 @@
-import type {Keyword} from "@/app/utils/types";
+import {KeywordDisplay} from "@/components";
+import type {SubmissionCallbacks} from "@/components/KeywordEditor";
+import type {Keyword} from "@/utils/types";
 import {CSSProperties} from "react";
-import KeywordDisplay from "../KeywordDisplay";
-import {SubmissionCallbacks} from "../KeywordEditor/KeywordEditor";
 import styles from "./KeywordDisplayCollection.module.scss";
 
 export interface Display {

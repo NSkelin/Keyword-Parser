@@ -6,6 +6,7 @@ import {
   getMatches,
   getUniqueMatches,
 } from "./utils";
+import {expect} from "@jest/globals";
 
 interface Keyword {
   displayName: string;
