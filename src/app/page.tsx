@@ -4,11 +4,11 @@ import styles from "./page.module.scss";
 
 export default async function Home() {
   const collectionKeywords = await getCollectionKeywords();
-  const testdata = await getResumeAssistData();
+  const resumeAssistSectionData = await getResumeAssistData();
 
   return (
     <main className={styles.main}>
-      <KeywordParser initialDisplays={collectionKeywords} sectionData={testdata} />
+      <KeywordParser initialDisplays={collectionKeywords} sectionData={resumeAssistSectionData} />
       <RegExDisplayCollection />
     </main>
   );
