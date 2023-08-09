@@ -1,0 +1,396 @@
+[
+  {
+    "title": "tempor ipsum",
+    "positions": [
+      {
+        "id": 0,
+        "title": "aliquip nulla",
+        "bullets": [
+          {
+            "id": 0,
+            "fill": false,
+            "point": "Do labore qui aute labore reprehenderit cillum minim.",
+            "positionId": 0,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 0,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "esse",
+                    "keywordDisplayName": "exercitation"
+                  }
+                ],
+                "bulletId": 0,
+                "proficient": false,
+                "displayName": "non",
+                "keywordsTitle": "velit"
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "fill": true,
+            "point": "Ipsum veniam aute aliqua amet non officia sit duis ex aliquip occaecat.",
+            "positionId": 1,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 1,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "deserunt",
+                    "keywordDisplayName": "ipsum"
+                  },
+                  {
+                    "id": 1,
+                    "alias": "nostrud",
+                    "keywordDisplayName": "elit"
+                  }
+                ],
+                "bulletId": 1,
+                "proficient": false,
+                "displayName": "anim",
+                "keywordsTitle": "reprehenderit"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "fill": true,
+            "point": "Incididunt consequat nostrud velit deserunt ad aute eu nostrud officia culpa incididunt excepteur ut.",
+            "positionId": 2,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 2,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "consequat",
+                    "keywordDisplayName": "nulla"
+                  },
+                  {
+                    "id": 1,
+                    "alias": "cillum",
+                    "keywordDisplayName": "minim"
+                  },
+                  {
+                    "id": 2,
+                    "alias": "cupidatat",
+                    "keywordDisplayName": "dolore"
+                  }
+                ],
+                "bulletId": 2,
+                "proficient": false,
+                "displayName": "amet",
+                "keywordsTitle": "dolor"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "fill": true,
+            "point": "Nisi id cupidatat et qui.",
+            "positionId": 3,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 3,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "culpa",
+                    "keywordDisplayName": "aute"
+                  }
+                ],
+                "bulletId": 3,
+                "proficient": false,
+                "displayName": "exercitation",
+                "keywordsTitle": "nisi"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "fill": true,
+            "point": "Nisi consectetur ullamco occaecat in amet.",
+            "positionId": 4,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 4,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "officia",
+                    "keywordDisplayName": "commodo"
+                  }
+                ],
+                "bulletId": 4,
+                "proficient": true,
+                "displayName": "dolore",
+                "keywordsTitle": "commodo"
+              }
+            ]
+          }
+        ],
+        "endDate": "1993-01-23T20:11:16.798Z",
+        "subTitle": "aliqua amet do",
+        "startDate": "1981-07-07T19:19:02.058Z",
+        "resumeSectionTitle": "excepteur"
+      }
+    ]
+  },
+  {
+    "title": "ad ex",
+    "positions": [
+      {
+        "id": 1,
+        "title": "Lorem occaecat",
+        "bullets": [
+          {
+            "id": 0,
+            "fill": true,
+            "point": "Labore deserunt aliqua amet tempor reprehenderit qui ut cillum aute ad id aliqua.",
+            "positionId": 0,
+            "includeByDefault": false,
+            "requiredKeywords": [
+              {
+                "id": 0,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "excepteur",
+                    "keywordDisplayName": "laborum"
+                  },
+                  {
+                    "id": 1,
+                    "alias": "incididunt",
+                    "keywordDisplayName": "culpa"
+                  }
+                ],
+                "bulletId": 0,
+                "proficient": false,
+                "displayName": "nisi",
+                "keywordsTitle": "id"
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "fill": false,
+            "point": "Consequat incididunt velit sint mollit do duis consequat duis velit occaecat magna quis est.",
+            "positionId": 1,
+            "includeByDefault": false,
+            "requiredKeywords": [
+              {
+                "id": 1,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "Lorem",
+                    "keywordDisplayName": "laborum"
+                  },
+                  {
+                    "id": 1,
+                    "alias": "ad",
+                    "keywordDisplayName": "id"
+                  }
+                ],
+                "bulletId": 1,
+                "proficient": true,
+                "displayName": "ut",
+                "keywordsTitle": "sit"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "fill": false,
+            "point": "In sint velit et in.",
+            "positionId": 2,
+            "includeByDefault": false,
+            "requiredKeywords": [
+              {
+                "id": 2,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "ex",
+                    "keywordDisplayName": "ullamco"
+                  },
+                  {
+                    "id": 1,
+                    "alias": "dolor",
+                    "keywordDisplayName": "consequat"
+                  }
+                ],
+                "bulletId": 2,
+                "proficient": true,
+                "displayName": "consequat",
+                "keywordsTitle": "minim"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "fill": false,
+            "point": "Tempor ipsum ullamco ea veniam ea occaecat.",
+            "positionId": 3,
+            "includeByDefault": false,
+            "requiredKeywords": [
+              {
+                "id": 3,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "occaecat",
+                    "keywordDisplayName": "adipisicing"
+                  },
+                  {
+                    "id": 1,
+                    "alias": "pariatur",
+                    "keywordDisplayName": "aliqua"
+                  }
+                ],
+                "bulletId": 3,
+                "proficient": true,
+                "displayName": "deserunt",
+                "keywordsTitle": "cillum"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "fill": true,
+            "point": "Lorem officia aliquip non commodo.",
+            "positionId": 4,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 4,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "enim",
+                    "keywordDisplayName": "elit"
+                  }
+                ],
+                "bulletId": 4,
+                "proficient": true,
+                "displayName": "ut",
+                "keywordsTitle": "esse"
+              }
+            ]
+          }
+        ],
+        "endDate": "2001-05-03T11:20:15.183Z",
+        "subTitle": "ut fugiat incididunt",
+        "startDate": "1980-12-23T21:55:26.452Z",
+        "resumeSectionTitle": "et"
+      }
+    ]
+  },
+  {
+    "title": "aliqua ad",
+    "positions": [
+      {
+        "id": 2,
+        "title": "magna duis",
+        "bullets": [
+          {
+            "id": 0,
+            "fill": false,
+            "point": "Minim nisi aliqua exercitation est deserunt aliqua cupidatat ad ipsum et cillum est.",
+            "positionId": 0,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 0,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "do",
+                    "keywordDisplayName": "pariatur"
+                  },
+                  {
+                    "id": 1,
+                    "alias": "aliqua",
+                    "keywordDisplayName": "aliquip"
+                  },
+                  {
+                    "id": 2,
+                    "alias": "quis",
+                    "keywordDisplayName": "pariatur"
+                  }
+                ],
+                "bulletId": 0,
+                "proficient": true,
+                "displayName": "tempor",
+                "keywordsTitle": "culpa"
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "fill": false,
+            "point": "Lorem ea Lorem aliquip fugiat id irure est.",
+            "positionId": 1,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 1,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "et",
+                    "keywordDisplayName": "Lorem"
+                  },
+                  {
+                    "id": 1,
+                    "alias": "non",
+                    "keywordDisplayName": "voluptate"
+                  }
+                ],
+                "bulletId": 1,
+                "proficient": true,
+                "displayName": "Lorem",
+                "keywordsTitle": "enim"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "fill": true,
+            "point": "Ullamco cupidatat mollit do enim velit exercitation sint incididunt ex laboris ad.",
+            "positionId": 2,
+            "includeByDefault": true,
+            "requiredKeywords": [
+              {
+                "id": 2,
+                "aliases": [
+                  {
+                    "id": 0,
+                    "alias": "dolor",
+                    "keywordDisplayName": "ea"
+                  }
+                ],
+                "bulletId": 2,
+                "proficient": false,
+                "displayName": "sit",
+                "keywordsTitle": "officia"
+              }
+            ]
+          }
+        ],
+        "endDate": "1981-06-18T20:55:03.292Z",
+        "subTitle": "ea adipisicing pariatur",
+        "startDate": "2000-08-01T02:44:28.166Z",
+        "resumeSectionTitle": "enim"
+      }
+    ]
+  }
+]
