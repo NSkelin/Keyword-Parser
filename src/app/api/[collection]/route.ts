@@ -1,4 +1,4 @@
-import {createKeywordAndAliases} from "@/app/database";
+import {createKeywordAndAliases} from "@/database";
 import {NextResponse} from "next/server";
 
 interface data {

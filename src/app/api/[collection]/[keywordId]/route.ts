@@ -1,4 +1,4 @@
-import {deleteKeywordAndAliases, updateKeywordAndAliases} from "@/app/database";
+import {deleteKeywordAndAliases, updateKeywordAndAliases} from "@/database";
 
 export async function DELETE(req: Request, {params}: {params: {collection: string; keywordId: number}}) {
   try {
