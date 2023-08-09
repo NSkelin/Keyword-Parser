@@ -10,7 +10,7 @@ function createListItems(keywords: Keyword[], highlightColor: CSSProperties["bac
   const sum = keywords.reduce((total, {instances}) => (total += instances), 0);
 
   return keywords.map(({displayName, instances, proficient, id}) => {
-    const highlightPercent = (instances / sum) * 100;
+    const highlightPercent = (instances / sum) * 100 || 0; // default to 0 incase of NaN value (ex 0/0 = NaN)
 
     return (
       <KeywordItem

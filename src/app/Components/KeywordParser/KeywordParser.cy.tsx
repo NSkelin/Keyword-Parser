@@ -19,5 +19,14 @@ describe("<KeywordParser />", () => {
       cy.get(".notranslate").type("kw1-1");
       cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='kw-itemHighlight']").should("be.visible");
     });
+
+    it("should not highlight the keyword after removing the matching text", () => {
+      cy.mount(<KeywordParser initialDisplays={mockKeywordDisplay} sectionData={mockSectionData} />);
+      cy.get(".notranslate").type("kw1-1");
+      cy.get(".notranslate").clear();
+      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)")
+        .find("[data-cy='kw-itemHighlight']")
+        .should("not.be.visible");
+    });
   });
 });
