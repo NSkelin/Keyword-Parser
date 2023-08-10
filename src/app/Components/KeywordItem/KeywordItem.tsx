@@ -54,7 +54,7 @@ function KeywordItem({
         <button data-cy="edit" onClick={() => onEdit(id)}>
           Edit
         </button>
-        <span>{instances}</span>
+        <span data-cy="instances">{instances}</span>
       </div>
     </li>
   );

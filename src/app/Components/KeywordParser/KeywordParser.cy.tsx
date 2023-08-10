@@ -32,8 +32,14 @@ describe("<KeywordParser />", () => {
   });
 
   describe("Test the keyword form updates the content properly", () => {
-    it("should successfully add a keyword", () => {
+    beforeEach(() => {
+      // setup mock api responses for keyword form
       cy.intercept("POST", "http://localhost:8080/api/Display*", {body: {id: 11}});
+      cy.intercept("DELETE", "http://localhost:8080/api/*/*", "success");
+      cy.intercept("PUT", "http://localhost:8080/api/*/*", "success");
+    });
+
+    it("should successfully add a keyword", () => {
       cy.get(":nth-child(1) > :nth-child(2) > [data-cy='kw-addKeyword']").click();
       cy.get("[data-cy='kw-form']")
         .eq(0)
@@ -46,8 +52,26 @@ describe("<KeywordParser />", () => {
       cy.get("[data-cy='kw-itemList']").contains("testDisplayName").should("exist");
     });
 
+    it("instance count should match the amount of keywords currently in the text area after the keyword is created", () => {
+      cy.get(".notranslate").type("test");
+      cy.get(":nth-child(1) > :nth-child(2) > [data-cy='kw-addKeyword']").click();
+      cy.get("[data-cy='kw-form']")
+        .eq(0)
+        .within(() => {
+          cy.get("[data-cy='displayName']").type("testDisplayName");
+          cy.get("[data-cy='proficient']").check();
+          cy.get("[data-cy='commaSeparatedInput']").type("testDisplayName, test, displayname,");
+          cy.get("[data-cy='submit']").click();
+        });
+      cy.get("[data-cy='kw-itemList']")
+        .contains("testDisplayName")
+        .parent()
+        .find("[data-cy='instances']")
+        .invoke("text")
+        .should("eq", "1");
+    });
+
     it("should successfully remove a keyword", () => {
-      cy.intercept("DELETE", "http://localhost:8080/api/*/*", "success");
       cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
       cy.get("[data-cy='kw-form']")
         .eq(0)
@@ -58,7 +82,6 @@ describe("<KeywordParser />", () => {
     });
 
     it("should update the keywords display name", () => {
-      cy.intercept("PUT", "http://localhost:8080/api/*/*", "success");
       cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
       cy.get("[data-cy='kw-form']")
         .eq(0)
