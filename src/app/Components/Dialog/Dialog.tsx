@@ -10,7 +10,7 @@ export interface DialogProps {
 /** A html dialog wrapper */
 const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog({children, onClose}: DialogProps, ref) {
   return (
-    <dialog ref={ref} className={styles.dialog} onClose={onClose}>
+    <dialog data-cy="dialog" ref={ref} className={styles.dialog} onClose={onClose}>
       {children}
     </dialog>
   );

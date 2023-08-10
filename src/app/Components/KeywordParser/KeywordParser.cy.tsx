@@ -39,6 +39,19 @@ describe("<KeywordParser />", () => {
       cy.intercept("PUT", "http://localhost:8080/api/*/*", "success");
     });
 
+    it("should close form on successful submit", () => {
+      cy.get(":nth-child(1) > :nth-child(2) > [data-cy='kw-addKeyword']").click();
+      cy.get("[data-cy='kw-form']")
+        .eq(0)
+        .within(() => {
+          cy.get("[data-cy='displayName']").type("testDisplayName");
+          cy.get("[data-cy='proficient']").check();
+          cy.get("[data-cy='commaSeparatedInput']").type("testDisplayName, test, displayname,");
+          cy.get("[data-cy='submit']").click();
+        });
+      cy.get("[data-cy='dialog']").eq(0).should("not.be.visible");
+    });
+
     it("should successfully add a keyword", () => {
       cy.get(":nth-child(1) > :nth-child(2) > [data-cy='kw-addKeyword']").click();
       cy.get("[data-cy='kw-form']")
