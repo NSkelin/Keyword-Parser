@@ -18,11 +18,8 @@ export interface KeywordDisplayProps extends SubmissionCallbacks {
  */
 function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdate, onDelete}: KeywordDisplayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const [editorDisplayName, setEditorDisplayName] = useState("");
   const [editorId, setEditorId] = useState<number>(-1);
-  const [editorProficient, setEditorProficient] = useState(false);
-  const [aliases, setAliases] = useState<string[]>([]);
-  const [editorMode, setEditorMode] = useState<"Create" | "Edit" | undefined>("Create");
+  const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
 
   // Create a new array as the old one is readonly. Passes the list to <KeywordList /> which requires a mutable list (to sort it).
   const keywordsList = keywords.map(({...rest}) => {
@@ -31,47 +28,48 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
 
   /** Opens and sets the KeywordEditor dialog for creating new keywords. */
   function openCreate() {
-    setEditorDisplayName("");
     setEditorMode("Create");
-    setEditorProficient(false);
-    setAliases([]);
+    setEditorId(-1);
     dialogRef.current?.showModal();
   }
 
   /** Opens and sets the KeywordEditor dialog for editing existing keywords. */
   function openEdit(id: number) {
     if (dialogRef.current) {
-      const name = keywords.find((keyword) => keyword.id === id)?.displayName;
-      if (name == null) return;
-      setEditorDisplayName(name);
       setEditorId(id);
       setEditorMode("Edit");
-      const keyword = keywords.find((keyword) => keyword.displayName === name);
-      if (keyword?.aliases != null) {
-        setEditorProficient(keyword.proficient);
-        setAliases(keyword.aliases);
-      }
       dialogRef.current.showModal();
     }
   }
 
+  function handleSubmit() {
+    setEditorId(-1);
+    dialogRef.current?.close();
+  }
+
+  // get the initial data
+  let displayName, aliases, proficient;
+
+  if (editorId !== -1) {
+    const keyword = keywords.find((keyword) => keyword.id === editorId);
+    if (keyword == null) throw new Error("Keyword not found!");
+    ({displayName, aliases, proficient} = keyword);
+  }
   return (
     <section className={styles.container}>
       <Dialog ref={dialogRef}>
         <KeywordEditor
-          aliases={aliases}
-          collection={title}
-          proficient={editorProficient}
+          key={editorId}
           id={editorId}
-          displayName={editorDisplayName}
+          collection={title}
+          initialDisplayName={displayName}
+          initialProficient={proficient}
+          initialAliases={aliases}
           mode={editorMode}
-          onAliasesChange={(aliases) => setAliases(aliases)}
-          onDisplayNameChange={(e) => setEditorDisplayName(e.target.value)}
-          onProficientChange={(e) => setEditorProficient(e.target.checked)}
           onCreate={onCreate}
           onUpdate={onUpdate}
           onDelete={onDelete}
-          onSubmit={() => dialogRef.current?.close()}
+          onSubmit={handleSubmit}
           onCancel={() => dialogRef.current?.close()}
         />
       </Dialog>

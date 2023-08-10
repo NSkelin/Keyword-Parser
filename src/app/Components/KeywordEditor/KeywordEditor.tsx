@@ -1,5 +1,5 @@
 import {CommaSeparatedInput} from "@/components";
-import {ChangeEventHandler} from "react";
+import {useState} from "react";
 import styles from "./KeywordEditor.module.scss";
 
 export interface SubmissionCallbacks {
@@ -33,24 +33,18 @@ export interface KeywordEditorProps extends SubmissionCallbacks {
   /** A keywords unique identifier.
    * Only used in edit mode so technically optional if you dont plan on using edit mode.  */
   id: number;
-  /** The value for the \<input> representing the currently edited keywords displayName. */
-  displayName: string;
   /** The collection the currently edited keyword is apart of. Used to call the REST api. */
   collection: string;
+  /** The value for the \<input> representing the currently edited keywords displayName. */
+  initialDisplayName?: string;
   /** Controls if the proficient checkbox input is checked or not. */
-  proficient: boolean;
+  initialProficient?: boolean;
   /** The list of aliases shown under the aliases \<input>. Each alias is represented by a clickable box underneath
    * the input allowing users to delete existing keywords easily. Requires onAliasesChange to function properly. */
-  aliases: string[];
+  initialAliases?: string[];
   /** Changes how the dialog's title and buttons are rendered. "Create" has two buttons, one to create a new keyword and another to cancel.
    * "Edit" has three buttons, one to save changes, one to delete the keyword, and another to cancel any changes.*/
   mode?: "Create" | "Edit";
-  /** A callback for when the user adds or removes an alias from the editor. Used for updating state. */
-  onAliasesChange: (aliases: string[]) => void;
-  /** A callback for the displayName \<input> onChange event. The displayName property is the \<input>s value so the result must be stored in state. */
-  onDisplayNameChange: ChangeEventHandler<HTMLInputElement>;
-  /** A callback for the proficient checkbox onChange event. The proficient property is the \<input>s checked value so the result must be stored in state. */
-  onProficientChange: ChangeEventHandler<HTMLInputElement>;
   /** Called upon a successful creation / update / deletion. */
   onSubmit?: () => void;
   /** Called when the user clicks the cancel button */
@@ -59,20 +53,20 @@ export interface KeywordEditorProps extends SubmissionCallbacks {
 /** A \<dialog> form used to add / edit / delete keywords. */
 function KeywordEditor({
   id,
-  displayName,
+  initialDisplayName = "",
   collection,
-  proficient,
-  aliases,
+  initialProficient = false,
+  initialAliases = [],
   mode = "Create",
-  onAliasesChange,
-  onDisplayNameChange,
-  onProficientChange,
   onCreate,
   onUpdate,
   onDelete,
   onSubmit,
   onCancel,
 }: KeywordEditorProps) {
+  const [displayName, setDisplayName] = useState<string>(initialDisplayName);
+  const [proficient, setProficient] = useState<boolean>(initialProficient);
+  const [aliases, setAliases] = useState<string[]>(initialAliases);
   /**
    * Handles the response to a user creating a keyword, by verifying input, and handling errors.
    * Sends the request to the REST api and upon success closes the editor and calls the passed in callback function.
@@ -195,13 +189,22 @@ function KeywordEditor({
         <h2>{title}</h2>
         <label>
           Display Name
-          <input data-cy="displayName" type="text" value={displayName} onChange={onDisplayNameChange} />
+          <input data-cy="displayName" type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
         </label>
         <label>
           Proficient
-          <input data-cy="proficient" type="checkbox" checked={proficient} onChange={onProficientChange}></input>
+          <input
+            data-cy="proficient"
+            type="checkbox"
+            checked={proficient}
+            onChange={(e) => setProficient(e.target.checked)}
+          ></input>
         </label>
-        <CommaSeparatedInput label={"Aliases (comma-separated)"} savedInputs={aliases} onInputChange={onAliasesChange} />
+        <CommaSeparatedInput
+          label={"Aliases (comma-separated)"}
+          savedInputs={aliases}
+          onInputChange={(aliases) => setAliases(aliases)}
+        />
       </div>
       <div className={styles.actionBar}>{buttons()}</div>
     </div>
