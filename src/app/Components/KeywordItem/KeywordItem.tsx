@@ -51,7 +51,9 @@ function KeywordItem({
         {displayName}
       </span>
       <div className={styles.containerEnd}>
-        <button onClick={() => onEdit(id)}>Edit</button>
+        <button data-cy="edit" onClick={() => onEdit(id)}>
+          Edit
+        </button>
         <span>{instances}</span>
       </div>
     </li>

@@ -162,17 +162,27 @@ function KeywordEditor({
     if (mode === "Create") {
       return (
         <>
-          <button onClick={handleCreate}>Create</button>
-          <button onClick={onCancel}>Cancel</button>
+          <button data-cy="submit" onClick={handleCreate}>
+            Create
+          </button>
+          <button data-cy="cancel" onClick={onCancel}>
+            Cancel
+          </button>
         </>
       );
     } else if (mode === "Edit") {
       return (
         <>
-          <button onClick={handleUpdate}>Save</button>
+          <button data-cy="submit" onClick={handleUpdate}>
+            Save
+          </button>
           <div>
-            <button onClick={handleDelete}>Delete</button>
-            <button onClick={onCancel}>Cancel</button>
+            <button data-cy="delete" onClick={handleDelete}>
+              Delete
+            </button>
+            <button data-cy="cancel" onClick={onCancel}>
+              Cancel
+            </button>
           </div>
         </>
       );
@@ -180,16 +190,16 @@ function KeywordEditor({
   };
 
   return (
-    <div className={styles.container}>
+    <div data-cy="kw-form" className={styles.container}>
       <div className={styles.inputs}>
         <h2>{title}</h2>
         <label>
           Display Name
-          <input type="text" value={displayName} onChange={onDisplayNameChange} />
+          <input data-cy="displayName" type="text" value={displayName} onChange={onDisplayNameChange} />
         </label>
         <label>
           Proficient
-          <input type="checkbox" checked={proficient} onChange={onProficientChange}></input>
+          <input data-cy="proficient" type="checkbox" checked={proficient} onChange={onProficientChange}></input>
         </label>
         <CommaSeparatedInput label={"Aliases (comma-separated)"} savedInputs={aliases} onInputChange={onAliasesChange} />
       </div>

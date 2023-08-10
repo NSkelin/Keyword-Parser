@@ -44,7 +44,7 @@ function CommaSeparatedInput({label, savedInputs, onInputChange}: CommaSeparated
     <div className={styles.container}>
       <label>
         {label}
-        <input onChange={handleChange} value={inputValue}></input>
+        <input data-cy="commaSeparatedInput" onChange={handleChange} value={inputValue}></input>
       </label>
 
       <div className={styles.savedValues}>{savedInputsDisplay}</div>

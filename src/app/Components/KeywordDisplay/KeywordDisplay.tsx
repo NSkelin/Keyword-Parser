@@ -77,7 +77,9 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
       </Dialog>
       <div>
         <input type={"color"}></input>
-        <button onClick={openCreate}>Add keyword +</button>
+        <button data-cy="kw-addKeyword" onClick={openCreate}>
+          Add keyword +
+        </button>
       </div>
       <h2>{title}</h2>
       <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={highlightColor} />
