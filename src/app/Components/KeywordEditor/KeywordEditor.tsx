@@ -85,7 +85,7 @@ function KeywordEditor({
         if (response.ok) {
           return response.json();
         } else {
-          console.error("Bad response");
+          throw new Error("Bad response");
         }
       })
       .then((jsonData: unknown) => {
@@ -93,7 +93,7 @@ function KeywordEditor({
           if (onSubmit) onSubmit();
           onCreate(jsonData.id, collection, displayName, proficient, aliases);
         } else {
-          console.error("Bad id");
+          throw new Error("Bad id");
         }
       })
       .catch((error) => {
@@ -120,7 +120,7 @@ function KeywordEditor({
           if (onSubmit) onSubmit();
           onUpdate(id, collection, displayName, proficient, aliases);
         } else {
-          console.error("Failed to update keyword");
+          throw new Error("Failed to update keyword");
         }
       })
       .catch((error) => {
@@ -142,7 +142,7 @@ function KeywordEditor({
           if (onSubmit) onSubmit();
           onDelete(id, collection);
         } else {
-          console.error("Failed to delete keyword");
+          throw new Error("Failed to delete keyword");
         }
       })
       .catch((error) => {
