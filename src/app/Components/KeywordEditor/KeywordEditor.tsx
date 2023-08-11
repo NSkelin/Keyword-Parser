@@ -67,87 +67,85 @@ function KeywordEditor({
   const [displayName, setDisplayName] = useState<string>(initialDisplayName);
   const [proficient, setProficient] = useState<boolean>(initialProficient);
   const [aliases, setAliases] = useState<string[]>(initialAliases);
+
   /**
-   * Handles the response to a user creating a keyword, by verifying input, and handling errors.
-   * Sends the request to the REST api and upon success closes the editor and calls the passed in callback function.
-   * Allowing the app to use the data to update the state, update the database, etc.
+   * Sends a POST request to the API to create a new keyword.
+   * @returns The newly created keywords ID.
    */
-  function handleCreate() {
-    if (!validateInput(displayName) && !validateInput(aliases)) return;
-    fetch(`/api/${collection}`, {
+  async function requestKeywordCreate() {
+    const response = await fetch(`/api/${collection}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({displayName: displayName, proficient: proficient, aliases: aliases}),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Bad response");
-        }
-      })
-      .then((jsonData: unknown) => {
-        if (typeof jsonData === "object" && jsonData != null && "id" in jsonData && typeof jsonData.id === "number") {
-          if (onSubmit) onSubmit();
-          onCreate(jsonData.id, collection, displayName, proficient, aliases);
-        } else {
-          throw new Error("Bad id");
-        }
-      })
-      .catch((error) => {
-        console.error("Error occurred while adding keyword:", error);
-      });
+    });
+
+    if (!response.ok) throw new Error("Bad response");
+
+    const jsonData: unknown = await response.json();
+
+    if (typeof jsonData === "object" && jsonData != null && "id" in jsonData && typeof jsonData.id === "number") {
+      return jsonData.id;
+    } else {
+      throw new Error("Bad id");
+    }
   }
 
   /**
-   * Handles the response to a user updating a keyword, by verifying input, and handling errors.
-   * Sends the request to the REST api and upon success closes the editor and calls the passed in callback function.
-   * Allowing the app to use the data to update the state, update the database, etc.
+   * Sends a PUT request to the API to update a keywords information.
    */
-  function handleUpdate() {
-    if (!validateInput(displayName) && !validateInput(aliases)) return;
-    fetch(`/api/${collection}/${id}`, {
+  async function requestKeywordUpdate() {
+    const response = await fetch(`/api/${collection}/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({newDisplayName: displayName, proficient, newAliases: aliases}),
-    })
-      .then((response) => {
-        if (response.ok) {
-          if (onSubmit) onSubmit();
-          onUpdate(id, collection, displayName, proficient, aliases);
-        } else {
-          throw new Error("Failed to update keyword");
-        }
-      })
-      .catch((error) => {
-        console.error("Error occurred while updating keyword:", error);
-      });
+    });
+    if (!response.ok) throw new Error("Failed to update keyword");
   }
 
   /**
-   * Handles the response to a user deleting a keyword, by verifying input, and handling errors.
-   * Sends the request to the REST api and upon success closes the editor and calls the passed in callback function.
-   * Allowing the app to use the data to update the state, update the database, etc.
+   * Sends a DELETE request to the API to delete a keywords.
    */
-  function handleDelete() {
-    fetch(`/api/${collection}/${id}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.ok) {
-          if (onSubmit) onSubmit();
-          onDelete(id, collection);
-        } else {
-          throw new Error("Failed to delete keyword");
+  async function requestKeywordDelete() {
+    const response = await fetch(`/api/${collection}/${id}`, {method: "DELETE"});
+    if (!response.ok) throw new Error("Failed to delete keyword");
+  }
+
+  async function handleSubmit(type: "Create" | "Update" | "Delete") {
+    switch (type) {
+      case "Create":
+        try {
+          if (!validateInput(displayName) && !validateInput(aliases)) return;
+          const id = await requestKeywordCreate();
+          onCreate(id, collection, displayName, proficient, aliases);
+        } catch (error) {
+          console.error("Error occurred while adding keyword:", error);
         }
-      })
-      .catch((error) => {
-        console.error("Error occurred while deleting keyword:", error);
-      });
+        break;
+
+      case "Update":
+        try {
+          if (!validateInput(displayName) && !validateInput(aliases)) return;
+          await requestKeywordUpdate();
+          onUpdate(id, collection, displayName, proficient, aliases);
+        } catch (error) {
+          console.error("Error occurred while updating keyword:", error);
+        }
+        break;
+
+      case "Delete":
+        try {
+          await requestKeywordDelete();
+          onDelete(id, collection);
+        } catch (error) {
+          console.error("Error occurred while deleting keyword:", error);
+        }
+        break;
+    }
+    if (onSubmit) onSubmit();
   }
 
   // Create the editors title and available buttons depending on if its creating a new keyword or editing and existing one.
@@ -156,7 +154,7 @@ function KeywordEditor({
     if (mode === "Create") {
       return (
         <>
-          <button data-cy="submit" onClick={handleCreate}>
+          <button data-cy="submit" onClick={() => void handleSubmit("Create")}>
             Create
           </button>
           <button data-cy="cancel" onClick={onCancel}>
@@ -167,11 +165,11 @@ function KeywordEditor({
     } else if (mode === "Edit") {
       return (
         <>
-          <button data-cy="submit" onClick={handleUpdate}>
+          <button data-cy="submit" onClick={() => void handleSubmit("Update")}>
             Save
           </button>
           <div>
-            <button data-cy="delete" onClick={handleDelete}>
+            <button data-cy="delete" onClick={() => void handleSubmit("Delete")}>
               Delete
             </button>
             <button data-cy="cancel" onClick={onCancel}>
