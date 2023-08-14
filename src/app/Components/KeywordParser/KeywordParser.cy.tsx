@@ -99,7 +99,7 @@ describe("<KeywordParser />", () => {
       cy.get("[data-cy='kw-form']")
         .eq(0)
         .within(() => {
-          cy.get("[data-cy='displayName']").type("testDisplayName");
+          cy.get("[data-cy='displayName']").clear().type("testDisplayName");
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='kw-itemList']").contains("testDisplayName").should("exist");
