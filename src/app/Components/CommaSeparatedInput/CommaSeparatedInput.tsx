@@ -51,7 +51,9 @@ function CommaSeparatedInput({label, savedInputs, onInputChange, inputValidation
   const savedInputsDisplay = savedInputs.map((val, index) => (
     <span key={index}>
       {val}
-      <button onClick={() => handleDelete(val)}>x</button>
+      <button data-cy="remove" onClick={() => handleDelete(val)}>
+        x
+      </button>
     </span>
   ));
 

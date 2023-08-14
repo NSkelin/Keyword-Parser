@@ -70,7 +70,10 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
           onUpdate={onUpdate}
           onDelete={onDelete}
           onSubmit={handleSubmit}
-          onCancel={() => dialogRef.current?.close()}
+          onCancel={() => {
+            dialogRef.current?.close();
+            setEditorId(-1);
+          }}
         />
       </Dialog>
       <div>
