@@ -112,6 +112,17 @@ describe("<KeywordParser />", () => {
         cy.get("[data-cy='kw-form']").eq(0).as("form");
       });
 
+      it("should not show changed displayName after canceling", () => {
+        cy.get("@form").within(() => {
+          cy.get("[data-cy='displayName']").clear().type("testDisplayName");
+          cy.get("[data-cy='cancel']").click();
+        });
+
+        // reopen form
+        cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+        cy.get("@form").get("[data-cy='displayName']").invoke("val").should("not.equal", "testDisplayName");
+      });
+
       it("should show deleted aliases after canceling", () => {
         cy.get("@form").within(() => {
           cy.get("[data-cy='remove']").eq(0).click();
