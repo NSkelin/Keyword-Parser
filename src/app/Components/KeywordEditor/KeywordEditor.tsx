@@ -17,16 +17,33 @@ export interface SubmissionCallbacks {
   onDelete: (keywordId: number, collectionName: string) => void;
 }
 
-export function validateInput(input: string | string[]) {
-  if (Array.isArray(input)) {
-    for (const val of input) {
-      if (val.length <= 1) return false;
-    }
-    return true;
-  } else {
-    if (input.length <= 1) return false;
-    else return true;
+/**
+ * Validates an \<input /> fields text value.
+ * @returns the error message or null for no errors.
+ */
+export function validateInput(input: string) {
+  const trimmedInput = input.trim();
+
+  if (trimmedInput.length === 0) {
+    return "Cannot be empty";
   }
+
+  if (trimmedInput.length < 2 || trimmedInput.length > 50) {
+    return "Must be 2 - 50 characters long";
+  }
+
+  const matches = trimmedInput.match(/[^\w ]/g);
+  const uniqueMatches = [...new Set(matches)];
+
+  if (uniqueMatches.length > 0) {
+    let matchStr = "";
+    for (const match of uniqueMatches) {
+      matchStr = matchStr + match + " ";
+    }
+    return `Invalid characters: ${matchStr}`;
+  }
+
+  return null; // Validation passed
 }
 
 export interface KeywordEditorProps extends SubmissionCallbacks {
@@ -67,6 +84,7 @@ function KeywordEditor({
   const [displayName, setDisplayName] = useState<string>(initialDisplayName);
   const [proficient, setProficient] = useState<boolean>(initialProficient);
   const [aliases, setAliases] = useState<string[]>(initialAliases);
+  const displayNameErrorMessage = validateInput(displayName);
 
   /**
    * Sends a POST request to the API to create a new keyword.
@@ -118,7 +136,7 @@ function KeywordEditor({
     switch (type) {
       case "Create":
         try {
-          if (!validateInput(displayName) && !validateInput(aliases)) return;
+          if (displayNameErrorMessage !== null) return;
           const id = await requestKeywordCreate();
           onCreate(id, collection, displayName, proficient, aliases);
         } catch (error) {
@@ -128,7 +146,7 @@ function KeywordEditor({
 
       case "Update":
         try {
-          if (!validateInput(displayName) && !validateInput(aliases)) return;
+          if (displayNameErrorMessage !== null) return;
           await requestKeywordUpdate();
           onUpdate(id, collection, displayName, proficient, aliases);
         } catch (error) {
@@ -185,6 +203,7 @@ function KeywordEditor({
     <div data-cy="kw-form" className={styles.container}>
       <div className={styles.inputs}>
         <h2>{title}</h2>
+        {displayNameErrorMessage}
         <label>
           Display Name
           <input data-cy="displayName" type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
@@ -202,6 +221,7 @@ function KeywordEditor({
           label={"Aliases (comma-separated)"}
           savedInputs={aliases}
           onInputChange={(aliases) => setAliases(aliases)}
+          inputValidation={validateInput}
         />
       </div>
       <div className={styles.actionBar}>{buttons()}</div>
