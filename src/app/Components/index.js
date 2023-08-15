@@ -1,6 +1,7 @@
 export {default as BulletList} from "./BulletList";
 export {default as CommaSeparatedInput} from "./CommaSeparatedInput";
 export {default as Dialog} from "./Dialog/Dialog";
+export {default as Input} from "./Input";
 export {default as KeywordDisplay} from "./KeywordDisplay";
 export {default as KeywordDisplayCollection} from "./KeywordDisplayCollection";
 export {default as KeywordEditor} from "./KeywordEditor";

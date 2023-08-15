@@ -1,4 +1,4 @@
-import {CommaSeparatedInput} from "@/components";
+import {CommaSeparatedInput, Input} from "@/components";
 import {useState} from "react";
 import styles from "./KeywordEditor.module.scss";
 
@@ -84,7 +84,7 @@ function KeywordEditor({
   const [displayName, setDisplayName] = useState<string>(initialDisplayName);
   const [proficient, setProficient] = useState<boolean>(initialProficient);
   const [aliases, setAliases] = useState<string[]>(initialAliases);
-  const displayNameErrorMessage = validateInput(displayName);
+  const displayNameErrorMessage = validateInput(displayName) ?? undefined; // convert null to undefined for <Input />
 
   /**
    * Sends a POST request to the API to create a new keyword.
@@ -203,11 +203,13 @@ function KeywordEditor({
     <div data-cy="kw-form" className={styles.container}>
       <div className={styles.inputs}>
         <h2>{title}</h2>
-        {displayNameErrorMessage}
-        <label>
-          Display Name
-          <input data-cy="displayName" type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
-        </label>
+        <Input
+          label="Display Name"
+          errorMessage={displayNameErrorMessage}
+          required={true}
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+        />
         <label>
           Proficient
           <input
@@ -222,6 +224,7 @@ function KeywordEditor({
           savedInputs={aliases}
           onInputChange={(aliases) => setAliases(aliases)}
           inputValidation={validateInput}
+          required={true}
         />
       </div>
       <div className={styles.actionBar}>{buttons()}</div>
