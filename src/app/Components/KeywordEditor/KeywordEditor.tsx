@@ -136,7 +136,7 @@ function KeywordEditor({
     switch (type) {
       case "Create":
         try {
-          if (displayNameErrorMessage !== null) return;
+          if (displayNameErrorMessage !== undefined) return;
           const id = await requestKeywordCreate();
           onCreate(id, collection, displayName, proficient, aliases);
         } catch (error) {
@@ -146,7 +146,7 @@ function KeywordEditor({
 
       case "Update":
         try {
-          if (displayNameErrorMessage !== null) return;
+          if (displayNameErrorMessage !== undefined) return;
           await requestKeywordUpdate();
           onUpdate(id, collection, displayName, proficient, aliases);
         } catch (error) {
@@ -204,6 +204,7 @@ function KeywordEditor({
       <div className={styles.inputs}>
         <h2>{title}</h2>
         <Input
+          data-cy="displayName"
           label="Display Name"
           errorMessage={displayNameErrorMessage}
           required={true}

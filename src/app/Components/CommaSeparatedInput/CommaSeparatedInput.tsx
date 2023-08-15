@@ -28,7 +28,7 @@ function CommaSeparatedInput({label, required, savedInputs, onInputChange, input
     if (inputVal.endsWith(",")) {
       const trimmedInputVal = inputVal.slice(0, -1); // remove the ","
 
-      if (errorMessage !== null) {
+      if (errorMessage !== undefined) {
         // error exists so remove comma from input
         setInputValue(trimmedInputVal);
       } else {

@@ -46,7 +46,7 @@ describe("<KeywordParser />", () => {
         .within(() => {
           cy.get("[data-cy='displayName']").type("testDisplayName");
           cy.get("[data-cy='proficient']").check();
-          cy.get("[data-cy='commaSeparatedInput']").type("testDisplayName, test, displayname,");
+          cy.get("[data-cy='commaSeparatedInput']").get("[data-cy='input']").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='dialog']").eq(0).should("not.be.visible");
@@ -59,7 +59,7 @@ describe("<KeywordParser />", () => {
         .within(() => {
           cy.get("[data-cy='displayName']").type("testDisplayName");
           cy.get("[data-cy='proficient']").check();
-          cy.get("[data-cy='commaSeparatedInput']").type("testDisplayName, test, displayname,");
+          cy.get("[data-cy='commaSeparatedInput']").get("[data-cy='input']").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='kw-itemList']").contains("testDisplayName").should("exist");
@@ -73,7 +73,7 @@ describe("<KeywordParser />", () => {
         .within(() => {
           cy.get("[data-cy='displayName']").type("testDisplayName");
           cy.get("[data-cy='proficient']").check();
-          cy.get("[data-cy='commaSeparatedInput']").type("testDisplayName, test, displayname,");
+          cy.get("[data-cy='commaSeparatedInput']").get("[data-cy='input']").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='kw-itemList']")
@@ -104,57 +104,56 @@ describe("<KeywordParser />", () => {
         });
       cy.get("[data-cy='kw-itemList']").contains("testDisplayName").should("exist");
     });
+  });
+  describe("Form changes should reset upon canceling", () => {
+    beforeEach(() => {
+      // open form in edit mode
+      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("[data-cy='kw-form']").eq(0).as("form");
+    });
 
-    describe("Form changes should reset upon canceling", () => {
-      beforeEach(() => {
-        // open form in edit mode
-        cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-        cy.get("[data-cy='kw-form']").eq(0).as("form");
+    it("should not show changed displayName after canceling", () => {
+      cy.get("@form").within(() => {
+        cy.get("[data-cy='displayName']").clear().type("testDisplayName");
+        cy.get("[data-cy='cancel']").click();
       });
 
-      it("should not show changed displayName after canceling", () => {
-        cy.get("@form").within(() => {
-          cy.get("[data-cy='displayName']").clear().type("testDisplayName");
-          cy.get("[data-cy='cancel']").click();
-        });
+      // reopen form
+      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("@form").get("[data-cy='displayName']").invoke("val").should("not.equal", "testDisplayName");
+    });
 
-        // reopen form
-        cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-        cy.get("@form").get("[data-cy='displayName']").invoke("val").should("not.equal", "testDisplayName");
+    it("should show deleted aliases after canceling", () => {
+      cy.get("@form").within(() => {
+        cy.get("[data-cy='remove']").eq(0).click();
+        cy.get("[data-cy='cancel']").click();
       });
 
-      it("should show deleted aliases after canceling", () => {
-        cy.get("@form").within(() => {
-          cy.get("[data-cy='remove']").eq(0).click();
-          cy.get("[data-cy='cancel']").click();
-        });
+      // reopen form
+      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("@form").contains("span", "keyword1-1").should("exist");
+    });
 
-        // reopen form
-        cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-        cy.get("@form").contains("span", "keyword1-1").should("exist");
+    it("should not show new aliases after canceling", () => {
+      cy.get("@form").within(() => {
+        cy.get("[data-cy='commaSeparatedInput']").get("[data-cy='input']").type("keyword 11,");
+        cy.get("[data-cy='cancel']").click();
       });
 
-      it("should not show new aliases after canceling", () => {
-        cy.get("@form").within(() => {
-          cy.get("[data-cy='commaSeparatedInput']").type("keyword 11,");
-          cy.get("[data-cy='cancel']").click();
-        });
+      // reopen form
+      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("@form").contains("span", "keyword 11").should("not.exist");
+    });
 
-        // reopen form
-        cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-        cy.get("@form").contains("span", "keyword 11").should("not.exist");
+    it("should not show the changed proficiency", () => {
+      cy.get("@form").within(() => {
+        cy.get("[data-cy='proficient']").click();
+        cy.get("[data-cy='cancel']").click();
       });
 
-      it("should not show the changed proficiency", () => {
-        cy.get("@form").within(() => {
-          cy.get("[data-cy='proficient']").click();
-          cy.get("[data-cy='cancel']").click();
-        });
-
-        // reopen form
-        cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-        cy.get("@form").get("[data-cy='proficient']").should("be.checked");
-      });
+      // reopen form
+      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("@form").get("[data-cy='proficient']").should("be.checked");
     });
   });
 });
