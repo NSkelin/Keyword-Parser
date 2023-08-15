@@ -84,7 +84,16 @@ function KeywordEditor({
   const [displayName, setDisplayName] = useState<string>(initialDisplayName);
   const [proficient, setProficient] = useState<boolean>(initialProficient);
   const [aliases, setAliases] = useState<string[]>(initialAliases);
+  const [formErrorMessage, setFormErrorMessage] = useState<string | undefined>(undefined);
   const displayNameErrorMessage = validateInput(displayName) ?? undefined; // convert null to undefined for <Input />
+
+  function validateForm() {
+    if (displayNameErrorMessage !== undefined) return false;
+    else if (aliases.length <= 0) {
+      setFormErrorMessage("Atleast 1 alias is required.");
+      return false;
+    } else return true;
+  }
 
   /**
    * Sends a POST request to the API to create a new keyword.
@@ -136,7 +145,7 @@ function KeywordEditor({
     switch (type) {
       case "Create":
         try {
-          if (displayNameErrorMessage !== undefined) return;
+          if (!validateForm()) return;
           const id = await requestKeywordCreate();
           onCreate(id, collection, displayName, proficient, aliases);
         } catch (error) {
@@ -146,7 +155,7 @@ function KeywordEditor({
 
       case "Update":
         try {
-          if (displayNameErrorMessage !== undefined) return;
+          if (!validateForm()) return;
           await requestKeywordUpdate();
           onUpdate(id, collection, displayName, proficient, aliases);
         } catch (error) {
@@ -203,6 +212,7 @@ function KeywordEditor({
     <div data-cy="kw-form" className={styles.container}>
       <div className={styles.inputs}>
         <h2>{title}</h2>
+        <span style={{color: "red"}}>{formErrorMessage}</span>
         <Input
           data-cy="displayName"
           label="Display Name"

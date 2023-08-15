@@ -1,4 +1,5 @@
 import {mockKeywordDisplay, mockSectionData} from "@/mockData";
+import {CyHttpMessages} from "cypress/types/net-stubbing";
 import React from "react";
 import KeywordParser from "./KeywordParser";
 
@@ -154,6 +155,48 @@ describe("<KeywordParser />", () => {
       // reopen form
       cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
       cy.get("@form").get("[data-cy='proficient']").should("be.checked");
+    });
+  });
+
+  describe("Test form error logic", () => {
+    beforeEach(() => {
+      // setup mock api responses for keyword form
+      cy.intercept(
+        "POST",
+        "http://localhost:8080/api/Display*",
+        cy
+          .spy((req: CyHttpMessages.IncomingHttpRequest) => {
+            req.reply({body: {id: 11}});
+          })
+          .as("post"),
+      );
+      cy.intercept("DELETE", "http://localhost:8080/api/*/*", "success");
+      cy.intercept("PUT", "http://localhost:8080/api/*/*", "success");
+    });
+    // dupe tests for new keyword and update keyword?
+    // form should not close after failed submit / delete?
+    // form should close after cancel
+    it("should not submit when there are no aliases", () => {
+      // open form in create mode
+      cy.get("[data-cy='keywordDisplay']").eq(0).as("keywordDisplay");
+      cy.get("@keywordDisplay").within(() => {
+        cy.get("[data-cy='kw-addKeyword']").click();
+      });
+      cy.get("[data-cy='kw-form']")
+        .eq(0)
+        .within(() => {
+          cy.get("[data-cy='displayName']").type("testDisplayName");
+          cy.get("[data-cy='proficient']").check();
+          cy.get("[data-cy='submit']").click();
+        });
+
+      // should not call api
+      cy.wait(1000);
+      cy.get("@post").should("not.have.been.called");
+      // should not close form
+      cy.get("[data-cy='dialog']").eq(0).should("be.visible");
+      // should not update state
+      cy.get("@keywordDisplay").contains("testDisplayName").should("not.exist");
     });
   });
 });

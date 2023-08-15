@@ -56,7 +56,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
     ({displayName, aliases, proficient} = keyword);
   }
   return (
-    <section className={styles.container}>
+    <section data-cy="keywordDisplay" className={styles.container}>
       <Dialog ref={dialogRef}>
         <KeywordEditor
           key={editorId}
