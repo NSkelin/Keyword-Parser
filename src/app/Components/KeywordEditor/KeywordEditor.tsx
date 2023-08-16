@@ -1,6 +1,13 @@
 import {CommaSeparatedInput, Input} from "@/components";
+import type {ValidationInputRules} from "@/utils";
+import {validateInput} from "@/utils";
 import {useState} from "react";
 import styles from "./KeywordEditor.module.scss";
+const validationRules: ValidationInputRules = {
+  required: true,
+  minLen: 2,
+  maxLen: 50,
+};
 
 export interface SubmissionCallbacks {
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
@@ -15,35 +22,6 @@ export interface SubmissionCallbacks {
   ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
   onDelete: (keywordId: number, collectionName: string) => void;
-}
-
-/**
- * Validates an \<input /> fields text value.
- * @returns the error message or null for no errors.
- */
-export function validateInput(input: string) {
-  const trimmedInput = input.trim();
-
-  if (trimmedInput.length === 0) {
-    return "Cannot be empty";
-  }
-
-  if (trimmedInput.length < 2 || trimmedInput.length > 50) {
-    return "Must be 2 - 50 characters long";
-  }
-
-  const matches = trimmedInput.match(/[^\w ]/g);
-  const uniqueMatches = [...new Set(matches)];
-
-  if (uniqueMatches.length > 0) {
-    let matchStr = "";
-    for (const match of uniqueMatches) {
-      matchStr = matchStr + match + " ";
-    }
-    return `Invalid characters: ${matchStr}`;
-  }
-
-  return null; // Validation passed
 }
 
 export interface KeywordEditorProps extends SubmissionCallbacks {
@@ -84,15 +62,27 @@ function KeywordEditor({
   const [displayName, setDisplayName] = useState<string>(initialDisplayName);
   const [proficient, setProficient] = useState<boolean>(initialProficient);
   const [aliases, setAliases] = useState<string[]>(initialAliases);
-  const [formErrorMessage, setFormErrorMessage] = useState<string | undefined>(undefined);
-  const displayNameErrorMessage = validateInput(displayName) ?? undefined; // convert null to undefined for <Input />
+  const [CSIErrorMessage, setCSIErrorMessage] = useState<string | undefined>(undefined);
+  const displayNameValidation = validateInput(displayName, validationRules);
 
   function validateForm() {
-    if (displayNameErrorMessage !== undefined) return false;
-    else if (aliases.length <= 0) {
-      setFormErrorMessage("Atleast 1 alias is required.");
-      return false;
-    } else return true;
+    let valid = true;
+
+    if (displayNameValidation.valid === false) {
+      valid = false;
+    }
+
+    if (aliases.length <= 0) {
+      valid = false;
+      setCSIErrorMessage("Atleast 1 alias is required.");
+    }
+
+    return valid;
+  }
+
+  function handleCSIChange(aliases: string[]) {
+    setAliases(aliases);
+    setCSIErrorMessage("");
   }
 
   /**
@@ -212,11 +202,10 @@ function KeywordEditor({
     <div data-cy="kw-form" className={styles.container}>
       <div className={styles.inputs}>
         <h2>{title}</h2>
-        <span style={{color: "red"}}>{formErrorMessage}</span>
         <Input
           data-cy="displayName"
           label="Display Name"
-          errorMessage={displayNameErrorMessage}
+          errorMessage={displayNameValidation.valid ? undefined : displayNameValidation.error}
           required={true}
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
@@ -233,9 +222,9 @@ function KeywordEditor({
         <CommaSeparatedInput
           label={"Aliases (comma-separated)"}
           savedInputs={aliases}
-          onInputChange={(aliases) => setAliases(aliases)}
-          inputValidation={validateInput}
+          onInputChange={handleCSIChange}
           required={true}
+          errorMessage={CSIErrorMessage}
         />
       </div>
       <div className={styles.actionBar}>{buttons()}</div>

@@ -1,3 +1,5 @@
+import type {ValidationInputRules} from "@/utils";
+import {expect} from "@jest/globals";
 import {
   createKeywordsRegEx,
   getAliases,
@@ -5,8 +7,8 @@ import {
   getInstancedKeywords,
   getMatches,
   getUniqueMatches,
+  validateInput,
 } from "./utils";
-import {expect} from "@jest/globals";
 
 interface Keyword {
   displayName: string;
@@ -343,5 +345,59 @@ describe("getUniqueMatches", () => {
     const result = getUniqueMatches(textToMatch, wordsToMatch);
     const expectedMatches = ["keyword1"];
     expect(result).toEqual(expectedMatches);
+  });
+});
+
+describe("validateInput", () => {
+  const validationRules: ValidationInputRules = {
+    required: true,
+    minLen: 2,
+    maxLen: 50,
+  };
+  it("should not allow an empty string", () => {
+    expect(validateInput("", validationRules).valid).toBe(false);
+  });
+
+  it("should not allow a string shorter than 2 characters", () => {
+    expect(validateInput("a", validationRules).valid).toBe(false);
+  });
+
+  it("should not allow a string longer than 50 characters", () => {
+    expect(
+      validateInput("a really long string aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa aaaaa", validationRules).valid,
+    ).toBe(false);
+  });
+
+  it("should not allow special characters", () => {
+    expect(validateInput("abc-", validationRules).valid).toBe(false);
+    expect(validateInput("abc/", validationRules).valid).toBe(false);
+    expect(validateInput("abc&", validationRules).valid).toBe(false);
+  });
+
+  it("should allow regular characters", () => {
+    expect(validateInput("abcdefghz lerpq", validationRules).valid).toBe(true);
+  });
+
+  it("should allow numbers", () => {
+    expect(validateInput("1 2 3456 78 9", validationRules).valid).toBe(true);
+  });
+
+  it("should return the invalid characters as part of its error message", () => {
+    const errMsg = validateInput("abc %.6 7lp() #qew", validationRules).error;
+    const specialChars = ["%", ".", "(", ")", "#"];
+
+    const t = () => {
+      for (const char of specialChars) {
+        if (errMsg?.includes(char) === false) return false;
+      }
+      return true;
+    };
+    expect(t()).toBe(true);
+  });
+
+  it("should return duplicate invalid characters only once in its error message", () => {
+    const errMsg = validateInput("abc***", validationRules).error;
+
+    expect(errMsg?.match(/[*]/g)?.length).toEqual(1);
   });
 });
