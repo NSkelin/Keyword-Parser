@@ -12,7 +12,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 /** A wrapper for the html input component that adds support for labels and error messages. */
 function Input({label, errorMessage, required = false, ...props}: InputProps) {
   return (
-    <div className={styles.wrapper}>
+    <div data-cy="inputComp" className={styles.wrapper}>
       <strong data-cy="errorMessage" className={styles.errorMessage}>
         {errorMessage}
       </strong>

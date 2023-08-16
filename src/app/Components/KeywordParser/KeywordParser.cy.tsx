@@ -38,6 +38,9 @@ describe("<KeywordParser />", () => {
       cy.intercept("POST", "http://localhost:8080/api/Display*", {body: {id: 11}});
       cy.intercept("DELETE", "http://localhost:8080/api/*/*", "success");
       cy.intercept("PUT", "http://localhost:8080/api/*/*", "success");
+
+      cy.get("[data-cy='input']").eq(0).as("displayName");
+      cy.get("[data-cy='input']").eq(1).as("aliases");
     });
 
     it("should close form on successful submit", () => {
@@ -45,9 +48,9 @@ describe("<KeywordParser />", () => {
       cy.get("[data-cy='kw-form']")
         .eq(0)
         .within(() => {
-          cy.get("[data-cy='displayName']").type("testDisplayName");
+          cy.get("@displayName").type("testDisplayName");
           cy.get("[data-cy='proficient']").check();
-          cy.get("[data-cy='commaSeparatedInput']").get("[data-cy='input']").type("testDisplayName, test, displayname,");
+          cy.get("@aliases").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='dialog']").eq(0).should("not.be.visible");
@@ -58,9 +61,9 @@ describe("<KeywordParser />", () => {
       cy.get("[data-cy='kw-form']")
         .eq(0)
         .within(() => {
-          cy.get("[data-cy='displayName']").type("testDisplayName");
+          cy.get("@displayName").type("testDisplayName");
           cy.get("[data-cy='proficient']").check();
-          cy.get("[data-cy='commaSeparatedInput']").get("[data-cy='input']").type("testDisplayName, test, displayname,");
+          cy.get("@aliases").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='kw-itemList']").contains("testDisplayName").should("exist");
@@ -72,9 +75,9 @@ describe("<KeywordParser />", () => {
       cy.get("[data-cy='kw-form']")
         .eq(0)
         .within(() => {
-          cy.get("[data-cy='displayName']").type("testDisplayName");
+          cy.get("@displayName").type("testDisplayName");
           cy.get("[data-cy='proficient']").check();
-          cy.get("[data-cy='commaSeparatedInput']").get("[data-cy='input']").type("testDisplayName, test, displayname,");
+          cy.get("@aliases").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='kw-itemList']")
@@ -100,28 +103,32 @@ describe("<KeywordParser />", () => {
       cy.get("[data-cy='kw-form']")
         .eq(0)
         .within(() => {
-          cy.get("[data-cy='displayName']").clear().type("testDisplayName");
+          cy.get("@displayName").clear().type("testDisplayName");
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='kw-itemList']").contains("testDisplayName").should("exist");
     });
   });
+
   describe("Form changes should reset upon canceling", () => {
     beforeEach(() => {
       // open form in edit mode
       cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
       cy.get("[data-cy='kw-form']").eq(0).as("form");
+
+      cy.get("[data-cy='input']").eq(0).as("displayName");
+      cy.get("[data-cy='input']").eq(1).as("aliases");
     });
 
     it("should not show changed displayName after canceling", () => {
       cy.get("@form").within(() => {
-        cy.get("[data-cy='displayName']").clear().type("testDisplayName");
+        cy.get("@displayName").clear().type("testDisplayName");
         cy.get("[data-cy='cancel']").click();
       });
 
       // reopen form
       cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-      cy.get("@form").get("[data-cy='displayName']").invoke("val").should("not.equal", "testDisplayName");
+      cy.get("@displayName").invoke("val").should("not.equal", "testDisplayName");
     });
 
     it("should show deleted aliases after canceling", () => {
@@ -137,7 +144,7 @@ describe("<KeywordParser />", () => {
 
     it("should not show new aliases after canceling", () => {
       cy.get("@form").within(() => {
-        cy.get("[data-cy='commaSeparatedInput']").get("[data-cy='input']").type("keyword 11,");
+        cy.get("@aliases").type("keyword 11,");
         cy.get("[data-cy='cancel']").click();
       });
 
@@ -158,7 +165,7 @@ describe("<KeywordParser />", () => {
     });
   });
 
-  describe("Test form error logic", () => {
+  describe("Test form validation", () => {
     beforeEach(() => {
       // setup mock api responses for keyword form
       cy.intercept(
@@ -173,9 +180,7 @@ describe("<KeywordParser />", () => {
       cy.intercept("DELETE", "http://localhost:8080/api/*/*", "success");
       cy.intercept("PUT", "http://localhost:8080/api/*/*", "success");
     });
-    // dupe tests for new keyword and update keyword?
-    // form should not close after failed submit / delete?
-    // form should close after cancel
+
     it("should not submit when there are no aliases", () => {
       // open form in create mode
       cy.get("[data-cy='keywordDisplay']").eq(0).as("keywordDisplay");
@@ -185,7 +190,7 @@ describe("<KeywordParser />", () => {
       cy.get("[data-cy='kw-form']")
         .eq(0)
         .within(() => {
-          cy.get("[data-cy='displayName']").type("testDisplayName");
+          cy.get("[data-cy='input']").eq(0).type("testDisplayName");
           cy.get("[data-cy='proficient']").check();
           cy.get("[data-cy='submit']").click();
         });

@@ -203,7 +203,6 @@ function KeywordEditor({
       <div className={styles.inputs}>
         <h2>{title}</h2>
         <Input
-          data-cy="displayName"
           label="Display Name"
           errorMessage={displayNameValidation.valid ? undefined : displayNameValidation.error}
           required={true}
