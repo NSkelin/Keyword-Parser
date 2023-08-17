@@ -204,4 +204,20 @@ describe("<KeywordParser />", () => {
       cy.get("@keywordDisplay").contains("testDisplayName").should("not.exist");
     });
   });
+
+  it("should not show changed displayName after canceling", () => {
+    cy.get("[data-cy='keywordDisplay']").eq(0).find("[data-cy='kw-addKeyword']").click();
+    cy.get("[data-cy='kw-form']").eq(0).as("form");
+
+    cy.get("[data-cy='input']").eq(0).as("displayName");
+    cy.get("[data-cy='input']").eq(1).as("aliases");
+    cy.get("@form").within(() => {
+      cy.get("@displayName").clear().type("testDisplayName");
+      cy.get("[data-cy='cancel']").click();
+    });
+
+    // reopen form
+    cy.get("[data-cy='keywordDisplay']").eq(0).find("[data-cy='kw-addKeyword']").click();
+    cy.get("@displayName").invoke("val").should("not.equal", "testDisplayName");
+  });
 });

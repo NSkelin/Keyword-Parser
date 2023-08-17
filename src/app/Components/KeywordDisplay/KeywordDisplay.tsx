@@ -47,10 +47,17 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
     dialogRef.current?.close();
   }
 
+  function handleCancel() {
+    // clear the form by reseting state when the user clickes cancel.
+    // react resets the state when its key changes so we use a unique key that no other form will use.
+    setEditorId(-2);
+    dialogRef.current?.close();
+  }
+
   // get the initial data
   let displayName, aliases, proficient;
 
-  if (editorId !== -1) {
+  if (editorId > 0) {
     const keyword = keywords.find((keyword) => keyword.id === editorId);
     if (keyword == null) throw new Error("Keyword not found!");
     ({displayName, aliases, proficient} = keyword);
@@ -70,10 +77,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
           onUpdate={onUpdate}
           onDelete={onDelete}
           onSubmit={handleSubmit}
-          onCancel={() => {
-            dialogRef.current?.close();
-            setEditorId(-1);
-          }}
+          onCancel={handleCancel}
         />
       </Dialog>
       <div>
