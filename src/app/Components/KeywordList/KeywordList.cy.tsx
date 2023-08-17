@@ -9,7 +9,7 @@ const keywords: Keyword[] = [
   {id: 5, aliases: ["kw5"], displayName: "kw5", instances: 2, proficient: false},
 ];
 
-describe("<KeywordParser />", () => {
+describe("<KeywordList />", () => {
   beforeEach(() => {
     cy.mount(<KeywordList keywords={keywords} onEdit={() => {}} />);
   });
