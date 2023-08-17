@@ -63,7 +63,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
     ({displayName, aliases, proficient} = keyword);
   }
   return (
-    <section data-cy="keywordDisplay" className={styles.container}>
+    <section data-cy="keywordDisplayComp" className={styles.container}>
       <Dialog ref={dialogRef}>
         <KeywordEditor
           key={editorId}
@@ -82,7 +82,7 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
       </Dialog>
       <div>
         <input type={"color"}></input>
-        <button data-cy="kw-addKeyword" onClick={openCreate}>
+        <button data-cy="create" onClick={openCreate}>
           Add keyword +
         </button>
       </div>

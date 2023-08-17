@@ -40,9 +40,9 @@ function KeywordItem({
   const highlightVisible = highlightPercent === 0 ? "none" : "block";
 
   return (
-    <li className={styles.container} style={itemStyle}>
+    <li data-cy="keywordItemComp" className={styles.container} style={itemStyle}>
       <div
-        data-cy="kw-itemHighlight"
+        data-cy="highlight"
         style={{backgroundColor: highlightColor, width: `${highlightPercent}%`, display: highlightVisible}}
         className={styles.highlight}
       ></div>

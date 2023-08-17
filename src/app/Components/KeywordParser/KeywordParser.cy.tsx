@@ -1,11 +1,12 @@
 import {mockKeywordDisplay, mockSectionData} from "@/mockData";
-import {CyHttpMessages} from "cypress/types/net-stubbing";
 import React from "react";
 import KeywordParser from "./KeywordParser";
 
 describe("<KeywordParser />", () => {
   beforeEach(() => {
     cy.mount(<KeywordParser initialDisplays={mockKeywordDisplay} sectionData={mockSectionData} />);
+
+    cy.get(".notranslate").as("textArea");
   });
 
   it("renders", () => {
@@ -14,20 +15,26 @@ describe("<KeywordParser />", () => {
 
   describe("Test text updates in <HighlightWithinTextArea /> update <KeywordDisplay />'s correctly", () => {
     it("should place the found keyword first, before other keywords", () => {
-      cy.get(".notranslate").type("kw1-3");
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").should("contain.text", "Keyword 1-3");
+      cy.get("@textArea").type("kw1-3");
+      cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='keywordListComp']").should("contain.text", "Keyword 1-3");
     });
 
     it("should highlight the keyword list item that matches the entered text", () => {
-      cy.get(".notranslate").type("kw1-1");
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='kw-itemHighlight']").should("be.visible");
+      cy.get("@textArea").type("kw1-1");
+      cy.get("[data-cy='keywordDisplayComp']")
+        .eq(0)
+        .find("[data-cy='keywordListComp']")
+        .find("[data-cy='highlight']")
+        .should("be.visible");
     });
 
     it("should not highlight the keyword after removing the matching text", () => {
-      cy.get(".notranslate").type("kw1-1");
-      cy.get(".notranslate").clear();
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)")
-        .find("[data-cy='kw-itemHighlight']")
+      cy.get("@textArea").type("kw1-1");
+      cy.get("@textArea").clear();
+      cy.get("[data-cy='keywordDisplayComp']")
+        .eq(0)
+        .find("[data-cy='keywordListComp']")
+        .find("[data-cy='highlight']")
         .should("not.be.visible");
     });
   });
@@ -44,8 +51,8 @@ describe("<KeywordParser />", () => {
     });
 
     it("should close form on successful submit", () => {
-      cy.get(":nth-child(1) > :nth-child(2) > [data-cy='kw-addKeyword']").click();
-      cy.get("[data-cy='kw-form']")
+      cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
+      cy.get("[data-cy='keywordEditorComp']")
         .eq(0)
         .within(() => {
           cy.get("@displayName").type("testDisplayName");
@@ -53,12 +60,12 @@ describe("<KeywordParser />", () => {
           cy.get("@aliases").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
-      cy.get("[data-cy='dialog']").eq(0).should("not.be.visible");
+      cy.get("[data-cy='dialogComp']").eq(0).should("not.be.visible");
     });
 
     it("should successfully add a keyword", () => {
-      cy.get(":nth-child(1) > :nth-child(2) > [data-cy='kw-addKeyword']").click();
-      cy.get("[data-cy='kw-form']")
+      cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
+      cy.get("[data-cy='keywordEditorComp']")
         .eq(0)
         .within(() => {
           cy.get("@displayName").type("testDisplayName");
@@ -66,13 +73,13 @@ describe("<KeywordParser />", () => {
           cy.get("@aliases").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
-      cy.get("[data-cy='kw-itemList']").contains("testDisplayName").should("exist");
+      cy.get("[data-cy='keywordListComp']").contains("testDisplayName").should("exist");
     });
 
     it("instance count should match the amount of keywords currently in the text area after the keyword is created", () => {
-      cy.get(".notranslate").type("test");
-      cy.get(":nth-child(1) > :nth-child(2) > [data-cy='kw-addKeyword']").click();
-      cy.get("[data-cy='kw-form']")
+      cy.get("@textArea").type("test");
+      cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
+      cy.get("[data-cy='keywordEditorComp']")
         .eq(0)
         .within(() => {
           cy.get("@displayName").type("testDisplayName");
@@ -80,7 +87,7 @@ describe("<KeywordParser />", () => {
           cy.get("@aliases").type("testDisplayName, test, displayname,");
           cy.get("[data-cy='submit']").click();
         });
-      cy.get("[data-cy='kw-itemList']")
+      cy.get("[data-cy='keywordListComp']")
         .contains("testDisplayName")
         .parent()
         .find("[data-cy='instances']")
@@ -89,32 +96,32 @@ describe("<KeywordParser />", () => {
     });
 
     it("should successfully remove a keyword", () => {
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-      cy.get("[data-cy='kw-form']")
+      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
+      cy.get("[data-cy='keywordEditorComp']")
         .eq(0)
         .within(() => {
           cy.get("[data-cy='delete']").click();
         });
-      cy.get("[data-cy='kw-itemList']").contains("Keyword 1-1").should("not.exist");
+      cy.get("[data-cy='keywordListComp']").contains("Keyword 1-1").should("not.exist");
     });
 
     it("should update the keywords display name", () => {
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-      cy.get("[data-cy='kw-form']")
+      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
+      cy.get("[data-cy='keywordEditorComp']")
         .eq(0)
         .within(() => {
           cy.get("@displayName").clear().type("testDisplayName");
           cy.get("[data-cy='submit']").click();
         });
-      cy.get("[data-cy='kw-itemList']").contains("testDisplayName").should("exist");
+      cy.get("[data-cy='keywordListComp']").contains("testDisplayName").should("exist");
     });
   });
 
   describe("Form changes should reset upon canceling", () => {
     beforeEach(() => {
       // open form in edit mode
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
-      cy.get("[data-cy='kw-form']").eq(0).as("form");
+      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
+      cy.get("[data-cy='keywordEditorComp']").eq(0).as("form");
 
       cy.get("[data-cy='input']").eq(0).as("displayName");
       cy.get("[data-cy='input']").eq(1).as("aliases");
@@ -127,7 +134,7 @@ describe("<KeywordParser />", () => {
       });
 
       // reopen form
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
       cy.get("@displayName").invoke("val").should("not.equal", "testDisplayName");
     });
 
@@ -138,7 +145,7 @@ describe("<KeywordParser />", () => {
       });
 
       // reopen form
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
       cy.get("@form").contains("span", "keyword1-1").should("exist");
     });
 
@@ -149,7 +156,7 @@ describe("<KeywordParser />", () => {
       });
 
       // reopen form
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
       cy.get("@form").contains("span", "keyword 11").should("not.exist");
     });
 
@@ -160,14 +167,14 @@ describe("<KeywordParser />", () => {
       });
 
       // reopen form
-      cy.get(":nth-child(1) > [data-cy='kw-itemList'] > :nth-child(1)").find("[data-cy='edit']").click();
+      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
       cy.get("@form").get("[data-cy='proficient']").should("be.checked");
     });
   });
 
   it("should not show changed displayName after canceling", () => {
-    cy.get("[data-cy='keywordDisplay']").eq(0).find("[data-cy='kw-addKeyword']").click();
-    cy.get("[data-cy='kw-form']").eq(0).as("form");
+    cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
+    cy.get("[data-cy='keywordEditorComp']").eq(0).as("form");
 
     cy.get("[data-cy='input']").eq(0).as("displayName");
     cy.get("[data-cy='input']").eq(1).as("aliases");
@@ -177,7 +184,7 @@ describe("<KeywordParser />", () => {
     });
 
     // reopen form
-    cy.get("[data-cy='keywordDisplay']").eq(0).find("[data-cy='kw-addKeyword']").click();
+    cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
     cy.get("@displayName").invoke("val").should("not.equal", "testDisplayName");
   });
 });

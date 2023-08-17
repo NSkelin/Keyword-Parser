@@ -199,7 +199,7 @@ function KeywordEditor({
   };
 
   return (
-    <div data-cy="kw-form" className={styles.container}>
+    <div data-cy="keywordEditorComp" className={styles.container}>
       <div className={styles.inputs}>
         <h2>{title}</h2>
         <Input
