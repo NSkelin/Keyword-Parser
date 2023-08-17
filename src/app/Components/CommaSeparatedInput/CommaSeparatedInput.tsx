@@ -84,7 +84,9 @@ function CommaSeparatedInput({label, required, savedInputs, errorMessage, onInpu
           setValidation(validateInput(inputValue, validationRules));
         }}
       />
-      <span className={styles.errorMessage}>{errorMessage}</span>
+      <strong data-cy="errorMessage" className={styles.errorMessage}>
+        {errorMessage}
+      </strong>
       <div className={styles.savedValues}>{savedInputsDisplay}</div>
     </div>
   );
