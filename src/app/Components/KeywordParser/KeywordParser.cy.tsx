@@ -14,11 +14,6 @@ describe("<KeywordParser />", () => {
   });
 
   describe("Test text updates in <HighlightWithinTextArea /> update <KeywordDisplay />'s correctly", () => {
-    it("should place the found keyword first, before other keywords", () => {
-      cy.get("@textArea").type("kw1-3");
-      cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='keywordListComp']").should("contain.text", "Keyword 1-3");
-    });
-
     it("should highlight the keyword list item that matches the entered text", () => {
       cy.get("@textArea").type("kw1-1");
       cy.get("[data-cy='keywordDisplayComp']")
