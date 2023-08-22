@@ -28,10 +28,12 @@ describe("<KeywordDisplay />", () => {
       });
 
       it("on submit", () => {
+        cy.intercept("PUT", "http://localhost:8080/api/*/*", "success");
         cy.get("[data-cy='keywordEditorComp']").find("[data-cy='submit']").click();
       });
 
       it("on delete", () => {
+        cy.intercept("DELETE", "http://localhost:8080/api/*/*", "success");
         cy.get("[data-cy='keywordEditorComp']").find("[data-cy='delete']").click();
       });
 

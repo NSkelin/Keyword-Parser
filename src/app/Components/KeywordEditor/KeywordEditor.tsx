@@ -140,6 +140,7 @@ function KeywordEditor({
           onCreate(id, collection, displayName, proficient, aliases);
         } catch (error) {
           console.error("Error occurred while adding keyword:", error);
+          return;
         }
         break;
 
@@ -150,6 +151,7 @@ function KeywordEditor({
           onUpdate(id, collection, displayName, proficient, aliases);
         } catch (error) {
           console.error("Error occurred while updating keyword:", error);
+          return;
         }
         break;
 
@@ -159,6 +161,7 @@ function KeywordEditor({
           onDelete(id, collection);
         } catch (error) {
           console.error("Error occurred while deleting keyword:", error);
+          return;
         }
         break;
     }
