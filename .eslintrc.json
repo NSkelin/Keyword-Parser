@@ -21,8 +21,8 @@
       "extends": ["plugin:@typescript-eslint/disable-type-checked"]
     },
     {
-      // Allow empty functions in story files because i am not going to mock functions.
-      "files": ["*.stories.*"],
+      // Allow empty functions because i am not going to mock them.
+      "files": ["*.stories.*", "*.cy.*"],
       "rules": {
         "@typescript-eslint/no-empty-function": "off"
       }
