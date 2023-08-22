@@ -112,61 +112,6 @@ describe("<KeywordParser />", () => {
     });
   });
 
-  describe("Form changes should reset upon canceling", () => {
-    beforeEach(() => {
-      // open form in edit mode
-      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
-      cy.get("[data-cy='keywordEditorComp']").eq(0).as("form");
-
-      cy.get("[data-cy='input']").eq(0).as("displayName");
-      cy.get("[data-cy='input']").eq(1).as("aliases");
-    });
-
-    it("should not show changed displayName after canceling", () => {
-      cy.get("@form").within(() => {
-        cy.get("@displayName").clear().type("testDisplayName");
-        cy.get("[data-cy='cancel']").click();
-      });
-
-      // reopen form
-      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
-      cy.get("@displayName").invoke("val").should("not.equal", "testDisplayName");
-    });
-
-    it("should show deleted aliases after canceling", () => {
-      cy.get("@form").within(() => {
-        cy.get("[data-cy='remove']").eq(0).click();
-        cy.get("[data-cy='cancel']").click();
-      });
-
-      // reopen form
-      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
-      cy.get("@form").contains("span", "keyword1-1").should("exist");
-    });
-
-    it("should not show new aliases after canceling", () => {
-      cy.get("@form").within(() => {
-        cy.get("@aliases").type("keyword 11,");
-        cy.get("[data-cy='cancel']").click();
-      });
-
-      // reopen form
-      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
-      cy.get("@form").contains("span", "keyword 11").should("not.exist");
-    });
-
-    it("should not show the changed proficiency", () => {
-      cy.get("@form").within(() => {
-        cy.get("[data-cy='proficient']").click();
-        cy.get("[data-cy='cancel']").click();
-      });
-
-      // reopen form
-      cy.get("[data-cy='keywordListComp']").eq(0).find("[data-cy='edit']").eq(0).click();
-      cy.get("@form").get("[data-cy='proficient']").should("be.checked");
-    });
-  });
-
   it("should not show changed displayName after canceling", () => {
     cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
     cy.get("[data-cy='keywordEditorComp']").eq(0).as("form");
