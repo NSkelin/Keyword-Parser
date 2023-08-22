@@ -32,6 +32,15 @@ describe("createKeywordsRegEx", () => {
     expect(matches).toEqual(expectedMatches);
   });
 
+  it("should find keywords with special characters in the text", () => {
+    const keywords = ["c#", "c++"];
+    const regex = createKeywordsRegEx(keywords);
+    const textToMatch = "This is a text with special* and (test) characters, but not character?. c# c++";
+    const matches = textToMatch.match(regex);
+    const expectedMatches = ["c#", "c++"];
+    // expect(regex).toEqual("");
+    expect(matches).toEqual(expectedMatches);
+  });
 
   it("should find keywords with different cases in the text", () => {
     const keywords = ["KEYWORD1", "KeYwOrD2"];
@@ -384,7 +393,7 @@ describe("validateInput", () => {
 
   it("should return the invalid characters as part of its error message", () => {
     const errMsg = validateInput("abc %.6 7lp() #qew", validationRules).error;
-    const specialChars = ["%", ".", "(", ")", "#"];
+    const specialChars = ["%", ".", "(", ")"];
 
     const t = () => {
       for (const char of specialChars) {

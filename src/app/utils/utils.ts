@@ -3,9 +3,13 @@ export function createKeywordsRegEx(keywords: string[] | string) {
   if (keywords.length < 1) {
     throw new Error("Keyword(s) cannot be empty");
   } else if (typeof keywords === "string") {
-    return new RegExp(`\\b${keywords}\\b`, "gi");
+    const escapedKeyword = keywords.replace(/[+#]/g, "\\$&");
+    return new RegExp(`(?<!w)${escapedKeyword}(?!w)`, "gi");
   } else {
-    return new RegExp(`\\b${keywords.join("\\b|\\b")}\\b`, "gi");
+    const escapedKeywords = keywords.map((keyword) => {
+      return keyword.replace(/[+#]/g, "\\$&");
+    });
+    return new RegExp(`(?<!w)${escapedKeywords.join("(?<!w)|(?!w)")}(?!w)`, "gi");
   }
 }
 interface Keyword {
@@ -110,7 +114,7 @@ export function validateInput(input: string, rules?: ValidationInputRules) {
     };
   }
 
-  const matches = input.match(/[^\w ]/g);
+  const matches = input.match(/[^\w #+]/g);
   const uniqueMatches = [...new Set(matches)];
 
   if (uniqueMatches.length > 0) {
