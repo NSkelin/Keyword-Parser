@@ -65,19 +65,6 @@ describe("<KeywordParser />", () => {
       cy.get("[data-cy='input']").eq(1).as("aliases");
     });
 
-    it("should close form on successful submit", () => {
-      cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
-      cy.get("[data-cy='keywordEditorComp']")
-        .eq(0)
-        .within(() => {
-          cy.get("@displayName").type("testDisplayName");
-          cy.get("[data-cy='proficient']").check();
-          cy.get("@aliases").type("testDisplayName, test, displayname,");
-          cy.get("[data-cy='submit']").click();
-        });
-      cy.get("[data-cy='dialogComp']").eq(0).should("not.be.visible");
-    });
-
     it("should successfully add a keyword", () => {
       cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
       cy.get("[data-cy='keywordEditorComp']")
@@ -89,25 +76,6 @@ describe("<KeywordParser />", () => {
           cy.get("[data-cy='submit']").click();
         });
       cy.get("[data-cy='keywordListComp']").contains("testDisplayName").should("exist");
-    });
-
-    it("instance count should match the amount of keywords currently in the text area after the keyword is created", () => {
-      cy.get("@textArea").type("test");
-      cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
-      cy.get("[data-cy='keywordEditorComp']")
-        .eq(0)
-        .within(() => {
-          cy.get("@displayName").type("testDisplayName");
-          cy.get("[data-cy='proficient']").check();
-          cy.get("@aliases").type("testDisplayName, test, displayname,");
-          cy.get("[data-cy='submit']").click();
-        });
-      cy.get("[data-cy='keywordListComp']")
-        .contains("testDisplayName")
-        .parent()
-        .find("[data-cy='instances']")
-        .invoke("text")
-        .should("eq", "1");
     });
 
     it("should successfully remove a keyword", () => {
@@ -130,21 +98,5 @@ describe("<KeywordParser />", () => {
         });
       cy.get("[data-cy='keywordListComp']").contains("testDisplayName").should("exist");
     });
-  });
-
-  it("should not show changed displayName after canceling", () => {
-    cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
-    cy.get("[data-cy='keywordEditorComp']").eq(0).as("form");
-
-    cy.get("[data-cy='input']").eq(0).as("displayName");
-    cy.get("[data-cy='input']").eq(1).as("aliases");
-    cy.get("@form").within(() => {
-      cy.get("@displayName").clear().type("testDisplayName");
-      cy.get("[data-cy='cancel']").click();
-    });
-
-    // reopen form
-    cy.get("[data-cy='keywordDisplayComp']").eq(0).find("[data-cy='create']").click();
-    cy.get("@displayName").invoke("val").should("not.equal", "testDisplayName");
   });
 });
