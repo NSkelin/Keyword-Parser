@@ -13,7 +13,7 @@ describe("<KeywordParser />", () => {
     cy.mount(<KeywordParser initialDisplays={mockKeywordDisplay} sectionData={mockSectionData} />);
   });
 
-  describe("Test text updates in <HighlightWithinTextArea /> update <KeywordDisplay />'s correctly", () => {
+  describe("<KeywordDisplay /> should represent the text in <HighlightWithinTextArea />", () => {
     it("should highlight the keyword list item that matches the entered text", () => {
       cy.get("@textArea").type("kw1-1");
       cy.get("[data-cy='keywordDisplayComp']")
