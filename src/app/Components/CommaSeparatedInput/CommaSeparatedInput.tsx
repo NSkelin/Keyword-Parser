@@ -70,7 +70,7 @@ function CommaSeparatedInput({label, required, savedInputs, errorMessage, onInpu
   ));
 
   return (
-    <div data-cy="commaSeparatedInput" className={styles.container}>
+    <div data-cy="commaSeparatedInputComp" className={styles.container}>
       <Input
         label={label}
         errorMessage={validation.valid ? undefined : validation.error}

@@ -59,7 +59,7 @@ describe("Test form validation", () => {
 
   it("aliases should show an error when trying to submit with 0 aliases", () => {
     cy.get("[data-cy='submit']").click();
-    cy.get("[data-cy='commaSeparatedInput']").find("[data-cy='errorMessage']").invoke("text").should("have.length.above", 5);
+    cy.get("[data-cy='commaSeparatedInputComp']").find("[data-cy='errorMessage']").invoke("text").should("have.length.above", 5);
   });
 
   describe("Should not submit with invalid input", () => {
