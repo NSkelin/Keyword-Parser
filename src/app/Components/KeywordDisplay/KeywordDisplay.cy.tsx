@@ -51,6 +51,11 @@ describe("<KeywordDisplay />", () => {
         cy.get("[data-cy='input']").eq(0).clear();
         cy.get("[data-cy='keywordEditorComp']").find("[data-cy='submit']").click();
       });
+
+      it("on failed delete", () => {
+        cy.intercept("DELETE", "http://localhost:8080/api/*/*", {statusCode: 404});
+        cy.get("[data-cy='keywordEditorComp']").find("[data-cy='delete']").click();
+      });
     });
 
     // if the user edits an input and cancels their changes it should not show those changes when reopening the form
