@@ -201,42 +201,42 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
     setOverrides(new Map());
   }
 
-  const collections = keywordCollections.map(({title, keywords}) => {
-    // Get the name of all keywords that the job requests, and the user is proficient in.
-    const primaryKeywords = keywords.reduce<{word: string; color: string}[]>(
+  const skillGroups = keywordCollections.map(({title, keywords}) => {
+    // Get the name of all skills that the job requests, and the user is proficient in.
+    const primarySkills = keywords.reduce<{name: string; color: string}[]>(
       (accumulator, {displayName, instances, proficient}) => {
         if (instances > 0 && proficient) {
-          accumulator.push({word: displayName, color: "green"});
+          accumulator.push({name: displayName, color: "green"});
         }
         return accumulator;
       },
       [],
     );
 
-    // Get the name of all the keywords that are present in each enabled bullet.
-    const bulletMatches = keywords.reduce<{word: string; color: string}[]>((accumulator, {displayName, aliases}) => {
+    // Get the name of all the skills that are present in each enabled bullet.
+    const bulletMatches = keywords.reduce<{name: string; color: string}[]>((accumulator, {displayName, aliases}) => {
       if (aliases.length < 1) return accumulator;
       const text = activeBullets.join(" ");
       const regEx = createKeywordsRegEx(aliases);
 
       if (regEx.test(text)) {
-        accumulator.push({word: displayName, color: "red"});
+        accumulator.push({name: displayName, color: "red"});
       }
 
       return accumulator;
     }, []);
 
-    // Get the keywords that are not requested by the job description but are in the enabled bullets.
-    const words = primaryKeywords.map(({word}) => word);
-    const secondaryKeywords = bulletMatches.filter(({word}) => !words.includes(word));
+    // Get the skills that are not requested by the job description but are in the enabled bullets.
+    const skills = primarySkills.map(({name}) => name);
+    const secondarySkills = bulletMatches.filter(({name}) => !skills.includes(name));
 
-    return {title: title, keywords: [...primaryKeywords, ...secondaryKeywords]};
+    return {title: title, skills: [...primarySkills, ...secondarySkills]};
   });
 
   return (
     <section className={styles.container}>
       <h2>Skills</h2>
-      <SkillSummary collections={collections} />
+      <SkillSummary skillGroups={skillGroups} />
       <button onClick={resetOverride}>Reset overrides</button>
       {resumeSections}
     </section>

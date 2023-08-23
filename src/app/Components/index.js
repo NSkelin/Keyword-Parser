@@ -11,4 +11,6 @@ export {default as KeywordParser} from "./KeywordParser";
 export {default as RegExDisplay} from "./RegExDisplay";
 export {default as RegExDisplayCollection} from "./RegExDisplayCollection";
 export {default as ResumeAssist} from "./ResumeAssist";
+export {default as SkillGroup} from "./SkillGroup";
+export {default as SkillItem} from "./SkillItem";
 export {default as SkillSummary} from "./SkillSummary";

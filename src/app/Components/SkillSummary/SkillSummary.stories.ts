@@ -7,40 +7,39 @@ const meta: Meta<typeof SkillSummary> = {
 
 export default meta;
 type Story = StoryObj<typeof SkillSummary>;
-// collections: {title: string; keywords: {word: string, color: string}[]}[];
 export const Default: Story = {
   args: {
-    collections: [
+    skillGroups: [
       {
-        title: "collection 1",
-        keywords: [
+        title: "group 1",
+        skills: [
           {
-            word: "word 1",
+            name: "skill 1",
             color: "green",
           },
           {
-            word: "word 1",
+            name: "skill 12",
             color: "red",
           },
           {
-            word: "word 1",
+            name: "skill 123",
             color: "red",
           },
         ],
       },
       {
-        title: "collection 2",
-        keywords: [
+        title: "group 12",
+        skills: [
           {
-            word: "word 1",
+            name: "skill 1",
             color: "blue",
           },
           {
-            word: "word 1",
+            name: "skill 12",
             color: "blue",
           },
           {
-            word: "word 1",
+            name: "skill 123",
             color: "blue",
           },
         ],

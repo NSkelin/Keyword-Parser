@@ -1,32 +1,28 @@
+import {SkillGroup} from "@/components";
 import React from "react";
+import type {SkillGroupProps} from "../SkillGroup";
 
 export interface KeywordSummaryProps {
-  collections: {title: string; keywords: {word: string; color: string}[]}[];
+  skillGroups: SkillGroupProps[];
 }
-function SkillSummary({collections}: KeywordSummaryProps) {
-  const keywordsString = collections.map(({title, keywords}, index) => {
-    const wordsColored = keywords.map(({word, color}) => (
-      <span key={word} style={{color: color}}>
-        {" "}
-        {word}{" "}
-      </span>
-    ));
+function SkillSummary({skillGroups}: KeywordSummaryProps) {
+  const skillGroupElements = skillGroups.map(({title, skills}, index) => {
     return (
       <div key={index}>
-        <b>{title}:</b>
-        {wordsColored}
+        <SkillGroup title={title} skills={skills} />
       </div>
     );
   });
 
-  function handleClick() {
-    const keywordsString = collections.map(({title, keywords}) => {
-      const wordsArray = keywords.map(({word}) => word);
-      const wordsString = wordsArray.join(", ") + ".";
-      return `${title}: ${wordsString}`;
+  function copyToClipboard() {
+    const skillGroupArray = skillGroups.map(({title, skills}) => {
+      const groupSkills = skills.map(({name}) => name);
+      return `${title}: ${groupSkills.join(", ") + "."}`;
     });
 
-    navigator.clipboard.writeText(keywordsString.join("\n")).then(
+    const skillString = skillGroupArray.join("\n");
+
+    navigator.clipboard.writeText(skillString).then(
       () => {
         // TODO ~
         // Success ~
@@ -44,8 +40,8 @@ function SkillSummary({collections}: KeywordSummaryProps) {
 
   return (
     <section>
-      <div>{keywordsString}</div>
-      <button onClick={handleClick}>Copy to clipboard</button>
+      <div>{skillGroupElements}</div>
+      <button onClick={copyToClipboard}>Copy to clipboard</button>
     </section>
   );
 }
