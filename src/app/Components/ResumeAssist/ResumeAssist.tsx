@@ -1,4 +1,4 @@
-import {BulletList, KeywordSummary} from "@/components";
+import {BulletList, SkillSummary} from "@/components";
 import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/utils";
 import type {Keyword} from "@/utils/types";
 import {Prisma} from "@prisma/client";
@@ -236,7 +236,7 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
   return (
     <section className={styles.container}>
       <h2>Skills</h2>
-      <KeywordSummary collections={collections} />
+      <SkillSummary collections={collections} />
       <button onClick={resetOverride}>Reset overrides</button>
       {resumeSections}
     </section>

@@ -3,7 +3,7 @@ import React from "react";
 export interface KeywordSummaryProps {
   collections: {title: string; keywords: {word: string; color: string}[]}[];
 }
-function KeywordSummary({collections}: KeywordSummaryProps) {
+function SkillSummary({collections}: KeywordSummaryProps) {
   const keywordsString = collections.map(({title, keywords}, index) => {
     const wordsColored = keywords.map(({word, color}) => (
       <span key={word} style={{color: color}}>
@@ -50,4 +50,4 @@ function KeywordSummary({collections}: KeywordSummaryProps) {
   );
 }
 
-export default KeywordSummary;
+export default SkillSummary;

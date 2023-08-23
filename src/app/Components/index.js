@@ -8,7 +8,7 @@ export {default as KeywordEditor} from "./KeywordEditor";
 export {default as KeywordItem} from "./KeywordItem";
 export {default as KeywordList} from "./KeywordList";
 export {default as KeywordParser} from "./KeywordParser";
-export {default as KeywordSummary} from "./KeywordSummary";
 export {default as RegExDisplay} from "./RegExDisplay";
 export {default as RegExDisplayCollection} from "./RegExDisplayCollection";
 export {default as ResumeAssist} from "./ResumeAssist";
+export {default as SkillSummary} from "./SkillSummary";
