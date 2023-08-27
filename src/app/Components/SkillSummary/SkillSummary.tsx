@@ -7,14 +7,14 @@ export interface KeywordSummaryProps {
   skillGroups: SkillGroupProps[];
 }
 function SkillSummary({skillGroups}: KeywordSummaryProps) {
-  const [selectedGroups, setSelectedGroups] = useState<Map<string, boolean>>(test());
+  const [selectedGroups, setSelectedGroups] = useState<Map<string, boolean>>(initSelectedGroups());
 
-  function test() {
-    const m = new Map();
+  function initSelectedGroups() {
+    const map = new Map();
     for (const group of skillGroups) {
-      m.set(group.title, true);
+      map.set(group.title, true);
     }
-    return m;
+    return map;
   }
 
   function toggleGroup(title: string) {
