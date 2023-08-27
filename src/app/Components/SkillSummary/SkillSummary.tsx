@@ -4,8 +4,11 @@ import type {SkillGroupProps} from "../SkillGroup";
 import {SkillItemProps} from "../SkillItem";
 
 export interface KeywordSummaryProps {
+  /** An array of objects that hold the props for a skill group component */
   skillGroups: SkillGroupProps[];
 }
+/** Holds a list of skill groups similar to a skill section found in resumes and lets users control which skill groups can be copied to clipboard
+ * for easy pasting into their resume.  */
 function SkillSummary({skillGroups}: KeywordSummaryProps) {
   const [selectedGroups, setSelectedGroups] = useState<Map<string, boolean>>(initSelectedGroups());
 
