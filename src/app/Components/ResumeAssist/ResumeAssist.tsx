@@ -202,16 +202,15 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
   }
 
   const skillGroups = keywordCollections.map(({title, keywords}) => {
-    // Get the name of all skills that the job requests, and the user is proficient in.
-    const primarySkills = keywords.reduce<{name: string; color: string}[]>(
-      (accumulator, {displayName, instances, proficient}) => {
-        if (instances > 0 && proficient) {
-          accumulator.push({name: displayName, color: "green"});
-        }
-        return accumulator;
-      },
-      [],
-    );
+    // Create the data for the most important skills of this group
+    // Get all keywords that are requested by the job and the user is proficient in
+    const filteredKeywords = keywords.filter(({instances, proficient}) => instances > 0 && proficient);
+    // Sort in descending order by instance count
+    filteredKeywords.sort(({instances: a}, {instances: b}) => b - a);
+    // Create the data structure for the SkillItem components props
+    const primarySkills = filteredKeywords.map(({displayName}) => {
+      return {name: displayName, color: "green"};
+    });
 
     // Get the name of all the skills that are present in each enabled bullet.
     const bulletMatches = keywords.reduce<{name: string; color: string}[]>((accumulator, {displayName, aliases}) => {
