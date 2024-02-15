@@ -28,7 +28,7 @@ function SkillGroup({title, skills, selected, onChange}: SkillGroupProps) {
   ));
 
   return (
-    <div className={styles.wrapper}>
+    <div className={selected ? styles.wrapper : styles.wrapperDisabled}>
       <label>
         <input type="checkbox" checked={selected} onChange={() => onChange(title)} />
         <b>{title}</b>

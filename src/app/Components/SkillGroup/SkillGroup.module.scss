@@ -1,3 +1,10 @@
+.wrapper,
+.wrapperDisabled {
+  label {
+    flex-direction: row;
+  }
+}
+
 .wrapper {
   margin-bottom: 20px;
   label {
@@ -8,5 +15,17 @@
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
+  }
+}
+
+.wrapperDisabled {
+  color: lightgray;
+  text-decoration: line-through;
+  margin-bottom: 5px;
+  label {
+    margin-bottom: 0px;
+  }
+  .skillToggles {
+    display: none;
   }
 }
