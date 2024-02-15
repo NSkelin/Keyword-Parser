@@ -18,7 +18,7 @@ function SkillGroup({title, skills, selected, onChange}: SkillGroupProps) {
   const wordsColored = skills.map(({name, color}) => <SkillItem key={name} name={name} color={color} />);
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <input type="checkbox" checked={selected} onChange={() => onChange(title)} />
       <b> {title}:</b>
       {wordsColored}
