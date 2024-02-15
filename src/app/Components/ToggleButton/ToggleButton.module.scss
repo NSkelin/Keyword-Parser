@@ -1,0 +1,14 @@
+.enabled,
+.disabled {
+  padding: 5px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+.enabled {
+  background-color: blue;
+  color: white;
+}
+
+.disabled {
+  background-color: lightblue;
+}

@@ -1,0 +1,29 @@
+import {Meta, StoryObj} from "@storybook/react";
+import ToggleButton from "./ToggleButton";
+
+const meta: Meta<typeof ToggleButton> = {
+  component: ToggleButton,
+};
+
+export default meta;
+type Story = StoryObj<typeof ToggleButton>;
+
+export const Default: Story = {
+  args: {
+    children: "Default",
+  },
+};
+
+export const Enabled: Story = {
+  args: {
+    initialState: true,
+    children: "Enabled",
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    initialState: false,
+    children: "Disabled",
+  },
+};
