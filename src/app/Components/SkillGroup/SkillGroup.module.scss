@@ -1,8 +1,12 @@
 .wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  label,
-  b {
-    margin-right: 5px;
+  margin-bottom: 20px;
+  label {
+    flex-direction: row;
+    margin-bottom: 10px;
+  }
+  .skillToggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
   }
 }

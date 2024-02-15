@@ -29,9 +29,11 @@ function SkillGroup({title, skills, selected, onChange}: SkillGroupProps) {
 
   return (
     <div className={styles.wrapper}>
-      <input type="checkbox" checked={selected} onChange={() => onChange(title)} />
-      <b> {title}:</b>
-      {skillToggles}
+      <label>
+        <input type="checkbox" checked={selected} onChange={() => onChange(title)} />
+        <b>{title}</b>
+      </label>
+      <div className={styles.skillToggles}>{skillToggles}</div>
     </div>
   );
 }
