@@ -1,4 +1,5 @@
-import {SkillItem} from "@/components";
+import {ToggleButton} from "@/components";
+import Image from "next/image";
 import React from "react";
 import type {SkillItemProps} from "../SkillItem";
 import styles from "./SkillGroup.module.scss";
@@ -15,13 +16,22 @@ export interface SkillGroupProps {
 }
 /** Multiple \<SkillItem /> components grouped under a single title with a checkbox for activating / disabling the group. */
 function SkillGroup({title, skills, selected, onChange}: SkillGroupProps) {
-  const wordsColored = skills.map(({name, color}) => <SkillItem key={name} name={name} color={color} />);
+  const fireSVG = <Image src={"/fire.svg"} alt="My SVG" width={12} height={12} />;
+  const infoISVG = <Image src={"/info_i.svg"} alt="My SVG" width={12} height={12} />;
+
+  // Converts each skill into a toggleable button.
+  const skillToggles = skills.map(({name, color}) => (
+    <ToggleButton initialState={true} key={name}>
+      {name}
+      {color === "green" ? fireSVG : color === "red" ? null : infoISVG}
+    </ToggleButton>
+  ));
 
   return (
     <div className={styles.wrapper}>
       <input type="checkbox" checked={selected} onChange={() => onChange(title)} />
       <b> {title}:</b>
-      {wordsColored}
+      {skillToggles}
     </div>
   );
 }
