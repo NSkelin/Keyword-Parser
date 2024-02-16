@@ -1,4 +1,4 @@
-import {BulletList, SkillSummary} from "@/components";
+import {BulletList, ResumeSection, ResumeSubSection, SkillSummary} from "@/components";
 import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/utils";
 import type {Keyword} from "@/utils/types";
 import {Prisma} from "@prisma/client";
@@ -108,31 +108,24 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
   /** Creates the React elements necessary to display each section stored in the database in a readable resume-like format. */
   function createSections(sections: SectionData) {
     return sections.map(({title, positions}) => {
-      const positionElems = createSectionPositions(positions);
-      if (positionElems.length === 0) return <></>;
+      const subSections = createSubSections(positions);
+      if (subSections.length === 0) return <></>;
       return (
-        <section key={title}>
-          <h2>{title}</h2>
-          {positionElems}
-        </section>
+        <ResumeSection key={title} title={title}>
+          {subSections}
+        </ResumeSection>
       );
     });
   }
 
   /** Creates the React elements necessary to display each position for a given section in a readable resume-like format. */
-  function createSectionPositions(positions: PositionData[]) {
+  function createSubSections(positions: PositionData[]) {
     return positions.map(({id, title, subTitle, startDate, endDate, bullets}) => {
       const bulletElems = createPositionBullets(bullets);
       return (
-        <section key={id} className={styles.history}>
-          <div className={styles.position}>
-            <h3>{title}</h3>
-            {`${startDate.getFullYear()} - ${endDate?.getFullYear() ?? "present"}`}
-          </div>
-          <i>{subTitle}</i>
-
+        <ResumeSubSection key={id} title={title} subTitle={subTitle} startDate={startDate} endDate={endDate}>
           {bulletElems}
-        </section>
+        </ResumeSubSection>
       );
     });
   }

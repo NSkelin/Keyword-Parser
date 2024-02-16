@@ -1,0 +1,25 @@
+import React from "react";
+import styles from "./ResumeSubSection.module.scss";
+
+export interface ResumeSubSectionProps {
+  title: string;
+  subTitle: string;
+  startDate: Date;
+  endDate?: Date | null;
+  children: React.ReactNode;
+}
+function ResumeSubSection({title, subTitle, startDate, endDate, children}: ResumeSubSectionProps) {
+  return (
+    <section className={styles.history}>
+      <div className={styles.position}>
+        <h3>{title}</h3>
+        {`${startDate.getFullYear()} - ${endDate?.getFullYear() ?? "present"}`}
+      </div>
+      <i>{subTitle}</i>
+
+      {children}
+    </section>
+  );
+}
+
+export default ResumeSubSection;
