@@ -1,5 +1,5 @@
 "use client";
-import {KeywordDisplayCollection, ResumeAssist} from "@/components";
+import {KeywordDisplayCollection, ResumeBuilder} from "@/components";
 import {createKeywordsRegEx, getAliases} from "@/utils";
 import {Prisma} from "@prisma/client";
 import {CSSProperties, ReactNode, useState} from "react";
@@ -184,7 +184,7 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
           onUpdate={handleUpdateKeyword}
         />
       </section>
-      <ResumeAssist
+      <ResumeBuilder
         sectionData={sectionData}
         keywordCollections={displays.map(({title, keywords}) => {
           return {title: title, keywords: keywords};

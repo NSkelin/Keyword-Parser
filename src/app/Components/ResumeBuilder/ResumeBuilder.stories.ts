@@ -1,14 +1,14 @@
 import {Meta, StoryObj} from "@storybook/react";
 import {enableMapSet} from "immer";
-import ResumeAssist from "./ResumeAssist";
+import ResumeBuilder from "./ResumeBuilder";
 enableMapSet();
 
-const meta: Meta<typeof ResumeAssist> = {
-  component: ResumeAssist,
+const meta: Meta<typeof ResumeBuilder> = {
+  component: ResumeBuilder,
 };
 
 export default meta;
-type Story = StoryObj<typeof ResumeAssist>;
+type Story = StoryObj<typeof ResumeBuilder>;
 export const Default: Story = {
   args: {
     sectionData: [

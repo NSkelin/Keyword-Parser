@@ -10,7 +10,7 @@ export {default as KeywordList} from "./KeywordList";
 export {default as KeywordParser} from "./KeywordParser";
 export {default as RegExDisplay} from "./RegExDisplay";
 export {default as RegExDisplayCollection} from "./RegExDisplayCollection";
-export {default as ResumeAssist} from "./ResumeAssist";
+export {default as ResumeBuilder} from "./ResumeBuilder";
 export {default as ResumeSection} from "./ResumeSection";
 export {default as ResumeSubSection} from "./ResumeSubSection";
 export {default as SkillGroup} from "./SkillGroup";

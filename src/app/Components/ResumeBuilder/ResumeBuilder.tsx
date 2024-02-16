@@ -5,7 +5,7 @@ import {Prisma} from "@prisma/client";
 import {enableMapSet} from "immer";
 import React from "react";
 import {useImmer} from "use-immer";
-import styles from "./ResumeAssist.module.scss";
+import styles from "./ResumeBuilder.module.scss";
 enableMapSet();
 
 // Database structure
@@ -67,7 +67,7 @@ interface Bullet {
   /** A filter that controls if the bullet is allowed to be shown. Checks the list for keywords that must be present before allowing it to appear. False means no filter, True means all keywords found must exist. */
   restrict?: string[] | boolean;
 }
-export interface ResumeAssistProps {
+export interface ResumeBuilderProps {
   /** The keywords used to determine which skills & bullets to display. */
   keywordCollections: {title: string; keywords: Keyword[]}[];
   /** All the data required to render a resumes sections (education, experience, etc), its positions, and their individual bullets. */
@@ -77,7 +77,7 @@ export interface ResumeAssistProps {
  *
  * Automatically chooses bullet points based off the keywords found in the job description and creates a summary of the skills / keywords found in all displayed bullet points.
  */
-function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
+function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
   const [overrides, setOverrides] = useImmer<Map<number, boolean>>(new Map());
   const keywords: Keyword[] = keywordCollections.flatMap(({keywords}) => keywords);
   const activeBullets: string[] = [];
@@ -235,4 +235,4 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
   );
 }
 
-export default ResumeAssist;
+export default ResumeBuilder;
