@@ -1,7 +1,9 @@
 import {SkillGroup} from "@/components";
+import Image from "next/image";
 import React, {useState} from "react";
 import type {SkillGroupProps} from "../SkillGroup";
 import {SkillItemProps} from "../SkillItem";
+import styles from "./SkillSummary.module.scss";
 
 export interface KeywordSummaryProps {
   /** An array of objects that hold the props for a skill group component */
@@ -80,8 +82,13 @@ function SkillSummary({skillGroups}: KeywordSummaryProps) {
 
   return (
     <section>
+      <div className={styles.title}>
+        <h2>Skills</h2>
+        <button className={styles.button} onClick={copyToClipboard}>
+          <Image src={"/content_copy.svg"} alt="My SVG" width={20} height={20} />
+        </button>
+      </div>
       <div>{skillGroupElements}</div>
-      <button onClick={copyToClipboard}>Copy to clipboard</button>
     </section>
   );
 }
