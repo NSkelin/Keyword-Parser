@@ -227,7 +227,7 @@ function ResumeAssist({keywordCollections, sectionData}: ResumeAssistProps) {
 
   return (
     <section className={styles.container}>
-      <h2>Skills</h2>
+      <h1>Resume Builder</h1>
       <SkillSummary skillGroups={skillGroups} />
       <button onClick={resetOverride}>Reset overrides</button>
       {resumeSections}
