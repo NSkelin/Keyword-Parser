@@ -1,36 +1,65 @@
 import {ToggleButton} from "@/components";
 import Image from "next/image";
 import React from "react";
-import type {SkillItemProps} from "../SkillItem";
 import styles from "./SkillGroup.module.scss";
 
-export interface SkillGroupProps {
-  /** The title used to represent the group of skills. */
-  title: string;
-  /** An array of objects that hold the props for a skill item component */
-  skills: SkillItemProps[];
-  /** Controls whether the checkbox is checked or not. */
-  selected: boolean;
-  /** Callback for when the user clicks the checkbox. */
-  onChange: (title: string) => void;
+export interface Skills {
+  name: string;
+  hot: boolean;
+  proficient: boolean;
+  familiar: boolean;
+  enabled: boolean;
 }
-/** Multiple \<SkillItem /> components grouped under a single title with a checkbox for activating / disabling the group. */
-function SkillGroup({title, skills, selected, onChange}: SkillGroupProps) {
+export interface SkillGroupProps {
+  /**
+   * The title used to represent the group of skills.
+   */
+  title: string;
+  /**
+   * An array of objects that hold the props for the skill.
+   */
+  skills: Skills[];
+  /**
+   * Controls whether the checkbox is checked or not. Defaults to true.
+   */
+  selected: boolean;
+  /**
+   * Callback for when the user clicks the checkbox.
+   */
+  onGroupToggle: (title: string) => void;
+  onSkillToggle: (groupTitle: string, skillName: string) => void;
+}
+/**
+ * A component that holds a list of skills and lets users control which skills are enabled.
+ */
+function SkillGroup({title, skills, selected, onGroupToggle, onSkillToggle}: SkillGroupProps) {
+  selected = selected ?? true;
   const fireSVG = <Image src={"/fire.svg"} alt="My SVG" width={12} height={12} />;
   const infoISVG = <Image src={"/info_i.svg"} alt="My SVG" width={12} height={12} />;
 
-  // Converts each skill into a toggleable button.
-  const skillToggles = skills.map(({name, color}) => (
-    <ToggleButton initialState={true} key={name}>
+  /**
+   * Sends the clicked skill to the parent component to handle the toggle.
+   * @param skillName The name of the skill that was clicked.
+   */
+  function handleSkillToggle(skillName: string) {
+    onSkillToggle(title, skillName);
+  }
+
+  // Creates a toggleable button for each skill in the group.
+  // The button will display the skill name and any icons that represent the skill's properties.
+  const skillToggles = skills.map(({name, hot, proficient, familiar, enabled}) => (
+    <ToggleButton enabled={enabled} key={name} onClick={() => handleSkillToggle(name)}>
       {name}
-      {color === "green" ? fireSVG : color === "red" ? null : infoISVG}
+      {hot ? fireSVG : null}
+      {proficient ? infoISVG : null}
+      {familiar ? "F" : null}
     </ToggleButton>
   ));
 
   return (
     <div className={selected ? styles.wrapper : styles.wrapperDisabled}>
       <label>
-        <input type="checkbox" checked={selected} onChange={() => onChange(title)} />
+        <input type="checkbox" checked={selected} onChange={() => onGroupToggle(title)} />
         <b>{title}</b>
       </label>
       <div className={styles.skillToggles}>{skillToggles}</div>

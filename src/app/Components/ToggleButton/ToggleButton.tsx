@@ -1,24 +1,23 @@
-import React, {useState} from "react";
+import React from "react";
 import styles from "./ToggleButton.module.scss";
 
 export interface ToggleButtonProps {
   /**
-   * The initial state of the button. Defaults to true.
+   * Controls whether the button is toggled on or off. Defaults to on (true).
    */
-  initialState?: boolean;
+  enabled?: boolean;
   children: React.ReactNode;
+  /**
+   * Callback for when the user clicks the button.
+   */
+  onClick?: () => void;
 }
 
 /** A button that can be toggled on and off. */
-function ToggleButton({initialState, children}: ToggleButtonProps) {
-  const [enabled, setEnabled] = useState(initialState ?? true);
-
-  const handleClick = () => {
-    setEnabled(!enabled);
-  };
-
+function ToggleButton({enabled, children, onClick}: ToggleButtonProps) {
+  enabled = enabled ?? true;
   return (
-    <button className={`${styles.toggleButton} ${enabled ? styles.enabled : styles.disabled}`} onClick={handleClick}>
+    <button className={`${styles.toggleButton} ${enabled ? styles.enabled : styles.disabled}`} onClick={onClick}>
       {children}
     </button>
   );

@@ -16,14 +16,14 @@ export const Default: Story = {
 
 export const Enabled: Story = {
   args: {
-    initialState: true,
+    enabled: true,
     children: "Enabled",
   },
 };
 
 export const Disabled: Story = {
   args: {
-    initialState: false,
+    enabled: false,
     children: "Disabled",
   },
 };
