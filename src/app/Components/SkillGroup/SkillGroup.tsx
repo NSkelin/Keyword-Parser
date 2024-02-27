@@ -1,6 +1,6 @@
 import {ToggleButton} from "@/components";
 import Image from "next/image";
-import React from "react";
+import React, {CSSProperties} from "react";
 import styles from "./SkillGroup.module.scss";
 
 export interface Skills {
@@ -9,6 +9,13 @@ export interface Skills {
   proficient: boolean;
   familiar: boolean;
   enabled: boolean;
+  /**
+   * Controls how much of the background the highlightColor will highlight (0-100).
+   * A helpful way of visualizing the relative amount this keyword has shown up compared to others.
+   */
+  highlightPercent?: number;
+  /** The color for the background fill. */
+  highlightColor?: CSSProperties["backgroundColor"];
 }
 export interface SkillGroupProps {
   /**
@@ -34,7 +41,6 @@ export interface SkillGroupProps {
  */
 function SkillGroup({title, skills, selected, onGroupToggle, onSkillToggle}: SkillGroupProps) {
   selected = selected ?? true;
-  const fireSVG = <Image src={"/fire.svg"} alt="My SVG" width={12} height={12} />;
   const infoISVG = <Image src={"/info_i.svg"} alt="My SVG" width={12} height={12} />;
 
   /**
@@ -47,12 +53,14 @@ function SkillGroup({title, skills, selected, onGroupToggle, onSkillToggle}: Ski
 
   // Creates a toggleable button for each skill in the group.
   // The button will display the skill name and any icons that represent the skill's properties.
-  const skillToggles = skills.map(({name, hot, proficient, familiar, enabled}) => (
+  const skillToggles = skills.map(({name, proficient, familiar, enabled, highlightColor, highlightPercent}) => (
     <ToggleButton enabled={enabled} key={name} onClick={() => handleSkillToggle(name)}>
-      {name}
-      {hot ? fireSVG : null}
-      {proficient ? infoISVG : null}
-      {familiar ? "F" : null}
+      <div className={styles.highlight} style={{backgroundColor: highlightColor, width: `${highlightPercent}%`}}></div>
+      <span className={styles.content}>
+        {name}
+        {proficient ? infoISVG : null}
+        {familiar ? "F" : null}
+      </span>
     </ToggleButton>
   ));
 

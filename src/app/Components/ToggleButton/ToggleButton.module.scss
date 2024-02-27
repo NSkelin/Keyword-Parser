@@ -1,8 +1,10 @@
 .enabled,
 .disabled {
+  position: relative;
   padding: 5px 15px;
   border-radius: 25px;
   cursor: pointer;
+  overflow: hidden;
 }
 .enabled {
   background-color: blue;

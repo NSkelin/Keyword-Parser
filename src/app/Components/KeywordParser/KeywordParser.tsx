@@ -163,7 +163,6 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
     }
     return;
   }
-
   return (
     <>
       <section className={styles.contentWrap}>
@@ -184,12 +183,7 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
           onUpdate={handleUpdateKeyword}
         />
       </section>
-      <ResumeBuilder
-        sectionData={sectionData}
-        keywordCollections={displays.map(({title, keywords}) => {
-          return {title: title, keywords: keywords};
-        })}
-      />
+      <ResumeBuilder sectionData={sectionData} keywordCollections={displays} />
     </>
   );
 }

@@ -3,7 +3,7 @@ import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/utils";
 import type {Keyword} from "@/utils/types";
 import {Prisma} from "@prisma/client";
 import {enableMapSet} from "immer";
-import React from "react";
+import React, {CSSProperties} from "react";
 import {useImmer} from "use-immer";
 import styles from "./ResumeBuilder.module.scss";
 enableMapSet();
@@ -69,7 +69,7 @@ interface Bullet {
 }
 export interface ResumeBuilderProps {
   /** The keywords used to determine which skills & bullets to display. */
-  keywordCollections: {title: string; keywords: Keyword[]}[];
+  keywordCollections: {title: string; keywords: Keyword[]; highlightColor?: CSSProperties["backgroundColor"]}[];
   /** All the data required to render a resumes sections (education, experience, etc), its positions, and their individual bullets. */
   sectionData: SectionData;
 }
@@ -194,15 +194,21 @@ function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
     setOverrides(new Map());
   }
 
-  const skillGroups = keywordCollections.map(({title, keywords}) => {
+  const skillGroups = keywordCollections.map(({title, keywords, highlightColor}) => {
+    const sum = keywords.reduce((total, {instances}) => (total += instances), 0);
     // Create the data for the most important skills of this group
     // Get all keywords that are requested by the job and the user is proficient in
     const filteredKeywords = keywords.filter(({instances, proficient}) => instances > 0 && proficient);
     // Sort in descending order by instance count
     filteredKeywords.sort(({instances: a}, {instances: b}) => b - a);
     // Create the data structure for the SkillItem components props
-    const primarySkills = filteredKeywords.map(({displayName}) => {
-      return {name: displayName, color: "green"};
+    const primarySkills = filteredKeywords.map(({displayName, instances}) => {
+      return {
+        name: displayName,
+        proficient: true,
+        highlightColor: highlightColor,
+        highlightPercent: (instances / sum) * 100,
+      };
     });
 
     // Get the name of all the skills that are present in each enabled bullet.
@@ -212,7 +218,7 @@ function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
       const regEx = createKeywordsRegEx(aliases);
 
       if (regEx.test(text)) {
-        accumulator.push({name: displayName, color: "red"});
+        accumulator.push({name: displayName, familiar: true});
       }
 
       return accumulator;
