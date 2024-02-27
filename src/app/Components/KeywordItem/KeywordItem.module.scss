@@ -1,12 +1,17 @@
-.container {
+.wrapper {
   position: relative;
   list-style: none;
-  padding: 10px 20px;
+  padding: 10px 10px;
 
   display: flex;
   justify-content: space-between;
   span {
     position: relative;
+    display: flex;
+    align-items: center;
+  }
+  button {
+    padding: 5px;
   }
 }
 .highlight {
