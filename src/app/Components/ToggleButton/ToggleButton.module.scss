@@ -7,10 +7,14 @@
   overflow: hidden;
 }
 .enabled {
-  background-color: blue;
-  color: white;
+  border-top: 3px solid lightslategray;
+  border-left: 3px solid lightslategray;
+  border-bottom: 1px solid lightslategray;
+  border-right: 1px solid lightslategray;
 }
-
 .disabled {
-  background-color: lightblue;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: 3px solid black;
+  border-right: 3px solid black;
 }
