@@ -212,7 +212,7 @@ function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
     });
 
     // Get the name of all the skills that are present in each enabled bullet.
-    const bulletMatches = keywords.reduce<{name: string; color: string}[]>((accumulator, {displayName, aliases}) => {
+    const bulletMatches = keywords.reduce<{name: string; familiar: boolean}[]>((accumulator, {displayName, aliases}) => {
       if (aliases.length < 1) return accumulator;
       const text = activeBullets.join(" ");
       const regEx = createKeywordsRegEx(aliases);
