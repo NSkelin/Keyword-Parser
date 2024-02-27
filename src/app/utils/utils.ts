@@ -6,10 +6,11 @@ export function createKeywordsRegEx(keywords: string[] | string) {
     const escapedKeyword = keywords.replace(/[+#]/g, "\\$&");
     return new RegExp(`(?<!w)${escapedKeyword}(?!w)`, "gi");
   } else {
-    const escapedKeywords = keywords.map((keyword) => {
+    const sortedKeywords = keywords.toSorted((a, b) => b.length - a.length);
+    const escapedKeywords = sortedKeywords.map((keyword) => {
       return keyword.replace(/[+#]/g, "\\$&");
     });
-    return new RegExp(`(?<!w)${escapedKeywords.join("(?<!w)|(?!w)")}(?!w)`, "gi");
+    return new RegExp(`\\b${escapedKeywords.join("\\b|\\b")}\\b`, "gi");
   }
 }
 interface Keyword {
