@@ -2,7 +2,7 @@
 import {KeywordDisplayCollection, ResumeBuilder} from "@/components";
 import {createKeywordsRegEx, getAliases} from "@/utils";
 import {Prisma} from "@prisma/client";
-import {CSSProperties, ReactNode, useState} from "react";
+import {CSSProperties, ReactNode, useEffect, useState} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {useImmerReducer} from "use-immer";
 import styles from "./KeywordParser.module.scss";
@@ -50,6 +50,25 @@ export interface KeywordParserProps {
 function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   const [textAreaInput, setTextAreaInput] = useState("");
   const [displays, dispatch] = useImmerReducer(keywordsReducer, initialDisplays, inits);
+
+  useEffect(() => {
+    const eventSource = new EventSource("/api/descriptionUpdate");
+
+    eventSource.onmessage = (event: MessageEvent) => {
+      if (typeof event.data != "string") return;
+      const data: unknown = JSON.parse(event.data);
+
+      // make sure data is an object with content
+      if (!data || typeof data !== "object" || "content" in data === false || typeof data.content !== "string") return;
+
+      setTextAreaInput(data.content);
+      console.log(data);
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  });
 
   // Create a new displays object and adds instances property to each keyword.
   function inits() {
