@@ -54,8 +54,6 @@ function CommaSeparatedInput({label, required, savedInputs, errorMessage, onInpu
 
   /** Handles the response to a user deleting an item from the list, by deleting the item. */
   function handleDelete(val: string) {
-    // @ts-expect-error toSpliced exists but is not currently supported in typescript.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
     onInputChange(savedInputs.toSpliced(savedInputs.indexOf(val), 1));
   }
 
