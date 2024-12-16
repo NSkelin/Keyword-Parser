@@ -14,15 +14,24 @@ export const Default: Story = {
     skills: [
       {
         name: "skill 1",
-        color: "green",
+        hot: true,
+        proficient: false,
+        familiar: true,
+        enabled: false,
       },
       {
         name: "skill 12",
-        color: "red",
+        hot: true,
+        proficient: false,
+        familiar: true,
+        enabled: false,
       },
       {
         name: "skill 123",
-        color: "red",
+        hot: true,
+        proficient: false,
+        familiar: true,
+        enabled: false,
       },
     ],
   },
