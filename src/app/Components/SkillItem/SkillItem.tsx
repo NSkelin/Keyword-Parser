@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./SkillItem.module.scss";
 
 export interface SkillItemProps {
   /** The name of the skill. */
