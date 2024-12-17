@@ -15,19 +15,16 @@ export const Default: Story = {
         skills: [
           {
             name: "skill 1",
-            hot: true,
             proficient: false,
             familiar: true,
           },
           {
             name: "skill 12",
-            hot: true,
             proficient: false,
             familiar: true,
           },
           {
             name: "skill 123",
-            hot: true,
             proficient: false,
             familiar: true,
           },
@@ -38,19 +35,16 @@ export const Default: Story = {
         skills: [
           {
             name: "skill 1",
-            hot: true,
             proficient: false,
             familiar: true,
           },
           {
             name: "skill 12",
-            hot: true,
             proficient: false,
             familiar: true,
           },
           {
             name: "skill 123",
-            hot: true,
             proficient: false,
             familiar: true,
           },
