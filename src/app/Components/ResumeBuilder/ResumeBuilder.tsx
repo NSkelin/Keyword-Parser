@@ -153,7 +153,7 @@ function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
       } else if (includeByDefault === true) {
         // bullet is required by default
         enabledBullets.push({ID: id, bullet: point});
-      } else if (regEx !== null && regEx.test(point)) {
+      } else if (regEx?.test(point)) {
         // bullet contains any of the keywords
         if (compareRestrictions(requiredKeywords)) {
           enabledBullets.push({ID: id, bullet: point});

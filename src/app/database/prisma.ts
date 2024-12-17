@@ -18,8 +18,8 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
       collectionTitles == null
         ? undefined
         : typeof collectionTitles === "string"
-        ? {title: collectionTitles}
-        : {title: {in: collectionTitles}},
+          ? {title: collectionTitles}
+          : {title: {in: collectionTitles}},
   });
 
   // Flatten the keywords.
@@ -142,7 +142,7 @@ export async function updateKeywordAndAliases(
 
   // get all unique instances between new and old aliases, essentially get the new ones so i can create them.
   const filteredAliases = newAliases.filter((obj) => {
-    return oldAliases.indexOf(obj) == -1;
+    return !oldAliases.includes(obj);
   });
 
   // convert aliases to prisma data structure
