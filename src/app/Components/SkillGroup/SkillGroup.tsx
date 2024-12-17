@@ -5,8 +5,9 @@ import styles from "./SkillGroup.module.scss";
 
 export interface Skills {
   name: string;
-  hot: boolean;
+  /** Tag indicating the user is proficient in this skill. Each skill is marked manually by the user. */
   proficient: boolean;
+  /** Tag indicating the skill is in an enabled bullet in the resume. */
   familiar: boolean;
   enabled: boolean;
   /**
