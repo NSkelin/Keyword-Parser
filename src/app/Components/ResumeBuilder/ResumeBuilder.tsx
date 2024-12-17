@@ -195,40 +195,38 @@ function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
   }
 
   const skillGroups = keywordCollections.map(({title, keywords, highlightColor}) => {
-    const sum = keywords.reduce((total, {instances}) => (total += instances), 0);
-    // Create the data for the most important skills of this group
-    // Get all keywords that are requested by the job and the user is proficient in
-    const filteredKeywords = keywords.filter(({instances, proficient}) => instances > 0 && proficient);
-    // Sort in descending order by instance count
-    filteredKeywords.sort(({instances: a}, {instances: b}) => b - a);
-    // Create the data structure for the SkillItem components props
-    const primarySkills = filteredKeywords.map(({displayName, instances}) => {
+    const activeBulletString = activeBullets.join(" ");
+    // Get all keywords that are either present in an active bullet, or are in the textArea and the user is proficient in.
+    const activeKeywords = keywords.filter(({aliases, instances, proficient}) => {
+      return (aliases.length >= 1 && createKeywordsRegEx(aliases).test(activeBulletString)) || (instances > 0 && proficient);
+    });
+
+    const instanceTotal = keywords.reduce((total, {instances}) => (total += instances), 0);
+    const skills = activeKeywords.map(({displayName, proficient, instances, aliases}) => {
       return {
         name: displayName,
-        proficient: true,
+        proficient,
+        // check if any skill name in the active bullet points match the current wanted skill name.
+        familiar: createKeywordsRegEx(aliases).test(activeBulletString),
         highlightColor: highlightColor,
-        highlightPercent: (instances / sum) * 100,
+        highlightPercent: (instances / instanceTotal) * 100,
       };
     });
 
-    // Get the name of all the skills that are present in each enabled bullet.
-    const bulletMatches = keywords.reduce<{name: string; familiar: boolean}[]>((accumulator, {displayName, aliases}) => {
-      if (aliases.length < 1) return accumulator;
-      const text = activeBullets.join(" ");
-      const regEx = createKeywordsRegEx(aliases);
-
-      if (regEx.test(text)) {
-        accumulator.push({name: displayName, familiar: true});
+    skills.sort((a, b) => {
+      // Sort by highlightPercent in descending order
+      if (b.highlightPercent !== a.highlightPercent) {
+        return b.highlightPercent - a.highlightPercent;
       }
 
-      return accumulator;
-    }, []);
+      // If highlightPercent is equal, count the number of true bools for each
+      const aTrueCount = [a.proficient, a.familiar].filter(Boolean).length;
+      const bTrueCount = [b.proficient, b.familiar].filter(Boolean).length;
 
-    // Get the skills that are not requested by the job description but are in the enabled bullets.
-    const skills = primarySkills.map(({name}) => name);
-    const secondarySkills = bulletMatches.filter(({name}) => !skills.includes(name));
+      return bTrueCount - aTrueCount; // Descending order by true count
+    });
 
-    return {title: title, skills: [...primarySkills, ...secondarySkills]};
+    return {title, skills};
   });
 
   return (
