@@ -26,6 +26,6 @@
     },
     "baseUrl": "."
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".storybook/*.ts"],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "src/**/*.ts", "src/**/*.tsx", ".storybook/*.ts", "cypress", "./*.ts"],
   "exclude": ["node_modules"]
 }
