@@ -22,6 +22,8 @@
     "use-immer": "^0.11.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^8.57.1",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/blocks": "^8.4.7",
     "@storybook/nextjs": "^8.4.7",
