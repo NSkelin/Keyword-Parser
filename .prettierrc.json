@@ -1,7 +1,7 @@
 {
+  "printWidth": 130,
   "useTabs": false,
-  "quoteProps": "consistent",
   "tabWidth": 2,
-  "bracketSpacing": false,
-  "printWidth": 130
+  "quoteProps": "as-needed",
+  "bracketSpacing": false
 }
