@@ -274,14 +274,14 @@ describe("getMatches", () => {
     const textToMatch = "";
     const wordsToMatch = ["keyword1", "keyword2", "keyword3"];
     const result = getMatches(textToMatch, wordsToMatch);
-    expect(result).toEqual(null);
+    expect(result).toBeNull();
   });
 
   it("should return null when no matches are found", () => {
     const textToMatch = "This is a sample text.";
     const wordsToMatch = ["keyword1", "keyword2", "keyword3"];
     const result = getMatches(textToMatch, wordsToMatch);
-    expect(result).toEqual(null);
+    expect(result).toBeNull();
   });
 
   it("should return an array of matching words", () => {
@@ -407,6 +407,6 @@ describe("validateInput", () => {
   it("should return duplicate invalid characters only once in its error message", () => {
     const errMsg = validateInput("abc***", validationRules).error;
 
-    expect(errMsg?.match(/[*]/g)?.length).toEqual(1);
+    expect(errMsg?.match(/[*]/g)?.length).toBe(1);
   });
 });

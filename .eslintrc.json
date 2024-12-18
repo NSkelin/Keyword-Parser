@@ -1,12 +1,14 @@
 {
   "extends": [
     "next/core-web-vitals",
+    "next/typescript",
     "prettier",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:storybook/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:jest/style"
   ],
   "plugins": ["@typescript-eslint", "jest"],
   "parser": "@typescript-eslint/parser",
@@ -52,17 +54,6 @@
     "jest/globals": true
   },
   "rules": {
-    "semi": ["error", "always"],
-    "camelcase": ["error", {"properties": "always"}],
-    "quotes": ["error", "double"],
-    "func-call-spacing": ["error", "never"],
-    "arrow-spacing": ["error", {"before": true, "after": true}],
-    "no-trailing-spaces": ["error", {"skipBlankLines": false, "ignoreComments": false}],
-    "space-before-blocks": ["error", "always"],
-    "jest/no-disabled-tests": "warn",
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error",
-    "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error"
+    "camelcase": ["error", {"properties": "always"}]
   }
 }
