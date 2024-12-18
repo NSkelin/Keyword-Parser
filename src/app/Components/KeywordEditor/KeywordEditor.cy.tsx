@@ -1,4 +1,4 @@
-import {CyHttpMessages} from "cypress/types/net-stubbing";
+import {CyHttpMessages} from "node_modules/cypress/types/net-stubbing";
 import React from "react";
 import KeywordEditor from "./KeywordEditor";
 
