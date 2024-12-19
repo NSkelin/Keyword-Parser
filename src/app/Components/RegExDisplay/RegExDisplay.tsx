@@ -1,9 +1,9 @@
 import {createKeywordsRegEx} from "@/utils";
-import React, {createElement} from "react";
+import {createElement} from "react";
 import {getCollectionAliases} from "src/app/database";
 import styles from "./RegExDisplay.module.scss";
 
-interface RegExDisplayProps {
+export interface RegExDisplayProps {
   /** The Keyword collection to generate a regEx from. */
   collection: string;
   /** The headling level used to display the collection being generated. Uses \<h{headlinglevel}>. */
