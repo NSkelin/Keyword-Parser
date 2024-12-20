@@ -1,9 +1,12 @@
-import {BulletList, ResumeSection, ResumeSubSection, SkillSummary} from "@/components";
+import BulletList from "@/components/BulletList";
+import ResumeSection from "@/components/ResumeSection";
+import ResumeSubSection from "@/components/ResumeSubSection";
+import SkillSummary from "@/components/SkillSummary";
 import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/utils";
 import type {Keyword} from "@/utils/types";
 import {Prisma} from "@prisma/client";
 import {enableMapSet} from "immer";
-import React, {CSSProperties} from "react";
+import {CSSProperties} from "react";
 import {useImmer} from "use-immer";
 import styles from "./ResumeBuilder.module.scss";
 enableMapSet();

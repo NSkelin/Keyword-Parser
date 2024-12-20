@@ -1,5 +1,5 @@
-import {KeywordItem} from "@/components";
 import type {OnEditProps} from "@/components/KeywordItem";
+import KeywordItem from "@/components/KeywordItem";
 import type {Keyword} from "@/utils/types";
 import {CSSProperties} from "react";
 import styles from "./KeywordList.module.scss";

@@ -1,5 +1,7 @@
-import {Dialog, KeywordEditor, KeywordList} from "@/components";
+import Dialog from "@/components/Dialog";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
+import KeywordEditor from "@/components/KeywordEditor";
+import KeywordList from "@/components/KeywordList";
 import type {Keyword} from "@/utils/types";
 import {CSSProperties, useRef, useState} from "react";
 import styles from "./KeywordDisplay.module.scss";

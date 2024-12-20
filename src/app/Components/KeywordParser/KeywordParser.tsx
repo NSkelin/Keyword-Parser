@@ -1,5 +1,6 @@
 "use client";
-import {KeywordDisplayCollection, ResumeBuilder} from "@/components";
+import KeywordDisplayCollection from "@/components/KeywordDisplayCollection";
+import ResumeBuilder from "@/components/ResumeBuilder";
 import {createKeywordsRegEx, getAliases} from "@/utils";
 import {Prisma} from "@prisma/client";
 import {CSSProperties, ReactNode, useEffect, useState} from "react";

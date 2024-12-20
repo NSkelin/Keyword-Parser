@@ -1,7 +1,7 @@
-import {Input} from "@/components";
+import Input from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
-import React, {ChangeEvent, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import styles from "./CommaSeparatedInput.module.scss";
 const validationRules: ValidationInputRules = {
   required: true,

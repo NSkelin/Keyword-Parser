@@ -1,6 +1,6 @@
-import {SkillGroup} from "@/components";
+import SkillGroup from "@/components/SkillGroup";
 import Image from "next/image";
-import React, {useEffect} from "react";
+import {useEffect} from "react";
 import {useImmer} from "use-immer";
 import type {Skills} from "../SkillGroup";
 import styles from "./SkillSummary.module.scss";

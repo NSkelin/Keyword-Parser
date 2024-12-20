@@ -1,5 +1,4 @@
-import {RegExDisplay} from "@/components";
-import React from "react";
+import RegExDisplay from "@/components/RegExDisplay";
 import prisma from "src/app/database/client";
 import styles from "./RegExDisplayCollection.module.scss";
 

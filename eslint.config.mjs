@@ -77,6 +77,41 @@ const eslintConfig = tseslint.config([
       "@typescript-eslint/no-namespace": ["error", {allowDeclarations: true}],
     },
   },
+  {
+    // Stop myself from creating circular dependancy errors. Read message property for more info.
+    files: ["**/components/**/*.tsx"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/components", "!**/components/"],
+              message:
+                "Do not import the component barrel file (index.js) from inside a component being re-exported by the barrel.\
+                This will cause circular dependency errors that are hard to find and understand.",
+            },
+          ],
+        },
+      ],
+      //
+      // eslint 9 version below, eslint 8 version above.
+      //
+      // "no-restricted-imports": [
+      //   "error",
+      //   {
+      //     patterns: [
+      //       {
+      //         regex: "^(?:@/components/?|src/app/components/?)$",
+      //         message:
+      //           "Do not import the component barrel file (index.js) from inside a component being re-exported by the barrel.\
+      //           This will cause circular dependency errors that are hard to find and understand.",
+      //       },
+      //     ],
+      //   },
+      // ],
+    },
+  },
 ]);
 
 export default eslintConfig;

@@ -1,4 +1,5 @@
-import {CommaSeparatedInput, Input} from "@/components";
+import CommaSeparatedInput from "@/components/CommaSeparatedInput";
+import Input from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
 import {useState} from "react";

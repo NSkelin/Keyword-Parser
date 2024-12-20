@@ -1,4 +1,4 @@
-import {KeywordDisplay} from "@/components";
+import KeywordDisplay from "@/components/KeywordDisplay";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import type {Keyword} from "@/utils/types";
 import {CSSProperties} from "react";

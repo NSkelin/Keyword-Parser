@@ -1,6 +1,6 @@
-import {ToggleButton} from "@/components";
+import ToggleButton from "@/components/ToggleButton";
 import Image from "next/image";
-import React, {CSSProperties} from "react";
+import {CSSProperties} from "react";
 import styles from "./SkillGroup.module.scss";
 
 export interface Skills {
