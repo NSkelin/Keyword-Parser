@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./ResumeSubSection.module.scss";
 
 export interface ResumeSubSectionProps {
@@ -8,7 +7,7 @@ export interface ResumeSubSectionProps {
   endDate?: Date | null;
   children: React.ReactNode;
 }
-function ResumeSubSection({title, subTitle, startDate, endDate, children}: ResumeSubSectionProps) {
+export function ResumeSubSection({title, subTitle, startDate, endDate, children}: ResumeSubSectionProps) {
   return (
     <section className={styles.history}>
       <div className={styles.position}>
@@ -21,5 +20,3 @@ function ResumeSubSection({title, subTitle, startDate, endDate, children}: Resum
     </section>
   );
 }
-
-export default ResumeSubSection;

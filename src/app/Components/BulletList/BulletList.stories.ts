@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react";
-import BulletList from "./BulletList";
+import {BulletList} from "./BulletList";
 
 const meta: Meta<typeof BulletList> = {
   component: BulletList,

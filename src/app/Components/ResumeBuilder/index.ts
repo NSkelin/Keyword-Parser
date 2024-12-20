@@ -1,2 +1,2 @@
-export {default} from "./ResumeBuilder";
+export {ResumeBuilder} from "./ResumeBuilder";
 export type {ResumeBuilderProps} from "./ResumeBuilder";

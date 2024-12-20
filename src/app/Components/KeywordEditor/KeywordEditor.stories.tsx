@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react";
-import KeywordEditor from "./KeywordEditor";
+import {KeywordEditor} from "./KeywordEditor";
 
 const meta: Meta<typeof KeywordEditor> = {
   component: KeywordEditor,

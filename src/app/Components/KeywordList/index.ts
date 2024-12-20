@@ -1,2 +1,2 @@
-export {default, sortList} from "./KeywordList";
+export {KeywordList, sortList} from "./KeywordList";
 export type {KeywordListProps} from "./KeywordList";

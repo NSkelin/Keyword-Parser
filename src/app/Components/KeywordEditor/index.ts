@@ -1,2 +1,2 @@
-export {default} from "./KeywordEditor";
+export {KeywordEditor} from "./KeywordEditor";
 export type {KeywordEditorProps, SubmissionCallbacks} from "./KeywordEditor";

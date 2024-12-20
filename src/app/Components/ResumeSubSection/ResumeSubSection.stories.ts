@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react";
-import ResumeSubSection from "./ResumeSubSection";
+import {ResumeSubSection} from "./ResumeSubSection";
 
 const meta: Meta<typeof ResumeSubSection> = {
   component: ResumeSubSection,

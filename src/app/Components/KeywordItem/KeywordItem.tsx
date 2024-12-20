@@ -24,7 +24,7 @@ export interface KeywordItemProps {
   id: number;
 }
 /** Renders a single list item \<li> */
-function KeywordItem({
+export function KeywordItem({
   highlightColor = "lightblue",
   displayName,
   instances = 0,
@@ -62,5 +62,3 @@ function KeywordItem({
     </li>
   );
 }
-
-export default KeywordItem;

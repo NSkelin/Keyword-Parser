@@ -1,2 +1,2 @@
-export {default} from "./SkillSummary";
+export {SkillSummary} from "./SkillSummary";
 export type {KeywordSummaryProps} from "./SkillSummary";

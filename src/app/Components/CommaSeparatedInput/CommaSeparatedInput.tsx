@@ -1,4 +1,4 @@
-import Input from "@/components/Input";
+import {Input} from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
 import {ChangeEvent, useState} from "react";
@@ -22,7 +22,7 @@ export interface CommaSeparatedInputProps {
   onInputChange: (savedInputs: string[]) => void;
 }
 /** Renders an \<input> used for displaying and editing a list of words. When a user types "," a new word will be added to the list. */
-function CommaSeparatedInput({label, required, savedInputs, errorMessage, onInputChange}: CommaSeparatedInputProps) {
+export function CommaSeparatedInput({label, required, savedInputs, errorMessage, onInputChange}: CommaSeparatedInputProps) {
   const [inputValue, setInputValue] = useState("");
   const [validation, setValidation] = useState({valid: true, error: ""});
 
@@ -89,5 +89,3 @@ function CommaSeparatedInput({label, required, savedInputs, errorMessage, onInpu
     </div>
   );
 }
-
-export default CommaSeparatedInput;

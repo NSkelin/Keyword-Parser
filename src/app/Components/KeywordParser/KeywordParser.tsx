@@ -1,6 +1,6 @@
 "use client";
-import KeywordDisplayCollection from "@/components/KeywordDisplayCollection";
-import ResumeBuilder from "@/components/ResumeBuilder";
+import {KeywordDisplayCollection} from "@/components/KeywordDisplayCollection";
+import {ResumeBuilder} from "@/components/ResumeBuilder";
 import {createKeywordsRegEx, getAliases} from "@/utils";
 import {Prisma} from "@prisma/client";
 import {CSSProperties, ReactNode, useEffect, useState} from "react";
@@ -48,7 +48,7 @@ export interface KeywordParserProps {
   sectionData: sectionData;
 }
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
-function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
+export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   const [textAreaInput, setTextAreaInput] = useState("");
   const [displays, dispatch] = useImmerReducer(keywordsReducer, initialDisplays, inits);
 
@@ -207,5 +207,3 @@ function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
     </>
   );
 }
-
-export default KeywordParser;

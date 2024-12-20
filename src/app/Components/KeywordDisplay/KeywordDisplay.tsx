@@ -1,7 +1,7 @@
-import Dialog from "@/components/Dialog";
+import {Dialog} from "@/components/Dialog";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
-import KeywordEditor from "@/components/KeywordEditor";
-import KeywordList from "@/components/KeywordList";
+import {KeywordEditor} from "@/components/KeywordEditor";
+import {KeywordList} from "@/components/KeywordList";
 import type {Keyword} from "@/utils/types";
 import {CSSProperties, useRef, useState} from "react";
 import styles from "./KeywordDisplay.module.scss";
@@ -18,7 +18,7 @@ export interface KeywordDisplayProps extends SubmissionCallbacks {
 /** Displays a Keyword list with a group title for the keywords and
  * a fully functional editor to add, edit, or remove keywords.
  */
-function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdate, onDelete}: KeywordDisplayProps) {
+export function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdate, onDelete}: KeywordDisplayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [editorId, setEditorId] = useState<number>(-1);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
@@ -93,5 +93,3 @@ function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdat
     </section>
   );
 }
-
-export default KeywordDisplay;

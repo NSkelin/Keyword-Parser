@@ -1,2 +1,2 @@
-export {default} from "./KeywordItem";
+export {KeywordItem} from "./KeywordItem";
 export type {KeywordItemProps, OnEditProps} from "./KeywordItem";

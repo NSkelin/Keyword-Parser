@@ -1,6 +1,6 @@
 import data from "@/mockData/keywords.json";
 import {Keyword} from "@/utils/types";
-import KeywordDisplay from "./KeywordDisplay";
+import {KeywordDisplay} from "./KeywordDisplay";
 
 const keywords: Keyword[] = data;
 

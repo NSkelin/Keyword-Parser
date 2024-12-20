@@ -1,4 +1,4 @@
-import KeywordDisplay from "@/components/KeywordDisplay";
+import {KeywordDisplay} from "@/components/KeywordDisplay";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import type {Keyword} from "@/utils/types";
 import {CSSProperties} from "react";
@@ -14,7 +14,7 @@ export interface KeywordDisplayCollectionProps extends SubmissionCallbacks {
   displays: Display[];
 }
 /** Renders a grouped collection of displays. */
-function KeywordDisplayCollection({displays, onCreate, onUpdate, onDelete}: KeywordDisplayCollectionProps) {
+export function KeywordDisplayCollection({displays, onCreate, onUpdate, onDelete}: KeywordDisplayCollectionProps) {
   const displaysList = displays.map(({title, keywords, highlightColor}) => {
     return (
       <KeywordDisplay
@@ -35,5 +35,3 @@ function KeywordDisplayCollection({displays, onCreate, onUpdate, onDelete}: Keyw
     </section>
   );
 }
-
-export default KeywordDisplayCollection;

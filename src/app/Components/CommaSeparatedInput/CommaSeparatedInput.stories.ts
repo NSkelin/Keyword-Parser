@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react";
-import CommaSeparatedInput from "./CommaSeparatedInput";
+import {CommaSeparatedInput} from "./CommaSeparatedInput";
 
 const meta: Meta<typeof CommaSeparatedInput> = {
   component: CommaSeparatedInput,

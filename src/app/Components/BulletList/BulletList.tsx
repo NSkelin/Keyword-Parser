@@ -13,7 +13,7 @@ export interface BulletListProps {
   onOverride: (ID: number, state: boolean) => void;
 }
 /** Renders a list of strings or bullets. Bullets that do not have a match with the passed in keywords are rendered as crossed out. */
-function BulletList({enabledBullets, disabledBullets, onOverride}: BulletListProps) {
+export function BulletList({enabledBullets, disabledBullets, onOverride}: BulletListProps) {
   // copies displayed bullets to the clipboard when clicked.
   function copyBulletsToClipboard() {
     const bulletsToCopy = enabledBullets.map(({bullet}) => bullet).join("\n");
@@ -53,5 +53,3 @@ function BulletList({enabledBullets, disabledBullets, onOverride}: BulletListPro
     </>
   );
 }
-
-export default BulletList;

@@ -112,6 +112,20 @@ const eslintConfig = tseslint.config([
       // ],
     },
   },
+  // Require using named exports instead of default exports since the general consensus online seems to be in favor of named exports (2024).
+  // Ignore specifics entries (next, storybook, prisma, etc) that require default exports to work properly.
+  {
+    files: ["src/**"],
+    rules: {
+      "no-restricted-exports": ["warn", {restrictDefaultExports: {direct: true}}],
+    },
+  },
+  {
+    files: ["src/app/**/{page,layout,}.tsx", "src/app/**/*.stories.{ts,tsx}", "src/app/database/client.ts"], // Ignore.
+    rules: {
+      "no-restricted-exports": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

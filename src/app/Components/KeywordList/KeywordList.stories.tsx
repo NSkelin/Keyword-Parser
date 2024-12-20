@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react";
-import KeywordList from "./KeywordList";
+import {KeywordList} from "./KeywordList";
 
 const meta: Meta<typeof KeywordList> = {
   component: KeywordList,

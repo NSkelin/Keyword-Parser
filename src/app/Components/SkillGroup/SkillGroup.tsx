@@ -1,4 +1,4 @@
-import ToggleButton from "@/components/ToggleButton";
+import {ToggleButton} from "@/components/ToggleButton";
 import Image from "next/image";
 import {CSSProperties} from "react";
 import styles from "./SkillGroup.module.scss";
@@ -40,7 +40,7 @@ export interface SkillGroupProps {
 /**
  * A component that holds a list of skills and lets users control which skills are enabled.
  */
-function SkillGroup({title, skills, selected, onGroupToggle, onSkillToggle}: SkillGroupProps) {
+export function SkillGroup({title, skills, selected, onGroupToggle, onSkillToggle}: SkillGroupProps) {
   selected = selected ?? true;
   const starSVG = <Image src={"/star.svg"} alt="My SVG" width={12} height={12} />;
   const RadioButtonCheckedSVG = <Image src={"/radio_button_checked.svg"} alt="My SVG" width={12} height={12} />;
@@ -75,5 +75,3 @@ function SkillGroup({title, skills, selected, onGroupToggle, onSkillToggle}: Ski
     </div>
   );
 }
-
-export default SkillGroup;

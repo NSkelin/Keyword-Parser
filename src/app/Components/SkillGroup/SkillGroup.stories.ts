@@ -1,5 +1,5 @@
 import {Meta, StoryObj} from "@storybook/react";
-import SkillGroup from "./SkillGroup";
+import {SkillGroup} from "./SkillGroup";
 
 const meta: Meta<typeof SkillGroup> = {
   component: SkillGroup,

@@ -1,4 +1,4 @@
-import SkillGroup from "@/components/SkillGroup";
+import {SkillGroup} from "@/components/SkillGroup";
 import Image from "next/image";
 import {useEffect} from "react";
 import {useImmer} from "use-immer";
@@ -26,7 +26,7 @@ export interface KeywordSummaryProps {
 }
 /** Holds a list of skill groups similar to a skill section found in resumes and lets users control which skill groups can be copied to clipboard
  * for easy pasting into their resume.  */
-function SkillSummary({skillGroups}: KeywordSummaryProps) {
+export function SkillSummary({skillGroups}: KeywordSummaryProps) {
   const [skillAndGroupState, setSkillAndGroupState] = useImmer<Groups>(createInitialData());
 
   /**
@@ -172,5 +172,3 @@ function SkillSummary({skillGroups}: KeywordSummaryProps) {
     </section>
   );
 }
-
-export default SkillSummary;

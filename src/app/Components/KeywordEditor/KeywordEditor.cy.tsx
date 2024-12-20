@@ -1,6 +1,5 @@
 import {CyHttpMessages} from "node_modules/cypress/types/net-stubbing";
-import React from "react";
-import KeywordEditor from "./KeywordEditor";
+import {KeywordEditor} from "./KeywordEditor";
 
 describe("'Create' mode", () => {
   beforeEach(() => {

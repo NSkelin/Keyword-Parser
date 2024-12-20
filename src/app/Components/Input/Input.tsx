@@ -1,4 +1,4 @@
-import React, {InputHTMLAttributes} from "react";
+import {InputHTMLAttributes} from "react";
 import styles from "./Input.module.scss";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -10,7 +10,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
 }
 /** A wrapper for the html input component that adds support for labels and error messages. */
-function Input({label, errorMessage, required = false, ...props}: InputProps) {
+export function Input({label, errorMessage, required = false, ...props}: InputProps) {
   return (
     <div data-cy="inputComp" className={styles.wrapper}>
       <strong data-cy="errorMessage" className={styles.errorMessage}>
@@ -26,5 +26,3 @@ function Input({label, errorMessage, required = false, ...props}: InputProps) {
     </div>
   );
 }
-
-export default Input;

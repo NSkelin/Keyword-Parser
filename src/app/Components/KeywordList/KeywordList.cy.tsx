@@ -1,5 +1,5 @@
 import {Keyword} from "@/utils/types";
-import KeywordList from "./KeywordList";
+import {KeywordList} from "./KeywordList";
 
 const keywords: Keyword[] = [
   {id: 1, aliases: ["kw1"], displayName: "kw1", instances: 0, proficient: false},

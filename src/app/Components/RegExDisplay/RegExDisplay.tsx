@@ -10,7 +10,7 @@ export interface RegExDisplayProps {
   headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 /** Renders the generated Regular expression for a given collection. Used for debugging. */
-async function RegExDisplay({collection, headingLevel = 3}: RegExDisplayProps) {
+export async function RegExDisplay({collection, headingLevel = 3}: RegExDisplayProps) {
   const Heading = createElement("h" + headingLevel, null, collection);
 
   const data = await getCollectionAliases(collection);
@@ -23,5 +23,3 @@ async function RegExDisplay({collection, headingLevel = 3}: RegExDisplayProps) {
     </>
   );
 }
-
-export default RegExDisplay;

@@ -1,2 +1,2 @@
-export {default} from "./RegExDisplayCollection";
+export {RegExDisplayCollection} from "./RegExDisplayCollection";
 export type {} from "./RegExDisplayCollection";

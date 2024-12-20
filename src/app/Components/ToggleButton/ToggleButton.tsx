@@ -14,7 +14,7 @@ export interface ToggleButtonProps {
 }
 
 /** A button that can be toggled on and off. */
-function ToggleButton({enabled, children, onClick}: ToggleButtonProps) {
+export function ToggleButton({enabled, children, onClick}: ToggleButtonProps) {
   enabled = enabled ?? true;
   return (
     <button className={`${styles.toggleButton} ${enabled ? styles.enabled : styles.disabled}`} onClick={onClick}>
@@ -22,5 +22,3 @@ function ToggleButton({enabled, children, onClick}: ToggleButtonProps) {
     </button>
   );
 }
-
-export default ToggleButton;

@@ -1,2 +1,2 @@
-export {default} from "./CommaSeparatedInput";
+export {CommaSeparatedInput} from "./CommaSeparatedInput";
 export type {CommaSeparatedInputProps} from "./CommaSeparatedInput";

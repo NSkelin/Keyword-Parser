@@ -1,7 +1,7 @@
-import BulletList from "@/components/BulletList";
-import ResumeSection from "@/components/ResumeSection";
-import ResumeSubSection from "@/components/ResumeSubSection";
-import SkillSummary from "@/components/SkillSummary";
+import {BulletList} from "@/components/BulletList";
+import {ResumeSection} from "@/components/ResumeSection";
+import {ResumeSubSection} from "@/components/ResumeSubSection";
+import {SkillSummary} from "@/components/SkillSummary";
 import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/utils";
 import type {Keyword} from "@/utils/types";
 import {Prisma} from "@prisma/client";
@@ -80,7 +80,7 @@ export interface ResumeBuilderProps {
  *
  * Automatically chooses bullet points based off the keywords found in the job description and creates a summary of the skills / keywords found in all displayed bullet points.
  */
-function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
+export function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
   const [overrides, setOverrides] = useImmer<Map<number, boolean>>(new Map());
   const keywords: Keyword[] = keywordCollections.flatMap(({keywords}) => keywords);
   const activeBullets: string[] = [];
@@ -241,5 +241,3 @@ function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderProps) {
     </section>
   );
 }
-
-export default ResumeBuilder;

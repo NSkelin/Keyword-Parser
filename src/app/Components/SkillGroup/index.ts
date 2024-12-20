@@ -1,2 +1,2 @@
-export {default} from "./SkillGroup";
+export {SkillGroup} from "./SkillGroup";
 export type {SkillGroupProps, Skills} from "./SkillGroup";

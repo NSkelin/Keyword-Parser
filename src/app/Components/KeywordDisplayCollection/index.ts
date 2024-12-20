@@ -1,2 +1,2 @@
-export {default} from "./KeywordDisplayCollection";
+export {KeywordDisplayCollection} from "./KeywordDisplayCollection";
 export type {Display, KeywordDisplayCollectionProps} from "./KeywordDisplayCollection";

@@ -1,5 +1,5 @@
-import CommaSeparatedInput from "@/components/CommaSeparatedInput";
-import Input from "@/components/Input";
+import {CommaSeparatedInput} from "@/components/CommaSeparatedInput";
+import {Input} from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
 import {useState} from "react";
@@ -47,7 +47,7 @@ export interface KeywordEditorProps extends SubmissionCallbacks {
   onCancel?: () => void;
 }
 /** A \<dialog> form used to add / edit / delete keywords. */
-function KeywordEditor({
+export function KeywordEditor({
   id,
   initialDisplayName = "",
   collection,
@@ -234,5 +234,3 @@ function KeywordEditor({
     </div>
   );
 }
-
-export default KeywordEditor;

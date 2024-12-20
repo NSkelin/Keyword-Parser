@@ -1,6 +1,5 @@
 import {mockKeywordDisplay, mockSectionData} from "@/mockData";
-import React from "react";
-import KeywordParser from "./KeywordParser";
+import {KeywordParser} from "./KeywordParser";
 
 describe("<KeywordParser />", () => {
   beforeEach(() => {

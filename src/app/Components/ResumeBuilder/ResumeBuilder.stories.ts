@@ -1,6 +1,6 @@
 import {Meta, StoryObj} from "@storybook/react";
 import {enableMapSet} from "immer";
-import ResumeBuilder from "./ResumeBuilder";
+import {ResumeBuilder} from "./ResumeBuilder";
 enableMapSet();
 
 const meta: Meta<typeof ResumeBuilder> = {

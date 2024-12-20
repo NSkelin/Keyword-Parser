@@ -1,5 +1,5 @@
 import type {OnEditProps} from "@/components/KeywordItem";
-import KeywordItem from "@/components/KeywordItem";
+import {KeywordItem} from "@/components/KeywordItem";
 import type {Keyword} from "@/utils/types";
 import {CSSProperties} from "react";
 import styles from "./KeywordList.module.scss";
@@ -47,7 +47,7 @@ export interface KeywordListProps {
   onEdit: OnEditProps;
 }
 /** Renders a sorted list of keywords. The list is sorted in descending order followed by alphabetical*/
-function KeywordList({keywords, highlightColor = "lightblue", onEdit}: KeywordListProps) {
+export function KeywordList({keywords, highlightColor = "lightblue", onEdit}: KeywordListProps) {
   const sortedKeywords = sortList(keywords);
   const listItems = createListItems(sortedKeywords, highlightColor, onEdit);
 
@@ -57,5 +57,3 @@ function KeywordList({keywords, highlightColor = "lightblue", onEdit}: KeywordLi
     </ol>
   );
 }
-
-export default KeywordList;
