@@ -1,6 +1,6 @@
+import {getCollectionsAliases} from "@/database/queries/collection";
 import {createKeywordsRegEx} from "@/utils";
 import {createElement} from "react";
-import {getCollectionAliases} from "src/app/database";
 import styles from "./RegExDisplay.module.scss";
 
 export interface RegExDisplayProps {
@@ -13,7 +13,7 @@ export interface RegExDisplayProps {
 export async function RegExDisplay({collection, headingLevel = 3}: RegExDisplayProps) {
   const Heading = createElement("h" + headingLevel, null, collection);
 
-  const data = await getCollectionAliases(collection);
+  const data = await getCollectionsAliases(collection);
   const aliases = data[0].aliases;
 
   return (

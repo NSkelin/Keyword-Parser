@@ -1,42 +1,5 @@
 import prisma from "./client";
 
-/** Gets collection(s) by title but flattens the keywords into an array aliases. */
-export async function getCollectionAliases(collectionTitles?: string[] | string) {
-  const data = await prisma.keywordCollection.findMany({
-    include: {
-      keywords: {
-        select: {
-          aliases: {
-            select: {
-              alias: true,
-            },
-          },
-        },
-      },
-    },
-    where:
-      collectionTitles == null
-        ? undefined
-        : typeof collectionTitles === "string"
-          ? {title: collectionTitles}
-          : {title: {in: collectionTitles}},
-  });
-
-  // Flatten the keywords.
-  // {...rest, keywords: {aliases: [ { alias: string } ] } } -----> {...rest, keywords: string[]}
-  const formattedData = data.map(({keywords, highlightColor, ...rest}) => {
-    return {
-      ...rest,
-      highlightColor: highlightColor ?? undefined,
-      aliases: keywords.flatMap((keyword) => {
-        return keyword.aliases.map((obj) => obj.alias);
-      }),
-    };
-  });
-
-  return formattedData;
-}
-
 /** Gets every collection but flattens the each keywords aliases into an array. */
 export async function getCollectionKeywords() {
   const data = await prisma.keywordCollection.findMany({

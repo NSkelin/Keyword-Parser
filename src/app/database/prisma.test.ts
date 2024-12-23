@@ -1,6 +1,7 @@
 import {expect} from "@jest/globals";
 import {prismaMock} from "./clientMock";
-import {getCollectionAliases} from "./prisma";
+import {getCollectionsAliases} from "./queries/collection";
+
 // Test case for the getCollectionAliases function
 describe("getCollectionAliases", () => {
   const mockData = [
@@ -30,7 +31,7 @@ describe("getCollectionAliases", () => {
   it("should return formatted data with aliases when collection titles are provided as an array", async () => {
     prismaMock.keywordCollection.findMany.mockResolvedValue(mockData);
 
-    const result = await getCollectionAliases(["Collection 1"]);
+    const result = await getCollectionsAliases(["Collection 1"]);
 
     expect(result).toEqual([
       {
@@ -44,7 +45,7 @@ describe("getCollectionAliases", () => {
   it("should return formatted data with aliases when collection titles are provided as a string", async () => {
     prismaMock.keywordCollection.findMany.mockResolvedValue(mockData);
 
-    const result = await getCollectionAliases("Collection 1");
+    const result = await getCollectionsAliases("Collection 1");
 
     expect(result).toEqual([
       {
@@ -58,7 +59,7 @@ describe("getCollectionAliases", () => {
   it("should return empty array when no collection titles are provided", async () => {
     prismaMock.keywordCollection.findMany.mockResolvedValue([]);
 
-    const result = await getCollectionAliases();
+    const result = await getCollectionsAliases();
 
     expect(result).toEqual([]);
   });
