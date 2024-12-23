@@ -2,65 +2,81 @@ import {expect} from "@jest/globals";
 import {prismaMock} from "../clientMock";
 import {getCollectionsAliases} from "./collection";
 
-// Test case for the getCollectionAliases function
-describe("getCollectionAliases", () => {
-  const mockData = [
+describe("getCollectionsAliases", () => {
+  const mockResponse = [
     {
-      title: "Collection 1",
-      highlightColor: "red",
+      title: "Languages",
+      highlightColor: "#a3daff",
       keywords: [
+        {aliases: [{alias: "html"}, {alias: "html5"}]},
+        {aliases: [{alias: "css"}, {alias: "css3"}]},
+        {aliases: [{alias: "javascript"}, {alias: "js"}]},
+        {aliases: [{alias: "typescript"}]},
+        {aliases: [{alias: "python"}]},
+        {aliases: [{alias: "c++"}, {alias: "cplusplus"}]},
+        {aliases: [{alias: "c#"}]},
+        {aliases: [{alias: "java"}]},
+      ],
+    },
+    {
+      title: "Other",
+      highlightColor: "#95f263",
+      keywords: [
+        {aliases: [{alias: "api"}]},
+        {aliases: [{alias: "seo"}]},
         {
-          displayName: "Keyword 1",
-          proficient: true,
-          aliases: [
-            {id: 1, alias: "Alias 1"},
-            {id: 2, alias: "Alias 2"},
-          ],
+          aliases: [{alias: "ui"}, {alias: "ux"}, {alias: "ui/ux"}],
         },
-        {
-          displayName: "Keyword 2",
-          proficient: false,
-          aliases: [
-            {id: 3, alias: "Alias 3"},
-            {id: 4, alias: "Alias 4"},
-          ],
-        },
+        {aliases: [{alias: "agile"}]},
+        {aliases: [{alias: "devops"}]},
+        {aliases: [{alias: "version control"}]},
+        {aliases: [{alias: "database"}]},
+        {aliases: [{alias: "testing"}]},
+        {aliases: [{alias: "sql"}]},
       ],
     },
   ];
-  it("should return formatted data with aliases when collection titles are provided as an array", async () => {
-    prismaMock.keywordCollection.findMany.mockResolvedValue(mockData);
+  const expectedFormattedData = [
+    {
+      title: "Languages",
+      highlightColor: "#a3daff",
+      aliases: ["html", "html5", "css", "css3", "javascript", "js", "typescript", "python", "c++", "cplusplus", "c#", "java"],
+    },
+    {
+      title: "Other",
+      highlightColor: "#95f263",
+      aliases: ["api", "seo", "ui", "ux", "ui/ux", "agile", "devops", "version control", "database", "testing", "sql"],
+    },
+  ];
+  it("should return in the correct format", async () => {
+    prismaMock.keywordCollection.findMany.mockResolvedValue([mockResponse[0]]);
+    expect(await getCollectionsAliases("Languages")).toEqual([expectedFormattedData[0]]);
 
-    const result = await getCollectionsAliases(["Collection 1"]);
+    prismaMock.keywordCollection.findMany.mockResolvedValue([mockResponse[1]]);
+    expect(await getCollectionsAliases("Languages")).toEqual([expectedFormattedData[1]]);
 
-    expect(result).toEqual([
-      {
-        title: "Collection 1",
-        highlightColor: "red",
-        aliases: ["Alias 1", "Alias 2", "Alias 3", "Alias 4"],
-      },
-    ]);
+    prismaMock.keywordCollection.findMany.mockResolvedValue(mockResponse);
+    expect(await getCollectionsAliases("Languages")).toEqual(expectedFormattedData);
   });
 
-  it("should return formatted data with aliases when collection titles are provided as a string", async () => {
-    prismaMock.keywordCollection.findMany.mockResolvedValue(mockData);
+  it("should return a formatted response when provided with a string", async () => {
+    prismaMock.keywordCollection.findMany.mockResolvedValue(mockResponse);
 
-    const result = await getCollectionsAliases("Collection 1");
-
-    expect(result).toEqual([
-      {
-        title: "Collection 1",
-        highlightColor: "red",
-        aliases: ["Alias 1", "Alias 2", "Alias 3", "Alias 4"],
-      },
-    ]);
+    expect(await getCollectionsAliases("Languages")).toEqual(expectedFormattedData);
   });
 
-  it("should return empty array when no collection titles are provided", async () => {
-    prismaMock.keywordCollection.findMany.mockResolvedValue([]);
+  it("should return a formatted response when provided with an array of strings", async () => {
+    prismaMock.keywordCollection.findMany.mockResolvedValue(mockResponse);
+    expect(await getCollectionsAliases(["Languages", "Other", "Battle"])).toEqual(expectedFormattedData);
+  });
 
-    const result = await getCollectionsAliases();
+  it("should return a formatted response when provided with nothing", async () => {
+    prismaMock.keywordCollection.findMany.mockResolvedValue(mockResponse);
+    expect(await getCollectionsAliases()).toEqual(expectedFormattedData);
+  });
 
-    expect(result).toEqual([]);
+  it("should return a formatted response when provided with an empty array", async () => {
+    prismaMock.keywordCollection.findMany.mockResolvedValue(mockResponse);
+    expect(await getCollectionsAliases([])).toEqual(expectedFormattedData);
   });
 });
