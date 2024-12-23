@@ -14,7 +14,7 @@ export async function RegExDisplay({collection, headingLevel = 3}: RegExDisplayP
   const Heading = createElement("h" + headingLevel, null, collection);
 
   const data = await getCollectionAliases(collection);
-  const aliases = data[0].keywords;
+  const aliases = data[0].aliases;
 
   return (
     <>

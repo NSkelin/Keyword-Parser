@@ -36,7 +36,7 @@ describe("getCollectionAliases", () => {
       {
         title: "Collection 1",
         highlightColor: "red",
-        keywords: ["Alias 1", "Alias 2", "Alias 3", "Alias 4"],
+        aliases: ["Alias 1", "Alias 2", "Alias 3", "Alias 4"],
       },
     ]);
   });
@@ -50,7 +50,7 @@ describe("getCollectionAliases", () => {
       {
         title: "Collection 1",
         highlightColor: "red",
-        keywords: ["Alias 1", "Alias 2", "Alias 3", "Alias 4"],
+        aliases: ["Alias 1", "Alias 2", "Alias 3", "Alias 4"],
       },
     ]);
   });

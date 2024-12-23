@@ -28,7 +28,7 @@ export async function getCollectionAliases(collectionTitles?: string[] | string)
     return {
       ...rest,
       highlightColor: highlightColor ?? undefined,
-      keywords: keywords.flatMap((keyword) => {
+      aliases: keywords.flatMap((keyword) => {
         return keyword.aliases.map((obj) => obj.alias);
       }),
     };
