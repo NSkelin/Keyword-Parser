@@ -1,6 +1,6 @@
 import {expect} from "@jest/globals";
-import {prismaMock} from "./clientMock";
-import {getCollectionsAliases} from "./queries/collection";
+import {prismaMock} from "../clientMock";
+import {getCollectionsAliases} from "./collection";
 
 // Test case for the getCollectionAliases function
 describe("getCollectionAliases", () => {
