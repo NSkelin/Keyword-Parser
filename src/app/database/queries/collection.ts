@@ -1,10 +1,5 @@
 import prisma from "../client";
 
-// test all inputs return a correct result
-// test that formatted result is correct
-// test query works
-// test query result formats correctly
-
 /**
  * Gets one or more collections (leave blank for all collections)
  * and all the aliases inside each collection.
@@ -12,6 +7,8 @@ import prisma from "../client";
 export async function getCollectionsAliases(collectionTitles?: string[] | string) {
   if (typeof collectionTitles === "string") {
     collectionTitles = [collectionTitles];
+  } else if (collectionTitles !== undefined && collectionTitles.length === 0) {
+    collectionTitles = undefined;
   }
 
   // Find one or more collections by title or undefined for all collections and include all of the aliases in each collection.
