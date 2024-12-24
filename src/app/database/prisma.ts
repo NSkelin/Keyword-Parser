@@ -177,3 +177,80 @@ export async function getResumeAssistData() {
 
   return data;
 }
+
+interface alias {
+  alias: string;
+}
+
+interface keyword {
+  displayName: string;
+  proficient: boolean;
+  aliases: alias[];
+}
+
+interface collection {
+  title: string;
+  highlightColor?: string;
+  keywords: keyword[];
+}
+
+function createAliasesQuery(aliases: alias[]) {
+  const query = aliases?.map(({alias}) => {
+    return {alias};
+  });
+  return query;
+}
+
+function createKeywordsQuery(keywords: keyword[]) {
+  const query = keywords.map(({displayName, proficient, aliases}) => {
+    return {
+      displayName,
+      proficient,
+      aliases: {
+        create: createAliasesQuery(aliases),
+      },
+    };
+  });
+
+  return query;
+}
+
+function createCollectionsQuery(collections: collection[]) {
+  const query = collections.map(({title, highlightColor, keywords}) => {
+    return {
+      title,
+      highlightColor,
+      keywords: {
+        create: createKeywordsQuery(keywords),
+      },
+    };
+  });
+
+  return query;
+}
+
+export async function createCollections(collections: collection[]) {
+  const collectionsQuery = createCollectionsQuery(collections);
+
+  const newCollections = [];
+
+  for (const query of collectionsQuery) {
+    const newCollection = await prisma.keywordCollection.create({
+      data: {
+        ...query,
+      },
+    });
+    newCollections.push(newCollection);
+  }
+
+  return newCollections;
+}
+
+export async function deleteCollections() {
+  const deleteAliases = prisma.keywordAlias.deleteMany();
+  const deleteKeywords = prisma.keyword.deleteMany();
+  const deleteCollections = prisma.keywordCollection.deleteMany();
+
+  // The transaction runs synchronously so deleteCollections must run last.
+  await prisma.$transaction([deleteAliases, deleteKeywords, deleteCollections]);
+}
