@@ -36,5 +36,5 @@ next-env.d.ts
 
 # other
 .fttemplates
-prisma/dev.db
-prisma/dev.db-journal
+prisma/*.db
+prisma/*.db-journal
