@@ -1,4 +1,4 @@
-import {getCollectionsAliases} from "@/database/queries/collection";
+import {getCollectionsAliases} from "@/database/tableQueries/keywordCollection";
 import {createKeywordsRegEx} from "@/utils";
 import {createElement} from "react";
 import styles from "./RegExDisplay.module.scss";

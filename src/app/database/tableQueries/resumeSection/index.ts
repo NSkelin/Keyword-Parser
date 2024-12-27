@@ -1,0 +1,1 @@
+export {getResumeAssistData} from "./resumeSection";

@@ -1,4 +1,4 @@
-import {createCollections, deleteCollections} from "../prisma";
+import {createCollections, deleteCollections} from "@/database/tableQueries/keywordCollection";
 import {getCollectionsAliases} from "./collection";
 
 async function initDB() {

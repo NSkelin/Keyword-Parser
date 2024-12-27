@@ -1,5 +1,5 @@
+import {prismaMock} from "@/database/clientMock";
 import {expect} from "@jest/globals";
-import {prismaMock} from "../clientMock";
 import {getCollectionsAliases} from "./collection";
 
 describe("getCollectionsAliases", () => {
