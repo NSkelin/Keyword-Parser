@@ -1,7 +1,7 @@
 import {createCollections, deleteCollections} from "@/database/tableQueries/keywordCollection";
 import {getCollectionsAliases} from "./collection";
 
-async function initDB() {
+async function seedDB() {
   const mockData = [
     {
       title: "col1Title",
@@ -86,7 +86,7 @@ async function clearDB() {
 }
 
 beforeAll(async () => {
-  await initDB();
+  await seedDB();
 });
 
 afterAll(async () => {
