@@ -144,6 +144,13 @@ export async function createCollections(collections: collection[]) {
       data: {
         ...query,
       },
+      include: {
+        keywords: {
+          include: {
+            aliases: true,
+          },
+        },
+      },
     });
     newCollections.push(newCollection);
   }
