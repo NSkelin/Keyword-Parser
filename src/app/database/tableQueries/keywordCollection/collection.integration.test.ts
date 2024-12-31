@@ -1,3 +1,4 @@
+import prisma from "@/database/client";
 import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "@/database/tableQueries/keywordCollection";
 import {getCollectionsAliases, getCollectionsKeywords, getCollectionsWithKeywordsAndAliases} from "./collection";
 
@@ -242,4 +243,21 @@ describe("getCollectionsWithKeywordsAndAliases", () => {
     const nestedCollection = await getCollectionsWithKeywordsAndAliases(collectionTitles);
     expect(nestedCollection).toMatchObject(DBSeedData);
   });
+});
+
+describe("deleteCollections", () => {
+  it("should delete all collections and their many-to-one relations (keyword, keywordAlias)", async () => {
+    expect(await prisma.keywordCollection.findFirst()).not.toBeNull();
+    expect(await prisma.keyword.findFirst()).not.toBeNull();
+    expect(await prisma.keywordAlias.findFirst()).not.toBeNull();
+
+    await deleteCollections();
+
+    expect(await prisma.keywordCollection.findFirst()).toBeNull();
+    expect(await prisma.keyword.findFirst()).toBeNull();
+    expect(await prisma.keywordAlias.findFirst()).toBeNull();
+  });
+
+  // no functions to add bullets as its not implemented yet.
+  it.todo("should not delete optional relations (many-to-many, one-to-many)");
 });
