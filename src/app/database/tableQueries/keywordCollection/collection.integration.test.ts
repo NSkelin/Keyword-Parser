@@ -1,83 +1,83 @@
 import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "@/database/tableQueries/keywordCollection";
-import {getCollectionsAliases} from "./collection";
+import {getCollectionsAliases, getCollectionsWithKeywordsAndAliases} from "./collection";
+
+const DBSeedData = [
+  {
+    title: "col1Title",
+    highlightColor: "testColor",
+    keywords: [
+      {
+        displayName: "col1Key1Name",
+        proficient: true,
+        aliases: [
+          {
+            alias: "col1Key1Alias1",
+          },
+          {
+            alias: "col1Key1Alias2",
+          },
+          {
+            alias: "col1Key1Alias3",
+          },
+        ],
+      },
+      {
+        displayName: "col1Key2Name",
+        proficient: true,
+        aliases: [
+          {
+            alias: "col1Key2Alias1",
+          },
+          {
+            alias: "col1Key2Alias2",
+          },
+          {
+            alias: "col1Key2Alias3",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "col2Title",
+    highlightColor: "testColor",
+    keywords: [
+      {
+        displayName: "col2Key1Name",
+        proficient: true,
+        aliases: [
+          {
+            alias: "col2Key1Alias1",
+          },
+          {
+            alias: "col2Key1Alias2",
+          },
+          {
+            alias: "col2Key1Alias3",
+          },
+        ],
+      },
+      {
+        displayName: "col2Key2Name",
+        proficient: true,
+        aliases: [
+          {
+            alias: "col2Key2Alias1",
+          },
+          {
+            alias: "col2Key2Alias2",
+          },
+          {
+            alias: "col2Key2Alias3",
+          },
+        ],
+      },
+    ],
+  },
+];
 
 async function seedDB() {
-  const mockData = [
-    {
-      title: "col1Title",
-      highlightColor: "testColor",
-      keywords: [
-        {
-          displayName: "col1Key1Name",
-          proficient: true,
-          aliases: [
-            {
-              alias: "col1Key1Alias1",
-            },
-            {
-              alias: "col1Key1Alias2",
-            },
-            {
-              alias: "col1Key1Alias3",
-            },
-          ],
-        },
-        {
-          displayName: "col1Key2Name",
-          proficient: true,
-          aliases: [
-            {
-              alias: "col1Key2Alias1",
-            },
-            {
-              alias: "col1Key2Alias2",
-            },
-            {
-              alias: "col1Key2Alias3",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "col2Title",
-      highlightColor: "testColor",
-      keywords: [
-        {
-          displayName: "col2Key1Name",
-          proficient: true,
-          aliases: [
-            {
-              alias: "col2Key1Alias1",
-            },
-            {
-              alias: "col2Key1Alias2",
-            },
-            {
-              alias: "col2Key1Alias3",
-            },
-          ],
-        },
-        {
-          displayName: "col2Key2Name",
-          proficient: true,
-          aliases: [
-            {
-              alias: "col2Key2Alias1",
-            },
-            {
-              alias: "col2Key2Alias2",
-            },
-            {
-              alias: "col2Key2Alias3",
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
-  await createCollectionsWithKeywordsAndAliases(mockData);
+  await createCollectionsWithKeywordsAndAliases(DBSeedData);
 }
 
 async function clearDB() {
@@ -85,11 +85,11 @@ async function clearDB() {
   return;
 }
 
-beforeAll(async () => {
+beforeEach(async () => {
   await seedDB();
 });
 
-afterAll(async () => {
+afterEach(async () => {
   await clearDB();
 });
 
@@ -127,5 +127,71 @@ describe("getCollectionsAliases", () => {
     it("should return an empty array when a wrong title is sent in", async () => {
       expect(await getCollectionsAliases("wrong title")).toEqual([]);
     });
+  });
+});
+
+describe("createCollectionsWithKeywordsAndAliases", () => {
+  const mockData = [
+    {
+      title: "createCollectionTestTitle1",
+      highlightColor: "createCollectionColor1",
+      keywords: [
+        {
+          displayName: "createCollectionDisplayname1",
+          proficient: false,
+          aliases: [
+            {
+              alias: "createCollectionAlias1",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "createCollectionTestTitle2",
+      highlightColor: "createCollectionColor2",
+      keywords: [
+        {
+          displayName: "createCollectionDisplayname2",
+          proficient: false,
+          aliases: [
+            {
+              alias: "createCollectionAlias2",
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  it("should return a data structure containing the newly created data", async () => {
+    expect(await createCollectionsWithKeywordsAndAliases(mockData)).toMatchObject(mockData);
+  });
+
+  it("should create one nested collection", async () => {
+    await createCollectionsWithKeywordsAndAliases([mockData[0]]);
+
+    const DBCollection = await getCollectionsWithKeywordsAndAliases([mockData[0].title]);
+    expect(DBCollection).toMatchObject([mockData[0]]);
+  });
+
+  it("should create multiple nested collections", async () => {
+    await createCollectionsWithKeywordsAndAliases(mockData);
+    const collectionTitles = mockData.map((e) => e.title);
+    const DBCollections = await getCollectionsWithKeywordsAndAliases(collectionTitles);
+    expect(DBCollections).toMatchObject(mockData);
+  });
+});
+
+describe("getCollectionsWithKeywordsAndAliases", () => {
+  it("should return one nested collection", async () => {
+    const nestedCollection = await getCollectionsWithKeywordsAndAliases([DBSeedData[0].title]);
+    expect(nestedCollection).toMatchObject([DBSeedData[0]]);
+  });
+
+  it("should return multiple nested collections", async () => {
+    const collectionTitles = DBSeedData.map((e) => e.title);
+    const nestedCollection = await getCollectionsWithKeywordsAndAliases(collectionTitles);
+    expect(nestedCollection).toMatchObject(DBSeedData);
   });
 });

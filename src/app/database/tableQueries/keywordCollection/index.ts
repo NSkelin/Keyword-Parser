@@ -3,4 +3,5 @@ export {
   deleteCollections,
   getCollectionKeywords,
   getCollectionsAliases,
+  getCollectionsWithKeywordsAndAliases,
 } from "./collection";

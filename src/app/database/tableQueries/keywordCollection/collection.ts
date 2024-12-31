@@ -161,6 +161,21 @@ export async function createCollectionsWithKeywordsAndAliases(collections: colle
   return newCollections;
 }
 
+export async function getCollectionsWithKeywordsAndAliases(collectionTitles: string[]) {
+  return await prisma.keywordCollection.findMany({
+    where: {
+      title: {in: collectionTitles},
+    },
+    include: {
+      keywords: {
+        include: {
+          aliases: true,
+        },
+      },
+    },
+  });
+}
+
 export async function deleteCollections() {
   const deleteAliases = prisma.keywordAlias.deleteMany();
   const deleteKeywords = prisma.keyword.deleteMany();
