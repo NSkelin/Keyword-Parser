@@ -28,7 +28,7 @@ export async function createKeywordAndAliases(
   const newKeyword = await prisma.keyword.create({
     data: {
       displayName: displayName,
-      keywordsTitle: collection,
+      collectionTitle: collection,
       proficient: proficient,
       aliases: {
         create: aliases,

@@ -17,14 +17,14 @@ model keywordCollection {
 }
 
 model keyword {
-  id            Int               @id @default(autoincrement())
-  displayName   String            @unique
-  proficient    Boolean           @default(false)
-  aliases       keywordAlias[]
-  keywords      keywordCollection @relation(fields: [keywordsTitle], references: [title])
-  keywordsTitle String
-  bullet        bullet?           @relation(fields: [bulletId], references: [id])
-  bulletId      Int?
+  id              Int               @id @default(autoincrement())
+  displayName     String            @unique
+  proficient      Boolean           @default(false)
+  aliases         keywordAlias[]
+  collection      keywordCollection @relation(fields: [collectionTitle], references: [title])
+  collectionTitle String
+  bullet          bullet?           @relation(fields: [bulletId], references: [id])
+  bulletId        Int?
 }
 
 model keywordAlias {

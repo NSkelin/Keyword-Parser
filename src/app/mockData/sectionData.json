@@ -25,7 +25,7 @@
                 "bulletId": 0,
                 "proficient": false,
                 "displayName": "non",
-                "keywordsTitle": "velit"
+                "collectionTitle": "velit"
               }
             ]
           },
@@ -53,7 +53,7 @@
                 "bulletId": 1,
                 "proficient": false,
                 "displayName": "anim",
-                "keywordsTitle": "reprehenderit"
+                "collectionTitle": "reprehenderit"
               }
             ]
           },
@@ -86,7 +86,7 @@
                 "bulletId": 2,
                 "proficient": false,
                 "displayName": "amet",
-                "keywordsTitle": "dolor"
+                "collectionTitle": "dolor"
               }
             ]
           },
@@ -109,7 +109,7 @@
                 "bulletId": 3,
                 "proficient": false,
                 "displayName": "exercitation",
-                "keywordsTitle": "nisi"
+                "collectionTitle": "nisi"
               }
             ]
           },
@@ -132,7 +132,7 @@
                 "bulletId": 4,
                 "proficient": true,
                 "displayName": "dolore",
-                "keywordsTitle": "commodo"
+                "collectionTitle": "commodo"
               }
             ]
           }
@@ -175,7 +175,7 @@
                 "bulletId": 0,
                 "proficient": false,
                 "displayName": "nisi",
-                "keywordsTitle": "id"
+                "collectionTitle": "id"
               }
             ]
           },
@@ -203,7 +203,7 @@
                 "bulletId": 1,
                 "proficient": true,
                 "displayName": "ut",
-                "keywordsTitle": "sit"
+                "collectionTitle": "sit"
               }
             ]
           },
@@ -231,7 +231,7 @@
                 "bulletId": 2,
                 "proficient": true,
                 "displayName": "consequat",
-                "keywordsTitle": "minim"
+                "collectionTitle": "minim"
               }
             ]
           },
@@ -259,7 +259,7 @@
                 "bulletId": 3,
                 "proficient": true,
                 "displayName": "deserunt",
-                "keywordsTitle": "cillum"
+                "collectionTitle": "cillum"
               }
             ]
           },
@@ -282,7 +282,7 @@
                 "bulletId": 4,
                 "proficient": true,
                 "displayName": "ut",
-                "keywordsTitle": "esse"
+                "collectionTitle": "esse"
               }
             ]
           }
@@ -330,7 +330,7 @@
                 "bulletId": 0,
                 "proficient": true,
                 "displayName": "tempor",
-                "keywordsTitle": "culpa"
+                "collectionTitle": "culpa"
               }
             ]
           },
@@ -358,7 +358,7 @@
                 "bulletId": 1,
                 "proficient": true,
                 "displayName": "Lorem",
-                "keywordsTitle": "enim"
+                "collectionTitle": "enim"
               }
             ]
           },
@@ -381,7 +381,7 @@
                 "bulletId": 2,
                 "proficient": false,
                 "displayName": "sit",
-                "keywordsTitle": "officia"
+                "collectionTitle": "officia"
               }
             ]
           }
