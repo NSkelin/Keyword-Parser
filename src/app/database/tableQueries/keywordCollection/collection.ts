@@ -43,7 +43,7 @@ export async function getCollectionsAliases(collectionTitles?: string[] | string
 }
 
 /** Gets every collection but flattens the each keywords aliases into an array. */
-export async function getCollectionKeywords() {
+export async function getCollectionsKeywords() {
   const data = await prisma.keywordCollection.findMany({
     select: {
       title: true,
