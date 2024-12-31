@@ -28,7 +28,7 @@ export async function getCollectionsAliases(collectionTitles?: string[] | string
   });
 
   // Format the returned collections keywords like so:
-  // aliases: [ { aliases: [ { alias: string } ] } } ] -----> aliases: string[]
+  // keywords: [ { aliases: [ { alias: alias1 }, { ... } ] }, { ... } ] -----> aliases: [ alias1, ... ]
   const formattedData = data.map(({keywords, highlightColor, ...rest}) => {
     return {
       ...rest,
@@ -63,8 +63,8 @@ export async function getCollectionKeywords() {
     },
   });
 
-  // Flatten the aliases.
-  // {...rest, aliases: [ { alias: string } ] } } -----> {...rest, aliases: string[]}
+  // Flatten the aliases for each keyword like so:
+  // aliases: [ { alias: alias1 }, {...} ] -----> aliases: [ alias1, ... ]
   const formattedData = data.map(({keywords, highlightColor, ...rest}) => {
     return {
       ...rest,
@@ -134,6 +134,9 @@ function createCollectionsQuery(collections: collection[]) {
   return query;
 }
 
+/**
+ * Creates one ore more new collections with its keywords and the keywords aliases all at once.
+ */
 export async function createCollectionsWithKeywordsAndAliases(collections: collection[]) {
   const collectionsQuery = createCollectionsQuery(collections);
 
