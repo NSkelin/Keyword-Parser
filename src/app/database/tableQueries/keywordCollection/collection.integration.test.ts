@@ -1,4 +1,4 @@
-import {createCollections, deleteCollections} from "@/database/tableQueries/keywordCollection";
+import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "@/database/tableQueries/keywordCollection";
 import {getCollectionsAliases} from "./collection";
 
 async function seedDB() {
@@ -77,7 +77,7 @@ async function seedDB() {
     },
   ];
 
-  await createCollections(mockData);
+  await createCollectionsWithKeywordsAndAliases(mockData);
 }
 
 async function clearDB() {

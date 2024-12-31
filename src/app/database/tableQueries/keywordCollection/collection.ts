@@ -134,7 +134,7 @@ function createCollectionsQuery(collections: collection[]) {
   return query;
 }
 
-export async function createCollections(collections: collection[]) {
+export async function createCollectionsWithKeywordsAndAliases(collections: collection[]) {
   const collectionsQuery = createCollectionsQuery(collections);
 
   const newCollections = [];

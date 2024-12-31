@@ -1,1 +1,6 @@
-export {createCollections, deleteCollections, getCollectionKeywords, getCollectionsAliases} from "./collection";
+export {
+  createCollectionsWithKeywordsAndAliases,
+  deleteCollections,
+  getCollectionKeywords,
+  getCollectionsAliases,
+} from "./collection";
