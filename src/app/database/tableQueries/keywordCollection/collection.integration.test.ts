@@ -1,5 +1,5 @@
 import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "@/database/tableQueries/keywordCollection";
-import {getCollectionsAliases, getCollectionsWithKeywordsAndAliases} from "./collection";
+import {getCollectionsAliases, getCollectionsKeywords, getCollectionsWithKeywordsAndAliases} from "./collection";
 
 const DBSeedData = [
   {
@@ -127,6 +127,54 @@ describe("getCollectionsAliases", () => {
     it("should return an empty array when a wrong title is sent in", async () => {
       expect(await getCollectionsAliases("wrong title")).toEqual([]);
     });
+  });
+});
+
+describe("getCollectionKeywords", () => {
+  const expectedResult = [
+    {
+      title: "col1Title",
+      highlightColor: "testColor",
+      keywords: [
+        {
+          displayName: "col1Key1Name",
+          proficient: true,
+          aliases: ["col1Key1Alias1", "col1Key1Alias2", "col1Key1Alias3"],
+        },
+        {
+          displayName: "col1Key2Name",
+          proficient: true,
+          aliases: ["col1Key2Alias1", "col1Key2Alias2", "col1Key2Alias3"],
+        },
+      ],
+    },
+    {
+      title: "col2Title",
+      highlightColor: "testColor",
+      keywords: [
+        {
+          displayName: "col2Key1Name",
+          proficient: true,
+          aliases: ["col2Key1Alias1", "col2Key1Alias2", "col2Key1Alias3"],
+        },
+        {
+          displayName: "col2Key2Name",
+          proficient: true,
+          aliases: ["col2Key2Alias1", "col2Key2Alias2", "col2Key2Alias3"],
+        },
+      ],
+    },
+  ];
+
+  it("should return a formatted array of data", async () => {
+    // remove the id parameter from the result since its different every time because the db is persistent and auto increments.
+    const data = (await getCollectionsKeywords()).map(({keywords, ...rest}) => {
+      const idLessKeywords = keywords.map(({id: _id, ...rest}) => {
+        return {...rest};
+      });
+      return {keywords: idLessKeywords, ...rest};
+    });
+    expect(data).toEqual(expectedResult);
   });
 });
 
