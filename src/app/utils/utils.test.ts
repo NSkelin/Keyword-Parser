@@ -38,7 +38,6 @@ describe("createKeywordsRegEx", () => {
     const textToMatch = "This is a text with special* and (test) characters, but not character?. c# c++";
     const matches = textToMatch.match(regex);
     const expectedMatches = ["c#", "c++"];
-    // expect(regex).toEqual("");
     expect(matches).toEqual(expectedMatches);
   });
 

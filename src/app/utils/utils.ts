@@ -1,17 +1,12 @@
 /** Creates a regular expression capable of matching all the keywords sent in. */
 export function createKeywordsRegEx(keywords: string[] | string) {
-  if (keywords.length < 1) {
-    throw new Error("Keyword(s) cannot be empty");
-  } else if (typeof keywords === "string") {
-    const escapedKeyword = keywords.replace(/[+#]/g, "\\$&");
-    return new RegExp(`(?<!w)${escapedKeyword}(?!w)`, "gi");
-  } else {
-    const sortedKeywords = keywords.toSorted((a, b) => b.length - a.length);
-    const escapedKeywords = sortedKeywords.map((keyword) => {
-      return keyword.replace(/[+#]/g, "\\$&");
-    });
-    return new RegExp(`\\b${escapedKeywords.join("\\b|\\b")}\\b`, "gi");
-  }
+  if (keywords.length < 1) throw new Error("Keyword(s) cannot be empty");
+  if (typeof keywords === "string") keywords = [keywords];
+
+  // Escape (allow) special regex characters in each string.
+  const escapedKeywords = keywords.map((str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const pattern = escapedKeywords.join("|");
+  return new RegExp(`(?<=^|[^\\w])(${pattern})(?=$|[^\\w])`, "gi");
 }
 interface Keyword {
   displayName: string;
