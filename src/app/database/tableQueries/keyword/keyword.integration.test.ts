@@ -1,11 +1,5 @@
 import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "../keywordCollection";
-import {
-  createKeywordAndAliases,
-  deleteKeywordAndAliases,
-  getKeywordAliases,
-  getKeywordWithAliasesByID,
-  updateKeywordAndAliases,
-} from "./keyword";
+import {createKeywordAndAliases, deleteKeywordAndAliases, getKeywordWithAliasesByID, updateKeywordAndAliases} from "./keyword";
 
 const DBSeedData = [
   {
@@ -97,13 +91,6 @@ beforeEach(async () => {
 
 afterEach(async () => {
   await clearDB();
-});
-
-describe("getKeywordAliases", () => {
-  it("should return the aliases for the given keyword", async () => {
-    const aliases = await getKeywordAliases(DBSeedData[0].keywords[0].displayName);
-    expect(aliases).toEqual(["col1Key1Alias1", "col1Key1Alias2", "col1Key1Alias3"]);
-  });
 });
 
 describe("getKeywordWithAliasesByID", () => {
