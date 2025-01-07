@@ -1,6 +1,6 @@
 import {deleteKeywordAndAliases, updateKeywordAndAliases} from "@/database/tableQueries/keyword";
 
-export async function DELETE(req: Request, {params}: {params: {collection: string; keywordId: number}}) {
+export async function DELETE({params}: {params: {collection: string; keywordId: number}}) {
   try {
     const keywordId = Number(params.keywordId);
 
