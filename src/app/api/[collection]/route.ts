@@ -1,4 +1,4 @@
-import {createKeywordAndAliases} from "@/database/tableQueries/keyword";
+import {createKeywordWithAliases} from "@/database/tableQueries/keyword";
 import {NextResponse} from "next/server";
 
 interface data {
@@ -37,7 +37,7 @@ export async function POST(req: Request, {params}: {params: {collection: string}
     const aliasObjs = aliases.map((alias) => {
       return {alias: alias};
     });
-    const newId = await createKeywordAndAliases(displayName, proficient, aliasObjs, collection);
+    const newId = await createKeywordWithAliases(displayName, proficient, aliasObjs, collection);
     return NextResponse.json({id: newId});
   } catch (error) {
     console.log(error);

@@ -1,5 +1,5 @@
 import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "../keywordCollection";
-import {createKeywordAndAliases, deleteKeywordAndAliases, getKeywordWithAliasesByID, updateKeywordAndAliases} from "./keyword";
+import {createKeywordWithAliases, deleteKeywordAndAliases, getKeywordWithAliasesByID, updateKeywordAndAliases} from "./keyword";
 
 const DBSeedData = [
   {
@@ -102,7 +102,7 @@ describe("getKeywordWithAliasesByID", () => {
       collectionTitle: DBSeedData[0].title,
     };
 
-    const newKeywordID = await createKeywordAndAliases(
+    const newKeywordID = await createKeywordWithAliases(
       mockData.displayName,
       mockData.proficient,
       mockData.aliases,
@@ -114,7 +114,7 @@ describe("getKeywordWithAliasesByID", () => {
   });
 });
 
-describe("createKeywordAndAliases", () => {
+describe("createKeywordWithAliases", () => {
   it("should add the keyword to the database", async () => {
     const mockData = {
       displayName: "testName1",
@@ -123,7 +123,7 @@ describe("createKeywordAndAliases", () => {
       collectionTitle: DBSeedData[0].title,
     };
 
-    const newKeywordID = await createKeywordAndAliases(
+    const newKeywordID = await createKeywordWithAliases(
       mockData.displayName,
       mockData.proficient,
       mockData.aliases,
@@ -150,7 +150,7 @@ describe("updateKeywordAndAliases", () => {
       collectionTitle: DBSeedData[0].title,
     };
 
-    const newKeywordID = await createKeywordAndAliases(
+    const newKeywordID = await createKeywordWithAliases(
       mockData.displayName,
       mockData.proficient,
       mockData.aliases,
@@ -179,7 +179,7 @@ describe("deleteKeywordAndAliases", () => {
       collectionTitle: DBSeedData[0].title,
     };
 
-    const newKeywordID = await createKeywordAndAliases(
+    const newKeywordID = await createKeywordWithAliases(
       mockData.displayName,
       mockData.proficient,
       mockData.aliases,

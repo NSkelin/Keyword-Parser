@@ -1,1 +1,1 @@
-export {createKeywordAndAliases, deleteKeywordAndAliases, updateKeywordAndAliases} from "./keyword";
+export {createKeywordWithAliases, deleteKeywordAndAliases, updateKeywordAndAliases} from "./keyword";

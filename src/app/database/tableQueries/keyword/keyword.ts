@@ -14,8 +14,15 @@ export async function getKeywordWithAliasesByID(id: number) {
   return keyword;
 }
 
-/** Create a keyword and its aliases */
-export async function createKeywordAndAliases(
+/**
+ * Creates a keyword and creates its aliases.
+ *
+ * @param displayName The name of keyword.
+ * @param aliases Any aliases used to reference this keyword.
+ * @param collection The collection this keyword is apart of.
+ * @returns
+ */
+export async function createKeywordWithAliases(
   displayName: string,
   proficient: boolean,
   aliases: {alias: string}[],
@@ -35,75 +42,75 @@ export async function createKeywordAndAliases(
   return newKeyword.id;
 }
 
-/** Rename a keyword and update its aliases */
+/**
+ * Update a keyword and replace its aliases.
+ *
+ * Any aliases that are in the DB and are the same as any new aliases will not be removed or replaced, meaning fields such as ID will remain the same.
+ * All other aliases in the DB will removed and all non duplicate new aliases will be created.
+ */
 export async function updateKeywordAndAliases(
-  idToUpdate: number,
-  proficient: boolean,
+  keywordID: number,
+  newProficient: boolean,
   newAliases: string[],
   newDisplayName: string,
 ) {
-  /**
-   * SECTION START ----------
-   * Necessary because prisma doesnt support createMany on sqlite which I am using.
-   */
-  // Get all existing aliases
   const keyword = await prisma.keyword.findFirst({
     select: {
       displayName: true,
     },
     where: {
-      id: idToUpdate,
+      id: keywordID,
     },
   });
   if (keyword == null) throw new Error("cant find keyword!");
-  const oldAliases = await getKeywordAliases(keyword.displayName);
 
-  // get all unique instances between new and old aliases, essentially get the new ones so i can create them.
-  const filteredAliases = newAliases.filter((obj) => {
-    return !oldAliases.includes(obj);
+  const currentAliases = await getKeywordAliases(keyword.displayName);
+
+  // Get only the aliases that are truly new and not currently existing in the DB.
+  // This is because the duplicates are not deleted from the DB so we only want to add in non-duplicate aliases.
+  // I am unsure why i do it like this, my guess is to preserve the aliases ID as something down the line might require it to stay the same?
+  const uniqueNewAliases = newAliases.filter((obj) => {
+    return !currentAliases.includes(obj);
   });
 
-  // convert aliases to prisma data structure
-  const aliasObjs = filteredAliases.map((alias) => {
-    return {alias: alias};
-  });
-  /**
-   * SECTION END ----------
-   */
-
-  // Update db
   await prisma.keyword.update({
     where: {
-      id: idToUpdate,
+      id: keywordID,
     },
     data: {
       displayName: newDisplayName,
-      proficient: proficient,
+      proficient: newProficient,
       aliases: {
         deleteMany: {
           alias: {
             notIn: newAliases,
           },
         },
-        create: aliasObjs,
+        createMany: {
+          data: uniqueNewAliases.map((alias) => ({alias})),
+        },
       },
     },
   });
   return;
 }
 
-/** Delete a keyword and its aliases. */
-export async function deleteKeywordAndAliases(idToDelete: number) {
+/**
+ * Delete a keyword and all of its aliases.
+ *
+ * @param keywordID The ID of the keyword you want to delete.
+ */
+export async function deleteKeywordAndAliases(keywordID: number) {
   const deleteAliases = prisma.keywordAlias.deleteMany({
     where: {
       keyword: {
-        id: idToDelete,
+        id: keywordID,
       },
     },
   });
   const deleteKeyword = prisma.keyword.delete({
     where: {
-      id: idToDelete,
+      id: keywordID,
     },
   });
 
