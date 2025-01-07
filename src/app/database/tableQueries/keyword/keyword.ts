@@ -18,6 +18,19 @@ export async function getKeywordAliases(displayName: string) {
   return aliases;
 }
 
+/** Returns a keyword and its aliases */
+export async function getKeywordWithAliasesByID(id: number) {
+  const keyword = await prisma.keyword.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      aliases: true,
+    },
+  });
+  return keyword;
+}
+
 /** Create a keyword and its aliases */
 export async function createKeywordAndAliases(
   displayName: string,
@@ -33,6 +46,9 @@ export async function createKeywordAndAliases(
       aliases: {
         create: aliases,
       },
+    },
+    include: {
+      aliases: true,
     },
   });
 
