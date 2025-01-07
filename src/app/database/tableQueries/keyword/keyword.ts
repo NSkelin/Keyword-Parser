@@ -30,9 +30,6 @@ export async function createKeywordAndAliases(
         create: aliases,
       },
     },
-    include: {
-      aliases: true,
-    },
   });
 
   return newKeyword.id;
