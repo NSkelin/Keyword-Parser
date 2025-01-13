@@ -8,6 +8,14 @@ const meta: Meta<typeof ResumeSubSection> = {
 export default meta;
 type Story = StoryObj<typeof ResumeSubSection>;
 
+export interface ResumeSubSectionProps {
+  title: string;
+  subTitle: string;
+  startDate: Date;
+  endDate?: Date | null;
+  children: React.ReactNode;
+}
+
 export const Default: Story = {
-  args: {},
+  args: {title: "title", subTitle: "subtitle", startDate: new Date(1995), endDate: new Date()},
 };
