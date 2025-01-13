@@ -9,5 +9,5 @@ export default meta;
 type Story = StoryObj<typeof ResumeSection>;
 
 export const Default: Story = {
-  args: {},
+  args: {title: "title"},
 };

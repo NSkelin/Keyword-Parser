@@ -173,6 +173,164 @@ export const Default: Story = {
               },
             ],
           },
+          {
+            id: 2,
+            title: "anims est",
+            subTitle: "ipsuma culpa adipisicing",
+            startDate: new Date(1996),
+            endDate: new Date(2015),
+            resumeSectionTitle: "amwet",
+            bullets: [
+              {
+                id: 1,
+                point: "Reprehenderit minim ullamco id anim ut.",
+                includeByDefault: true,
+                fill: true,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "adipisicing",
+                        keywordDisplayName: "cillum",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "ea",
+                    proficient: false,
+                    collectionTitle: "velit",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Id eu tempor quis consequat.",
+                includeByDefault: false,
+                fill: false,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "deserunt",
+                        keywordDisplayName: "nisi",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "reprehenderit",
+                    proficient: true,
+                    collectionTitle: "enim",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Aute irure commodo aliquip eiusmod sunt aute do est sunt nisi mollit.",
+                includeByDefault: true,
+                fill: true,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "exercitation",
+                        keywordDisplayName: "ipsum",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "velit",
+                    proficient: true,
+                    collectionTitle: "fugiat",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Non mollit incididunt deserunt non anim aute nostrud veniam.",
+                includeByDefault: true,
+                fill: false,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "aute",
+                        keywordDisplayName: "commodo",
+                      },
+                      {
+                        id: 1,
+                        alias: "magna",
+                        keywordDisplayName: "in",
+                      },
+                      {
+                        id: 1,
+                        alias: "eu",
+                        keywordDisplayName: "fugiat",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "consequat",
+                    proficient: false,
+                    collectionTitle: "cillum",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Est aliquip magna eiusmod esse incididunt.",
+                includeByDefault: true,
+                fill: true,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "consectetur",
+                        keywordDisplayName: "consequat",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "mollit",
+                    proficient: false,
+                    collectionTitle: "veniam",
+                    bulletId: 1,
+                  },
+                ],
+              },
+              {
+                id: 1,
+                point: "Nulla cillum voluptate ullamco ea consectetur cupidatat amet et exercitation ipsum.",
+                includeByDefault: false,
+                fill: false,
+                positionId: 1,
+                requiredKeywords: [
+                  {
+                    aliases: [
+                      {
+                        id: 1,
+                        alias: "consequat",
+                        keywordDisplayName: "incididunt",
+                      },
+                    ],
+                    id: 1,
+                    displayName: "amet",
+                    proficient: true,
+                    collectionTitle: "sint",
+                    bulletId: 1,
+                  },
+                ],
+              },
+            ],
+          },
         ],
       },
       {
