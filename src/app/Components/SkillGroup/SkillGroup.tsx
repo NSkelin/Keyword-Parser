@@ -59,7 +59,8 @@ export function SkillGroup({title, skills, selected, onGroupToggle, onSkillToggl
     <ToggleButton enabled={enabled} key={name} onClick={() => handleSkillToggle(name)}>
       <div className={styles.highlight} style={{backgroundColor: highlightColor, width: `${highlightPercent}%`}}></div>
       <span className={styles.content}>
-        {name} {proficient ? starSVG : null}
+        {name}
+        {proficient ? starSVG : null}
         {familiar ? RadioButtonCheckedSVG : null}
       </span>
     </ToggleButton>
