@@ -11,6 +11,7 @@ type Story = StoryObj<typeof ToggleButton>;
 export const Default: Story = {
   args: {
     children: "Default",
+    enabled: false,
   },
 };
 
