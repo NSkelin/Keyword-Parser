@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./BulletList.module.scss";
 
 interface Bullet {
@@ -35,7 +36,9 @@ export function BulletList({enabledBullets, disabledBullets, onOverride}: Bullet
 
   return (
     <>
-      <button onClick={copyBulletsToClipboard}>Copy to Clipboard</button>
+      <button className={styles.button} onClick={copyBulletsToClipboard}>
+        <Image src="/content_copy.svg" alt="Copy to clipboard icon" width={20} height={20} />
+      </button>
       <ul>
         {enabledBullets.map(({ID, bullet}) => (
           <li key={ID}>
