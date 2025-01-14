@@ -39,8 +39,8 @@ export function KeywordItem({
   };
   const itemStyle = instances === 0 ? emptyStyle : undefined;
   const highlightVisible = highlightPercent === 0 ? "none" : "block";
-  const editSVG = <Image src={"/edit.svg"} alt="My SVG" width={16} height={16} />;
-  const starSVG = <Image src={"/star.svg"} alt="My SVG" width={12} height={12} />;
+  const editSVG = <Image src="/edit.svg" alt="Edit icon" width={16} height={16} />;
+  const starSVG = <Image src="/star.svg" alt="Star Icon" width={12} height={12} />;
 
   return (
     <li data-cy="keywordItemComp" className={styles.wrapper} style={itemStyle}>

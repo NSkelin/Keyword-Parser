@@ -42,8 +42,8 @@ export interface SkillGroupProps {
  */
 export function SkillGroup({title, skills, selected, onGroupToggle, onSkillToggle}: SkillGroupProps) {
   selected = selected ?? true;
-  const starSVG = <Image src={"/star.svg"} alt="My SVG" width={12} height={12} />;
-  const RadioButtonCheckedSVG = <Image src={"/radio_button_checked.svg"} alt="My SVG" width={12} height={12} />;
+  const starSVG = <Image src="/star.svg" alt="Star icon" width={12} height={12} />;
+  const RadioButtonCheckedSVG = <Image src="/radio_button_checked.svg" alt="Radio button checked icon" width={12} height={12} />;
 
   /**
    * Sends the clicked skill to the parent component to handle the toggle.
