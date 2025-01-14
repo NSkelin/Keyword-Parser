@@ -165,7 +165,7 @@ export function SkillSummary({skillGroups}: KeywordSummaryProps) {
       <div className={styles.title}>
         <h2>Skills</h2>
         <button className={styles.button} onClick={copyToClipboard}>
-          <Image src={"/content_copy.svg"} alt="My SVG" width={20} height={20} />
+          <Image src={"/content_copy.svg"} alt="Copy to clipboard" width={20} height={20} />
         </button>
       </div>
       <div>{skillGroupElements}</div>
