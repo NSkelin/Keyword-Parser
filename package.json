@@ -18,6 +18,7 @@
     "immer": "^10.0.2",
     "next": "^14.2.20",
     "react": "^18.2.0",
+    "react-colorful": "^5.6.1",
     "react-dom": "^18.2.0",
     "react-highlight-within-textarea": "^3.2.1",
     "use-immer": "^0.11.0"

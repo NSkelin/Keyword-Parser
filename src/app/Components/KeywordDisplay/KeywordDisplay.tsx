@@ -2,8 +2,9 @@ import {Dialog} from "@/components/Dialog";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import {KeywordEditor} from "@/components/KeywordEditor";
 import {KeywordList} from "@/components/KeywordList";
+import {PopoverPicker} from "@/components/PopoverPicker";
 import type {Keyword} from "@/utils/types";
-import {CSSProperties, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import styles from "./KeywordDisplay.module.scss";
 
 export interface KeywordDisplayProps extends SubmissionCallbacks {
@@ -12,7 +13,7 @@ export interface KeywordDisplayProps extends SubmissionCallbacks {
   /** The keywords to display */
   keywords: Keyword[];
   /** The color used for each keywords highlight color */
-  highlightColor?: CSSProperties["backgroundColor"];
+  highlightColor?: string;
 }
 
 /** Displays a Keyword list with a group title for the keywords and
@@ -22,6 +23,7 @@ export function KeywordDisplay({keywords, title = "", highlightColor, onCreate, 
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [editorId, setEditorId] = useState<number>(-1);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
+  const [color, setColor] = useState(highlightColor ?? "FFFFFF");
 
   // Create a new array as the old one is readonly. Passes the list to <KeywordList /> which requires a mutable list (to sort it).
   const keywordsList = keywords.map(({...rest}) => {
@@ -56,6 +58,10 @@ export function KeywordDisplay({keywords, title = "", highlightColor, onCreate, 
     dialogRef.current?.close();
   }
 
+  function handleColorChange(newColor: string) {
+    setColor(newColor);
+  }
+
   // get the initial data
   let displayName, aliases, proficient;
 
@@ -82,14 +88,14 @@ export function KeywordDisplay({keywords, title = "", highlightColor, onCreate, 
           onCancel={handleCancel}
         />
       </Dialog>
+      <h2>{title}</h2>
       <div>
-        <input type={"color"}></input>
         <button data-cy="create" onClick={openCreate}>
           Add keyword +
         </button>
+        <PopoverPicker color={color} onChange={handleColorChange} />
       </div>
-      <h2>{title}</h2>
-      <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={highlightColor} />
+      <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={color} />
     </section>
   );
 }

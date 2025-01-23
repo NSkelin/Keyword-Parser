@@ -8,6 +8,7 @@ export {KeywordEditor} from "./KeywordEditor";
 export {KeywordItem} from "./KeywordItem";
 export {KeywordList} from "./KeywordList";
 export {KeywordParser} from "./KeywordParser";
+export {PopoverPicker} from "./PopoverPicker";
 export {RegExDisplay} from "./RegExDisplay";
 export {RegExDisplayCollection} from "./RegExDisplayCollection";
 export {ResumeBuilder} from "./ResumeBuilder";
