@@ -3,7 +3,7 @@ import {KeywordDisplayCollection} from "@/components/KeywordDisplayCollection";
 import {ResumeBuilder} from "@/components/ResumeBuilder";
 import {createKeywordsRegEx, getAliases} from "@/utils";
 import {Prisma} from "@prisma/client";
-import {CSSProperties, ReactNode, useEffect, useState} from "react";
+import {CSSProperties, ReactNode, useEffect, useState, type JSX} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {useImmerReducer} from "use-immer";
 import styles from "./KeywordParser.module.scss";

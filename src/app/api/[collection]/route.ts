@@ -25,7 +25,8 @@ function verifyData(data: unknown): data | undefined {
 }
 
 /** Handles the api call to create a new keyword */
-export async function POST(req: Request, {params}: {params: {collection: string}}) {
+export async function POST(req: Request, props: {params: Promise<{collection: string}>}) {
+  const params = await props.params;
   try {
     const collection = params.collection;
     const jsonData: unknown = await req.json();

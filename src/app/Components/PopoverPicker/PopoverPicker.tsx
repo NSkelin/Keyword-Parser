@@ -3,7 +3,7 @@ import {HexColorPicker} from "react-colorful";
 import styles from "./PopoverPicker.module.css";
 
 // Improved version of https://usehooks.com/useOnClickOutside/
-function useClickOutside(ref: React.RefObject<HTMLElement>, handler: (event: Event) => void) {
+function useClickOutside(ref: React.RefObject<HTMLElement | null>, handler: (event: Event) => void) {
   useEffect(() => {
     let startedInside = false;
     let startedWhenMounted = false;

@@ -16,7 +16,11 @@ export async function DELETE({params}: {params: {collection: string; keywordId: 
   }
 }
 
-export async function PUT(req: Request, {params}: {params: {collection: string; keywordId: string}}) {
+export async function PUT(
+  req: Request,
+  props: {params: Promise<{collection: string; keywordId: string}>}
+) {
+  const params = await props.params;
   interface data {
     newDisplayName: string;
     newAliases: string[];
