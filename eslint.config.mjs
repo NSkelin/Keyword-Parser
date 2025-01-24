@@ -98,7 +98,7 @@ const eslintConfig = tseslint.config([
         {
           patterns: [
             {
-              group: ["**/components", "!**/components/"],
+              regex: "^(?:@/components/?|src/app/components/?)$",
               message:
                 "Do not import the component barrel file (index.js) from inside a component being re-exported by the barrel.\
                 This will cause circular dependency errors that are hard to find and understand.",
@@ -106,22 +106,6 @@ const eslintConfig = tseslint.config([
           ],
         },
       ],
-      //
-      // eslint 9 version below, eslint 8 version above.
-      //
-      // "no-restricted-imports": [
-      //   "error",
-      //   {
-      //     patterns: [
-      //       {
-      //         regex: "^(?:@/components/?|src/app/components/?)$",
-      //         message:
-      //           "Do not import the component barrel file (index.js) from inside a component being re-exported by the barrel.\
-      //           This will cause circular dependency errors that are hard to find and understand.",
-      //       },
-      //     ],
-      //   },
-      // ],
     },
   },
   // Require using named exports instead of default exports since the general consensus online seems to be in favor of named exports (2024).
