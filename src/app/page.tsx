@@ -1,4 +1,5 @@
-import {KeywordParser, RegExDisplayCollection} from "@/components";
+import {KeywordParser} from "@/components/KeywordParser";
+import {RegExDisplayCollection} from "@/components/RegExDisplayCollection";
 import {getResumeAssistData} from "src/app/database/tableQueries/resumeSection";
 import {getCollectionsKeywords} from "./database/tableQueries/keywordCollection";
 import styles from "./page.module.scss";
