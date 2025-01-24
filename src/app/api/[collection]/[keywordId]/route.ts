@@ -1,8 +1,9 @@
 import {deleteKeywordAndAliases, updateKeywordAndAliases} from "@/database/tableQueries/keyword";
 
-export async function DELETE({params}: {params: {collection: string; keywordId: number}}) {
+export async function DELETE(_req: Request, {params}: {params: Promise<{collection: string; keywordId: string}>}) {
   try {
-    const keywordId = Number(params.keywordId);
+    const {keywordId: rawKeywordId} = await params;
+    const keywordId = Number(rawKeywordId);
 
     if (typeof keywordId === "number") {
       await deleteKeywordAndAliases(keywordId);
@@ -16,11 +17,7 @@ export async function DELETE({params}: {params: {collection: string; keywordId: 
   }
 }
 
-export async function PUT(
-  req: Request,
-  props: {params: Promise<{collection: string; keywordId: string}>}
-) {
-  const params = await props.params;
+export async function PUT(req: Request, {params}: {params: Promise<{collection: string; keywordId: string}>}) {
   interface data {
     newDisplayName: string;
     newAliases: string[];
@@ -45,13 +42,15 @@ export async function PUT(
   }
 
   try {
+    const {keywordId: rawKeywordId} = await params;
+    const keywordId = Number(rawKeywordId);
+
     const jsonData: unknown = await req.json();
     const data = verifyData(jsonData);
 
     if (data == null) return new Response("Failed", {status: 400});
 
     const {newDisplayName, newAliases, proficient} = data;
-    const keywordId = Number(params.keywordId);
 
     await updateKeywordAndAliases(keywordId, proficient, newAliases, newDisplayName);
     return new Response("Success");
