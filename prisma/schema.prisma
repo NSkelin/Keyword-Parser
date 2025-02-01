@@ -21,7 +21,7 @@ model keyword {
   displayName     String            @unique
   proficient      Boolean           @default(false)
   aliases         keywordAlias[]
-  collection      keywordCollection @relation(fields: [collectionTitle], references: [title])
+  collection      keywordCollection @relation(fields: [collectionTitle], references: [title], onDelete: Cascade)
   collectionTitle String
   bullet          bullet?           @relation(fields: [bulletId], references: [id])
   bulletId        Int?
@@ -30,7 +30,7 @@ model keyword {
 model keywordAlias {
   id                 Int     @id @default(autoincrement())
   alias              String  @unique
-  keyword            keyword @relation(fields: [keywordDisplayName], references: [displayName])
+  keyword            keyword @relation(fields: [keywordDisplayName], references: [displayName], onDelete: Cascade)
   keywordDisplayName String
 }
 
