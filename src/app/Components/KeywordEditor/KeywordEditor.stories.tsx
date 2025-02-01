@@ -11,9 +11,9 @@ export const Default: Story = {
   args: {
     id: 0,
     collection: "collection",
-    onCreate: () => {},
-    onDelete: () => {},
-    onUpdate: () => {},
+    onKeywordCreate: () => {},
+    onKeywordDelete: () => {},
+    onKeywordUpdate: () => {},
     onSubmit: () => {},
     onCancel: () => {},
   },

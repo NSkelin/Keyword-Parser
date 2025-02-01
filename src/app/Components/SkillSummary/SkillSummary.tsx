@@ -58,7 +58,7 @@ export function SkillSummary({skillGroups}: KeywordSummaryProps) {
       const groups: Groups = {};
       for (const group of skillGroups) {
         groups[group.title] = {
-          selected: draft[group.title].selected ?? true,
+          selected: draft[group.title]?.selected ?? true,
         };
 
         for (const skill of group.skills) {

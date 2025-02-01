@@ -7,7 +7,7 @@ import {CSSProperties, ReactNode, useEffect, useState, type JSX} from "react";
 import HighlightWithinTextarea from "react-highlight-within-textarea";
 import {useImmerReducer} from "use-immer";
 import styles from "./KeywordParser.module.scss";
-import {keywordsReducer} from "./reducer";
+import {collectionsReducer} from "./reducer";
 
 type sectionData = Prisma.resumeSectionGetPayload<{
   include: {
@@ -50,7 +50,7 @@ export interface KeywordParserProps {
 /** A container component that links a text area that highlights keywords, and the displays that summarize that data, together. */
 export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps) {
   const [textAreaInput, setTextAreaInput] = useState("");
-  const [displays, dispatch] = useImmerReducer(keywordsReducer, initialDisplays, inits);
+  const [displays, dispatch] = useImmerReducer(collectionsReducer, initialDisplays, inits);
 
   useEffect(() => {
     const eventSource = new EventSource("/api/descriptionUpdate");
@@ -120,7 +120,7 @@ export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps
     aliases: string[],
   ) {
     dispatch({
-      type: "create",
+      type: "createKeyword",
       keywordId: keywordId,
       aliases: aliases,
       collectionName: collectionName,
@@ -139,7 +139,7 @@ export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps
     newAliases: string[],
   ) {
     dispatch({
-      type: "update",
+      type: "updateKeyword",
       collectionName: collectionName,
       keywordId: keywordId,
       newAliases: newAliases,
@@ -152,9 +152,19 @@ export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps
   /** Deletes a given displays keyword from state. */
   function handleDeleteKeyword(keywordId: number, collectionName: string) {
     dispatch({
-      type: "delete",
+      type: "deleteKeyword",
       collectionName: collectionName,
       keywordId: keywordId,
+    });
+  }
+
+  /**
+   * Updates state with the new collection.
+   */
+  function handleCreateCollection(collectionName: string) {
+    dispatch({
+      type: "createCollection",
+      collectionName,
     });
   }
 
@@ -173,7 +183,7 @@ export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps
         const instances = countInstances(keyword.aliases, sourceText);
         if (keyword.instances != instances) {
           dispatch({
-            type: "update",
+            type: "updateKeyword",
             collectionName: display.title,
             keywordId: keyword.id,
             instances: instances,
@@ -198,9 +208,10 @@ export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps
         </section>
         <KeywordDisplayCollection
           displays={displays}
-          onCreate={handleCreateKeyword}
-          onDelete={handleDeleteKeyword}
-          onUpdate={handleUpdateKeyword}
+          onKeywordCreate={handleCreateKeyword}
+          onKeywordDelete={handleDeleteKeyword}
+          onKeywordUpdate={handleUpdateKeyword}
+          onCollectionCreate={handleCreateCollection}
         />
       </section>
       <ResumeBuilder sectionData={sectionData} keywordCollections={displays} />

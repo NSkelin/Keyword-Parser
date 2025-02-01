@@ -9,9 +9,9 @@ describe("'Create' mode", () => {
         collection="collection"
         mode="Create"
         onSubmit={cy.spy().as("onSubmit")}
-        onCreate={cy.spy().as("onCreate")}
-        onUpdate={cy.spy().as("onUpdate")}
-        onDelete={cy.spy().as("onDelete")}
+        onKeywordCreate={cy.spy().as("onKeywordCreate")}
+        onKeywordUpdate={cy.spy().as("onKeywordUpdate")}
+        onKeywordDelete={cy.spy().as("onKeywordDelete")}
       />,
     );
 
@@ -25,9 +25,9 @@ describe("'Create' mode", () => {
         id={1}
         collection="collection"
         onSubmit={cy.spy().as("onSubmit")}
-        onCreate={cy.spy().as("onCreate")}
-        onUpdate={cy.spy().as("onUpdate")}
-        onDelete={cy.spy().as("onDelete")}
+        onKeywordCreate={cy.spy().as("onKeywordCreate")}
+        onKeywordUpdate={cy.spy().as("onKeywordUpdate")}
+        onKeywordDelete={cy.spy().as("onKeywordDelete")}
       />,
     );
   });
@@ -77,7 +77,7 @@ describe("'Create' mode", () => {
       cy.get("@post").should("have.been.called");
       // should not update state
       cy.get("@onSubmit").should("have.been.calledOnce");
-      cy.get("@onCreate").should("have.been.calledOnce");
+      cy.get("@onKeywordCreate").should("have.been.calledOnce");
     });
 
     it("aliases should show an error when trying to submit with 0 aliases", () => {
@@ -110,7 +110,7 @@ describe("'Create' mode", () => {
         cy.get("@post").should("not.have.been.called");
         // should not update state
         cy.get("@onSubmit").should("not.have.been.called");
-        cy.get("@onCreate").should("not.have.been.called");
+        cy.get("@onKeywordCreate").should("not.have.been.called");
       });
 
       it("should not submit when displayName is empty", () => {
@@ -185,9 +185,9 @@ describe("'Edit' mode", () => {
         initialProficient={false}
         initialAliases={["alias1", "alias2"]}
         onSubmit={cy.spy().as("onSubmit")}
-        onCreate={cy.spy().as("onCreate")}
-        onUpdate={cy.spy().as("onUpdate")}
-        onDelete={cy.spy().as("onDelete")}
+        onKeywordCreate={cy.spy().as("onKeywordCreate")}
+        onKeywordUpdate={cy.spy().as("onKeywordUpdate")}
+        onKeywordDelete={cy.spy().as("onKeywordDelete")}
       />,
     );
 

@@ -1,8 +1,8 @@
 import type {Keyword} from "@/utils/types";
 import {CSSProperties} from "react";
 
-interface CreateAction {
-  type: "create";
+interface CreateKeywordAction {
+  type: "createKeyword";
   keywordId: number;
   collectionName: string;
   displayName: string;
@@ -11,8 +11,8 @@ interface CreateAction {
   instances: number;
 }
 
-interface UpdateAction {
-  type: "update";
+interface UpdateKeywordAction {
+  type: "updateKeyword";
   collectionName: string;
   keywordId: number;
   newDisplayName?: string;
@@ -21,10 +21,24 @@ interface UpdateAction {
   instances?: number;
 }
 
-interface DeleteAction {
-  type: "delete";
+interface DeleteKeywordAction {
+  type: "deleteKeyword";
   collectionName: string;
   keywordId: number;
+}
+
+interface CreateCollectionAction {
+  type: "createCollection";
+  collectionName: string;
+}
+interface UpdateCollectionAction {
+  type: "updateCollection";
+  collectionName: string;
+  highlightColor: string;
+}
+interface DeleteCollectionAction {
+  type: "deleteCollection";
+  collectionName: string;
 }
 
 interface Display {
@@ -34,9 +48,18 @@ interface Display {
 }
 
 /** Updates the states keywords. Can create new keywords, update existing keywords, and deleting existing keywords. */
-export function keywordsReducer(draft: Display[], action: CreateAction | UpdateAction | DeleteAction) {
+export function collectionsReducer(
+  draft: Display[],
+  action:
+    | CreateKeywordAction
+    | UpdateKeywordAction
+    | DeleteKeywordAction
+    | CreateCollectionAction
+    | UpdateCollectionAction
+    | DeleteCollectionAction,
+) {
   switch (action.type) {
-    case "create": {
+    case "createKeyword": {
       const collection = draft.find((collection) => collection.title === action.collectionName);
       if (collection == null) throw new Error("Collection doesnt exist!");
 
@@ -51,7 +74,7 @@ export function keywordsReducer(draft: Display[], action: CreateAction | UpdateA
       break;
     }
 
-    case "update": {
+    case "updateKeyword": {
       const collection = draft.find((collection) => collection.title === action.collectionName);
       if (collection == null) throw new Error("Collection doesnt exist!");
 
@@ -66,7 +89,7 @@ export function keywordsReducer(draft: Display[], action: CreateAction | UpdateA
       break;
     }
 
-    case "delete": {
+    case "deleteKeyword": {
       const collection = draft.find((collection) => collection.title === action.collectionName);
       if (collection == null) throw new Error("Collection doesnt exist!");
 
@@ -74,6 +97,35 @@ export function keywordsReducer(draft: Display[], action: CreateAction | UpdateA
       if (index !== -1 && index != null) {
         collection.keywords.splice(index, 1);
       }
+      break;
+    }
+
+    case "createCollection": {
+      const collection = draft.find((collection) => collection.title === action.collectionName);
+      if (collection != null) throw new Error("Collection already exists!");
+
+      const newCollection = {
+        title: action.collectionName,
+        highlightColor: "FFFFFF",
+        keywords: [],
+      };
+      draft.push(newCollection);
+      break;
+    }
+
+    case "updateCollection": {
+      const collection = draft.find((collection) => collection.title === action.collectionName);
+      if (collection == null) throw new Error("Collection doesnt exist!");
+
+      collection.title = action.collectionName;
+      collection.highlightColor = action.highlightColor;
+      break;
+    }
+
+    case "deleteCollection": {
+      const collection = draft.find((collection) => collection.title === action.collectionName);
+      if (collection == null) throw new Error("Collection doesnt exist!");
+
       break;
     }
   }

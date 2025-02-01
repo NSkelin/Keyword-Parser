@@ -12,9 +12,15 @@ const validationRules: ValidationInputRules = {
 
 export interface SubmissionCallbacks {
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onCreate: (keywordId: number, collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
+  onKeywordCreate: (
+    keywordId: number,
+    collectionName: string,
+    displayName: string,
+    proficient: boolean,
+    aliases: string[],
+  ) => void;
   /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
-  onUpdate: (
+  onKeywordUpdate: (
     keywordId: number,
     collectionName: string,
     newDisplayName: string,
@@ -22,7 +28,7 @@ export interface SubmissionCallbacks {
     newAliases: string[],
   ) => void;
   /** A callback for when a user successfully deletes a keyword. Should be used to update state to keep the list relevant. */
-  onDelete: (keywordId: number, collectionName: string) => void;
+  onKeywordDelete: (keywordId: number, collectionName: string) => void;
 }
 
 export interface KeywordEditorProps extends SubmissionCallbacks {
@@ -54,9 +60,9 @@ export function KeywordEditor({
   initialProficient = false,
   initialAliases = [],
   mode = "Create",
-  onCreate,
-  onUpdate,
-  onDelete,
+  onKeywordCreate,
+  onKeywordUpdate,
+  onKeywordDelete,
   onSubmit,
   onCancel,
 }: KeywordEditorProps) {
@@ -138,7 +144,7 @@ export function KeywordEditor({
         try {
           if (!validateForm()) return;
           const id = await requestKeywordCreate();
-          onCreate(id, collection, displayName, proficient, aliases);
+          onKeywordCreate(id, collection, displayName, proficient, aliases);
         } catch (error) {
           console.error("Error occurred while adding keyword:", error);
           return;
@@ -149,7 +155,7 @@ export function KeywordEditor({
         try {
           if (!validateForm()) return;
           await requestKeywordUpdate();
-          onUpdate(id, collection, displayName, proficient, aliases);
+          onKeywordUpdate(id, collection, displayName, proficient, aliases);
         } catch (error) {
           console.error("Error occurred while updating keyword:", error);
           return;
@@ -159,7 +165,7 @@ export function KeywordEditor({
       case "Delete":
         try {
           await requestKeywordDelete();
-          onDelete(id, collection);
+          onKeywordDelete(id, collection);
         } catch (error) {
           console.error("Error occurred while deleting keyword:", error);
           return;

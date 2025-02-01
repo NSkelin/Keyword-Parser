@@ -19,7 +19,14 @@ export interface KeywordDisplayProps extends SubmissionCallbacks {
 /** Displays a Keyword list with a group title for the keywords and
  * a fully functional editor to add, edit, or remove keywords.
  */
-export function KeywordDisplay({keywords, title = "", highlightColor, onCreate, onUpdate, onDelete}: KeywordDisplayProps) {
+export function KeywordDisplay({
+  keywords,
+  title = "",
+  highlightColor,
+  onKeywordCreate,
+  onKeywordUpdate,
+  onKeywordDelete,
+}: KeywordDisplayProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [editorId, setEditorId] = useState<number>(-1);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
@@ -81,9 +88,9 @@ export function KeywordDisplay({keywords, title = "", highlightColor, onCreate, 
           initialProficient={proficient}
           initialAliases={aliases}
           mode={editorMode}
-          onCreate={onCreate}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
+          onKeywordCreate={onKeywordCreate}
+          onKeywordUpdate={onKeywordUpdate}
+          onKeywordDelete={onKeywordDelete}
           onSubmit={handleSubmit}
           onCancel={handleCancel}
         />

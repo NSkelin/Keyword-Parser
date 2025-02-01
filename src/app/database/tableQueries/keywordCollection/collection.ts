@@ -184,3 +184,13 @@ export async function deleteCollections() {
   // The transaction runs synchronously so deleteCollections must run last.
   await prisma.$transaction([deleteAliases, deleteKeywords, deleteCollections]);
 }
+
+/**
+ * Creates one or more new empty keywordCollections. Does not create keywords or aliases.
+ */
+export async function createCollections(collections: {title: string; highlightColor: string}[]) {
+  await prisma.keywordCollection.createMany({
+    data: collections,
+  });
+  return;
+}

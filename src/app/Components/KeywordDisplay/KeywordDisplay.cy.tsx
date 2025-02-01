@@ -7,13 +7,25 @@ const keywords: Keyword[] = data;
 describe("<KeywordDisplay />", () => {
   beforeEach(() => {
     cy.mount(
-      <KeywordDisplay keywords={keywords} title="Keyword Display" onCreate={() => {}} onUpdate={() => {}} onDelete={() => {}} />,
+      <KeywordDisplay
+        keywords={keywords}
+        title="Keyword Display"
+        onKeywordCreate={() => {}}
+        onKeywordUpdate={() => {}}
+        onKeywordDelete={() => {}}
+      />,
     );
   });
 
   it("renders", () => {
     cy.mount(
-      <KeywordDisplay keywords={keywords} title="Keyword Display" onCreate={() => {}} onUpdate={() => {}} onDelete={() => {}} />,
+      <KeywordDisplay
+        keywords={keywords}
+        title="Keyword Display"
+        onKeywordCreate={() => {}}
+        onKeywordUpdate={() => {}}
+        onKeywordDelete={() => {}}
+      />,
     );
   });
 
