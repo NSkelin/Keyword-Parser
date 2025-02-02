@@ -100,7 +100,14 @@ export function KeywordDisplay({
         <button data-cy="create" onClick={openCreate}>
           Add keyword +
         </button>
-        <PopoverPicker color={color} onChange={handleColorChange} />
+
+        <PopoverPicker
+          color={color}
+          onChange={handleColorChange}
+          onConfirm={() => {
+            return;
+          }}
+        />
       </div>
       <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={color} />
     </section>
