@@ -4,6 +4,7 @@ import {KeywordEditor} from "@/components/KeywordEditor";
 import {KeywordList} from "@/components/KeywordList";
 import {PopoverPicker} from "@/components/PopoverPicker";
 import type {Keyword} from "@/utils/types";
+import Image from "next/image";
 import {useRef, useState} from "react";
 import styles from "./KeywordDisplay.module.scss";
 
@@ -31,6 +32,8 @@ export function KeywordDisplay({
   const [editorId, setEditorId] = useState<number>(-1);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
   const [color, setColor] = useState(highlightColor ?? "FFFFFF");
+
+  const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
 
   // Create a new array as the old one is readonly. Passes the list to <KeywordList /> which requires a mutable list (to sort it).
   const keywordsList = keywords.map(({...rest}) => {
@@ -98,7 +101,7 @@ export function KeywordDisplay({
       <h2>{title}</h2>
       <div>
         <button data-cy="create" onClick={openCreate}>
-          Add keyword +
+          Add keyword {addSVG}
         </button>
 
         <PopoverPicker
