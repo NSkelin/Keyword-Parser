@@ -1,6 +1,6 @@
 import {KeywordDisplay} from "@/components/KeywordDisplay";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
-import {createCollection} from "@/utils/actions";
+import {createCollectionAction} from "@/utils/actions";
 import type {Keyword} from "@/utils/types";
 import {CSSProperties, useRef, useState} from "react";
 import {z} from "zod";
@@ -20,6 +20,8 @@ export interface KeywordDisplayCollectionProps extends SubmissionCallbacks {
   /** The list of data used to generate the displays */
   displays: Display[];
   onCollectionCreate: (collectionName: string) => void;
+  onCollectionUpdate: (collectionName: string, newCollectionName: string, newHighlightColor: string) => void;
+  onCollectionDelete: (collectionName: string) => void;
 }
 
 /** Renders a grouped collection of displays. */
@@ -29,6 +31,8 @@ export function KeywordDisplayCollection({
   onKeywordUpdate,
   onKeywordDelete,
   onCollectionCreate,
+  onCollectionUpdate,
+  onCollectionDelete,
 }: KeywordDisplayCollectionProps) {
   const [collectionName, setCollectionName] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -42,6 +46,8 @@ export function KeywordDisplayCollection({
         onKeywordCreate={onKeywordCreate}
         onKeywordDelete={onKeywordDelete}
         onKeywordUpdate={onKeywordUpdate}
+        onCollectionUpdate={onCollectionUpdate}
+        onCollectionDelete={onCollectionDelete}
       />
     );
   });
@@ -61,7 +67,7 @@ export function KeywordDisplayCollection({
       title: formData.get("title"),
     });
 
-    await createCollection(formData);
+    await createCollectionAction(formData);
     onCollectionCreate(title);
     closeDialog();
   }

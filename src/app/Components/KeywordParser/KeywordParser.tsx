@@ -168,6 +168,22 @@ export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps
     });
   }
 
+  function handleUpdateCollection(collectionName: string, newCollectionName: string, newHighlightColor: string) {
+    dispatch({
+      type: "updateCollection",
+      collectionName,
+      newCollectionName,
+      newHighlightColor,
+    });
+  }
+
+  function handleDeleteCollection(collectionName: string) {
+    dispatch({
+      type: "deleteCollection",
+      collectionName,
+    });
+  }
+
   /** Searches the text area's input for each alias and returns the total count found. */
   function countInstances(aliases: string[], sourceText = textAreaInput) {
     const regEx = createKeywordsRegEx(aliases);
@@ -193,6 +209,7 @@ export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps
     }
     return;
   }
+
   return (
     <>
       <section className={styles.contentWrap}>
@@ -212,6 +229,8 @@ export function KeywordParser({initialDisplays, sectionData}: KeywordParserProps
           onKeywordDelete={handleDeleteKeyword}
           onKeywordUpdate={handleUpdateKeyword}
           onCollectionCreate={handleCreateCollection}
+          onCollectionUpdate={handleUpdateCollection}
+          onCollectionDelete={handleDeleteCollection}
         />
       </section>
       <ResumeBuilder sectionData={sectionData} keywordCollections={displays} />

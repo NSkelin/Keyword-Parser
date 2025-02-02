@@ -1,7 +1,9 @@
 export {
+  createCollections,
   createCollectionsWithKeywordsAndAliases,
-  deleteCollections,
+  deleteAllCollections as deleteCollections,
   getCollectionsAliases,
   getCollectionsKeywords,
   getCollectionsWithKeywordsAndAliases,
+  updateCollection,
 } from "./collection";

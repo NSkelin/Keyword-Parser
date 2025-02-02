@@ -3,9 +3,11 @@ import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import {KeywordEditor} from "@/components/KeywordEditor";
 import {KeywordList} from "@/components/KeywordList";
 import {PopoverPicker} from "@/components/PopoverPicker";
+import {deleteCollectionAction, updateCollectionAction} from "@/utils/actions";
 import type {Keyword} from "@/utils/types";
 import Image from "next/image";
 import {useRef, useState} from "react";
+import {InlineEdit} from "../InlineEdit";
 import styles from "./KeywordDisplay.module.scss";
 
 export interface KeywordDisplayProps extends SubmissionCallbacks {
@@ -15,6 +17,9 @@ export interface KeywordDisplayProps extends SubmissionCallbacks {
   keywords: Keyword[];
   /** The color used for each keywords highlight color */
   highlightColor?: string;
+
+  onCollectionUpdate: (collectionName: string, newCollectionName: string, newHighlightColor: string) => void;
+  onCollectionDelete: (collectionName: string) => void;
 }
 
 /** Displays a Keyword list with a group title for the keywords and
@@ -27,12 +32,16 @@ export function KeywordDisplay({
   onKeywordCreate,
   onKeywordUpdate,
   onKeywordDelete,
+  onCollectionUpdate,
+  onCollectionDelete,
 }: KeywordDisplayProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  const keywordEditDialogRef = useRef<HTMLDialogElement>(null);
+  const collectionDeleteDialogRef = useRef<HTMLDialogElement>(null);
   const [editorId, setEditorId] = useState<number>(-1);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
   const [color, setColor] = useState(highlightColor ?? "FFFFFF");
 
+  const closeSVG = <Image src="/close.svg" alt="Edit icon" width={16} height={16} />;
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
 
   // Create a new array as the old one is readonly. Passes the list to <KeywordList /> which requires a mutable list (to sort it).
@@ -41,35 +50,59 @@ export function KeywordDisplay({
   });
 
   /** Opens and sets the KeywordEditor dialog for creating new keywords. */
-  function openCreate() {
+  function openKeywordCreateDialog() {
     setEditorMode("Create");
     setEditorId(-1);
-    dialogRef.current?.showModal();
+    keywordEditDialogRef.current?.showModal();
   }
 
   /** Opens and sets the KeywordEditor dialog for editing existing keywords. */
-  function openEdit(id: number) {
-    if (dialogRef.current) {
+  function openKeywordEditDialog(id: number) {
+    if (keywordEditDialogRef.current) {
       setEditorId(id);
       setEditorMode("Edit");
-      dialogRef.current.showModal();
+      keywordEditDialogRef.current.showModal();
     }
   }
 
-  function handleSubmit() {
+  function handleKeywordDialogSubmit() {
     setEditorId(-1);
-    dialogRef.current?.close();
+    keywordEditDialogRef.current?.close();
   }
 
-  function handleCancel() {
+  function handleKeywordDialogCancel() {
     // clear the form by reseting state when the user clickes cancel.
     // react resets the state when its key changes so we use a unique key that no other form will use.
     setEditorId(-2);
-    dialogRef.current?.close();
+    keywordEditDialogRef.current?.close();
   }
 
   function handleColorChange(newColor: string) {
     setColor(newColor);
+  }
+
+  async function handleCollectionNameUpdate(newCollectionName: string) {
+    await updateCollectionAction(title, {newTitle: newCollectionName});
+    onCollectionUpdate(title, newCollectionName, color);
+  }
+
+  async function handleCollectionColorUpdate(newHighlightColor: string) {
+    await updateCollectionAction(title, {newHighlightColor});
+    onCollectionUpdate(title, title, newHighlightColor);
+  }
+
+  async function handleCollectionDelete() {
+    await deleteCollectionAction(title);
+    collectionDeleteDialogRef.current?.close();
+    onCollectionDelete(title);
+  }
+
+  function openCollectionDeleteDialog() {
+    collectionDeleteDialogRef.current?.showModal();
+  }
+
+  function closeCollectionDeleteDialog() {
+    collectionDeleteDialogRef.current?.close();
   }
 
   // get the initial data
@@ -82,7 +115,7 @@ export function KeywordDisplay({
   }
   return (
     <section data-cy="keywordDisplayComp" className={styles.container}>
-      <Dialog ref={dialogRef}>
+      <Dialog ref={keywordEditDialogRef}>
         <KeywordEditor
           key={editorId}
           id={editorId}
@@ -94,25 +127,30 @@ export function KeywordDisplay({
           onKeywordCreate={onKeywordCreate}
           onKeywordUpdate={onKeywordUpdate}
           onKeywordDelete={onKeywordDelete}
-          onSubmit={handleSubmit}
-          onCancel={handleCancel}
+          onSubmit={handleKeywordDialogSubmit}
+          onCancel={handleKeywordDialogCancel}
         />
       </Dialog>
-      <h2>{title}</h2>
+      <Dialog ref={collectionDeleteDialogRef}>
+        <h2>Are you sure you want to delete the collection: {title}?</h2>
+        <button onClick={() => void handleCollectionDelete()}>Delete</button>
+        <button onClick={closeCollectionDeleteDialog}>Cancel</button>
+      </Dialog>
+      <InlineEdit value={title} onSave={(newValue) => void handleCollectionNameUpdate(newValue)}>
+        <h2>{title}</h2>
+      </InlineEdit>
       <div>
-        <button data-cy="create" onClick={openCreate}>
+        <button data-cy="create" onClick={openKeywordCreateDialog}>
           Add keyword {addSVG}
         </button>
-
+        <button onClick={openCollectionDeleteDialog}>Delete collection {closeSVG}</button>
         <PopoverPicker
           color={color}
           onChange={handleColorChange}
-          onConfirm={() => {
-            return;
-          }}
+          onConfirm={(newColor) => void handleCollectionColorUpdate(newColor)}
         />
       </div>
-      <KeywordList onEdit={openEdit} keywords={keywordsList} highlightColor={color} />
+      <KeywordList onEdit={openKeywordEditDialog} keywords={keywordsList} highlightColor={color} />
     </section>
   );
 }

@@ -176,7 +176,12 @@ export async function getCollectionsWithKeywordsAndAliases(collectionTitles: str
   });
 }
 
-export async function deleteCollections() {
+/**
+ * DO NOT USE --- THIS FUNCTION IS FOR TESTING ONLY.
+ *
+ * Deletes every collection and all related tables.
+ */
+export async function deleteAllCollections() {
   const deleteAliases = prisma.keywordAlias.deleteMany();
   const deleteKeywords = prisma.keyword.deleteMany();
   const deleteCollections = prisma.keywordCollection.deleteMany();
@@ -193,4 +198,28 @@ export async function createCollections(collections: {title: string; highlightCo
     data: collections,
   });
   return;
+}
+
+/**
+ * Updates the fields for a keyword collection.
+ */
+export async function updateCollection(collectionTitle: string, newData: {newTitle?: string; newHighlightColor?: string}) {
+  await prisma.keywordCollection.update({
+    where: {
+      title: collectionTitle,
+    },
+    data: {
+      title: newData.newTitle ?? undefined,
+      highlightColor: newData.newHighlightColor ?? undefined,
+      keywords: undefined,
+    },
+  });
+}
+
+export async function deleteCollection(title: string) {
+  const deleteCollection = prisma.keywordCollection.deleteMany({
+    where: {title: title},
+  });
+
+  await prisma.$transaction([deleteCollection]);
 }

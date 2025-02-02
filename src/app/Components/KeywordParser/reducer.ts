@@ -34,7 +34,8 @@ interface CreateCollectionAction {
 interface UpdateCollectionAction {
   type: "updateCollection";
   collectionName: string;
-  highlightColor: string;
+  newCollectionName: string;
+  newHighlightColor: string;
 }
 interface DeleteCollectionAction {
   type: "deleteCollection";
@@ -117,15 +118,16 @@ export function collectionsReducer(
       const collection = draft.find((collection) => collection.title === action.collectionName);
       if (collection == null) throw new Error("Collection doesnt exist!");
 
-      collection.title = action.collectionName;
-      collection.highlightColor = action.highlightColor;
+      collection.title = action.newCollectionName;
+      collection.highlightColor = action.newHighlightColor;
       break;
     }
 
     case "deleteCollection": {
-      const collection = draft.find((collection) => collection.title === action.collectionName);
-      if (collection == null) throw new Error("Collection doesnt exist!");
+      const index = draft.findIndex((collection) => collection.title === action.collectionName);
+      if (index === -1) throw new Error("Collection doesn't exist!");
 
+      draft.splice(index, 1); // Remove the collection from the draft
       break;
     }
   }
