@@ -98,7 +98,7 @@ const eslintConfig = tseslint.config([
         {
           patterns: [
             {
-              regex: "^(?:@/components/?|src/app/components/?)$",
+              regex: "^(?:@/components/?|src/components/?)$",
               message:
                 "Do not import the component barrel file (index.js) from inside a component being re-exported by the barrel.\
                 This will cause circular dependency errors that are hard to find and understand.",
@@ -117,7 +117,7 @@ const eslintConfig = tseslint.config([
     },
   },
   {
-    files: ["src/app/**/{page,layout,}.tsx", "src/app/**/*.stories.{ts,tsx}", "src/app/database/client.ts"], // Ignore.
+    files: ["src/app/**/{page,layout,}.tsx", "src/**/*.stories.{ts,tsx}", "src/database/client.ts"], // Ignore.
     rules: {
       "no-restricted-exports": "off",
     },
