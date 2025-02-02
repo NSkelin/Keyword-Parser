@@ -1,5 +1,5 @@
 import {RegExDisplay} from "@/components/RegExDisplay";
-import prisma from "src/app/database/client";
+import prisma from "@/database/client";
 import styles from "./RegExDisplayCollection.module.scss";
 
 /** Renders a RegExDisplay for every collection in the database. Used for debugging. */

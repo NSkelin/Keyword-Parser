@@ -1,4 +1,4 @@
-import {getKeywordAliases} from "../keywordAlias";
+import {getKeywordAliases} from ".";
 import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "../keywordCollection";
 
 const DBSeedData = [
