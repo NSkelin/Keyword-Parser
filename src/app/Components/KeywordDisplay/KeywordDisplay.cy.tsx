@@ -13,6 +13,8 @@ describe("<KeywordDisplay />", () => {
         onKeywordCreate={() => {}}
         onKeywordUpdate={() => {}}
         onKeywordDelete={() => {}}
+        onCollectionUpdate={() => {}}
+        onCollectionDelete={() => {}}
       />,
     );
   });
@@ -25,6 +27,8 @@ describe("<KeywordDisplay />", () => {
         onKeywordCreate={() => {}}
         onKeywordUpdate={() => {}}
         onKeywordDelete={() => {}}
+        onCollectionUpdate={() => {}}
+        onCollectionDelete={() => {}}
       />,
     );
   });
