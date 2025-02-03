@@ -132,9 +132,19 @@ export function KeywordDisplay({
         />
       </Dialog>
       <Dialog ref={collectionDeleteDialogRef}>
-        <h2>Are you sure you want to delete the collection: {title}?</h2>
-        <button onClick={() => void handleCollectionDelete()}>Delete</button>
-        <button onClick={closeCollectionDeleteDialog}>Cancel</button>
+        <form action={handleCollectionDelete} className={styles.form}>
+          <div className={styles.warning}>
+            <h3>Are you sure you want to delete this collection</h3>
+            <b>{title}</b>
+            <span>This action cannot be undone.</span>
+          </div>
+          <div className={styles.actionBar}>
+            <button type="submit">Yes, delete forever</button>
+            <button type="button" onClick={closeCollectionDeleteDialog}>
+              Cancel
+            </button>
+          </div>
+        </form>
       </Dialog>
       <div className={styles.titleContainer}>
         <PopoverPicker
