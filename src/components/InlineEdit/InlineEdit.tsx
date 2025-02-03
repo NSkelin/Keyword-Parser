@@ -6,8 +6,6 @@ export interface InlineEditProps {
   value: string;
   onSave: (newValue: string) => void;
   type?: "text" | "number" | "textarea";
-  placeholder?: string;
-  className?: string;
   children?: React.ReactNode;
 }
 
