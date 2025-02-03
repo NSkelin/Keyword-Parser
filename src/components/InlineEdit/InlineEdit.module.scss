@@ -1,5 +1,36 @@
+.editingContainer {
+  padding: 2px;
+
+  input,
+  textarea {
+    width: 100%;
+  }
+}
 .children {
   display: flex;
   align-items: center;
   gap: 2px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.buttonContainer {
+  position: relative;
+  top: -7px;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+
+  padding: 0 5px;
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .submitButton {
+    background-color: rgb(72, 226, 72);
+  }
 }

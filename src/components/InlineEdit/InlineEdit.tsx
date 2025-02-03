@@ -28,16 +28,20 @@ export function InlineEdit({value, onSave, type = "text", children}: InlineEditP
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       {isEditing ? (
-        <div>
+        <div className={styles.editingContainer}>
           {type === "textarea" ? (
             <textarea value={inputValue} onChange={(e) => setInputValue(e.target.value)} autoFocus />
           ) : (
             <input type={type} value={inputValue} onChange={(e) => setInputValue(e.target.value)} autoFocus />
           )}
-          <button onClick={handleSave}>{checkSVG}</button>
-          <button onClick={handleCancel}>{closeSVG}</button>
+          <div className={styles.buttonContainer}>
+            <button className={styles.submitButton} onClick={handleSave}>
+              {checkSVG}
+            </button>
+            <button onClick={handleCancel}>{closeSVG}</button>
+          </div>
         </div>
       ) : (
         <div className={styles.children} onClick={() => setIsEditing(true)}>
