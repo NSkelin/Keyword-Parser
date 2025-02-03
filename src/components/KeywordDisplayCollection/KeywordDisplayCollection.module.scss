@@ -32,3 +32,21 @@
     justify-content: space-between;
   }
 }
+
+.addButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgb(240, 252, 255);
+  margin: 5px;
+  flex: 0 0 30%;
+
+  border-style: dashed;
+  border-width: 2px;
+  border-color: rgba(142, 162, 206, 0.637);
+
+  &:hover {
+    background-color: rgb(212, 238, 247);
+  }
+}

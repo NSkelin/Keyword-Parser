@@ -2,6 +2,7 @@ import {KeywordDisplay} from "@/components/KeywordDisplay";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import {createCollectionAction} from "@/utils/actions";
 import type {Keyword} from "@/utils/types";
+import Image from "next/image";
 import {CSSProperties, useRef, useState} from "react";
 import {z} from "zod";
 import {Dialog} from "../Dialog";
@@ -36,6 +37,9 @@ export function KeywordDisplayCollection({
 }: KeywordDisplayCollectionProps) {
   const [collectionName, setCollectionName] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
+
   const displaysList = displays.map(({title, keywords, highlightColor}) => {
     return (
       <KeywordDisplay
@@ -78,8 +82,12 @@ export function KeywordDisplayCollection({
 
   return (
     <section className={styles.displayCollection}>
-      <button onClick={openDialog}>Create new collection</button>
-      <div className={styles.overflowContainer}>{displaysList}</div>
+      <div className={styles.overflowContainer}>
+        {displaysList}
+        <button className={styles.addButton} onClick={openDialog}>
+          New collection {addSVG}
+        </button>
+      </div>
       <Dialog ref={dialogRef}>
         <form action={handleCreateCollection} className={styles.form}>
           <h2>Create a new collection</h2>
