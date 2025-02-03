@@ -41,7 +41,7 @@ export function KeywordDisplay({
   const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
   const [color, setColor] = useState(highlightColor ?? "FFFFFF");
 
-  const closeSVG = <Image src="/close.svg" alt="Edit icon" width={16} height={16} />;
+  const trashSVG = <Image src="/delete_forever.svg" alt="Edit icon" width={20} height={20} />;
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
 
   // Create a new array as the old one is readonly. Passes the list to <KeywordList /> which requires a mutable list (to sort it).
@@ -136,20 +136,22 @@ export function KeywordDisplay({
         <button onClick={() => void handleCollectionDelete()}>Delete</button>
         <button onClick={closeCollectionDeleteDialog}>Cancel</button>
       </Dialog>
-      <InlineEdit value={title} onSave={(newValue) => void handleCollectionNameUpdate(newValue)}>
-        <h2>{title}</h2>
-      </InlineEdit>
-      <div>
-        <button data-cy="create" onClick={openKeywordCreateDialog}>
-          Add keyword {addSVG}
-        </button>
-        <button onClick={openCollectionDeleteDialog}>Delete collection {closeSVG}</button>
+      <div className={styles.titleContainer}>
         <PopoverPicker
           color={color}
           onChange={handleColorChange}
           onConfirm={(newColor) => void handleCollectionColorUpdate(newColor)}
         />
+        <InlineEdit value={title} onSave={(newValue) => void handleCollectionNameUpdate(newValue)}>
+          <h2>{title}</h2>
+        </InlineEdit>
       </div>
+      <button className={styles.trashButton} onClick={openCollectionDeleteDialog}>
+        Delete collection {trashSVG}
+      </button>
+      <button data-cy="create" className={styles.addButton} onClick={openKeywordCreateDialog}>
+        New keyword {addSVG}
+      </button>
       <KeywordList onEdit={openKeywordEditDialog} keywords={keywordsList} highlightColor={color} />
     </section>
   );

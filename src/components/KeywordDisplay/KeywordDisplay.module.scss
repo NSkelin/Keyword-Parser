@@ -4,3 +4,39 @@
   flex: 0 0 30%;
   width: 220px;
 }
+.addButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgb(240, 252, 255);
+  margin: 5px;
+  height: 60px;
+
+  border-style: dashed;
+  border-width: 2px;
+  border-color: rgba(142, 162, 206, 0.637);
+
+  &:hover {
+    background-color: rgb(212, 238, 247);
+  }
+}
+.trashButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 5px;
+  color: white;
+
+  background-color: rgb(255, 99, 99);
+
+  &:hover {
+    background-color: rgb(255, 77, 77);
+  }
+}
+.titleContainer {
+  display: flex;
+  padding: 0 0 15px 0;
+  gap: 5px;
+}
