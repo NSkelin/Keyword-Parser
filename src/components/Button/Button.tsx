@@ -23,7 +23,14 @@ export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTML
 /**
  * A generic button component to keep unified styling across all buttons.
  */
-export function Button({buttonStyle = "default", iconOnly = false, stretch = "none", children, ...props}: ButtonProps) {
+export function Button({
+  buttonStyle = "default",
+  iconOnly = false,
+  stretch = "none",
+  className,
+  children,
+  ...props
+}: ButtonProps) {
   const iconStyle = iconOnly ? "icon" : "";
   const stretchedStyle = `${stretch}Stretched`;
 
@@ -31,7 +38,8 @@ export function Button({buttonStyle = "default", iconOnly = false, stretch = "no
   const classNames = `
   ${styles[buttonStyle]} 
   ${styles[iconStyle]} 
-  ${styles[stretchedStyle]}
+  ${styles[stretchedStyle]} 
+  ${className} 
   `;
   return (
     <>
