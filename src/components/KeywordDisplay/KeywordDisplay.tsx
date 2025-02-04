@@ -1,3 +1,4 @@
+import {Button} from "@/components/Button";
 import {Dialog} from "@/components/Dialog";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import {KeywordEditor} from "@/components/KeywordEditor";
@@ -139,10 +140,12 @@ export function KeywordDisplay({
             <span>This action cannot be undone.</span>
           </div>
           <div className={styles.actionBar}>
-            <button type="submit">Yes, delete forever</button>
-            <button type="button" onClick={closeCollectionDeleteDialog}>
+            <Button buttonStyle="delete" type="submit">
+              Yes, delete forever
+            </Button>
+            <Button type="button" onClick={closeCollectionDeleteDialog}>
               Cancel
-            </button>
+            </Button>
           </div>
         </form>
       </Dialog>
@@ -156,12 +159,12 @@ export function KeywordDisplay({
           <h2>{title}</h2>
         </InlineEdit>
       </div>
-      <button className={styles.trashButton} onClick={openCollectionDeleteDialog}>
+      <Button buttonStyle="delete" onClick={openCollectionDeleteDialog}>
         Delete collection {trashSVG}
-      </button>
-      <button data-cy="create" className={styles.addButton} onClick={openKeywordCreateDialog}>
+      </Button>
+      <Button data-cy="create" buttonStyle="create" onClick={openKeywordCreateDialog}>
         New keyword {addSVG}
-      </button>
+      </Button>
       <KeywordList onEdit={openKeywordEditDialog} keywords={keywordsList} highlightColor={color} />
     </section>
   );

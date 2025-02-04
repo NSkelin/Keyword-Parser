@@ -1,3 +1,4 @@
+import {Button} from "@/components/Button";
 import Image from "next/image";
 import {useEffect, useRef, useState} from "react";
 import {HexColorPicker} from "react-colorful";
@@ -74,8 +75,12 @@ export function PopoverPicker({color, onChange, onConfirm}: PopoverPickerProps) 
         <div className={styles.popover} ref={popover}>
           <HexColorPicker color={color} onChange={onChange} />
           <div className={styles.buttonWrap}>
-            <button onClick={handleCancel}>{closeSVG}</button>
-            <button onClick={handleConfirmClick}>{checkSVG}</button>
+            <Button iconOnly onClick={handleCancel}>
+              {closeSVG}
+            </Button>
+            <Button buttonStyle="submit" iconOnly onClick={handleConfirmClick}>
+              {checkSVG}
+            </Button>
           </div>
         </div>
       )}

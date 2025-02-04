@@ -1,3 +1,4 @@
+import {Button} from "@/components/Button";
 import Image from "next/image";
 import {CSSProperties} from "react";
 import styles from "./KeywordItem.module.scss";
@@ -54,9 +55,9 @@ export function KeywordItem({
         {displayName}
       </span>
       <div className={styles.containerEnd}>
-        <button data-cy="edit" onClick={() => onEdit(id)}>
+        <Button iconOnly data-cy="edit" onClick={() => onEdit(id)}>
           {editSVG}
-        </button>
+        </Button>
         <span data-cy="instances">{instances}</span>
       </div>
     </li>

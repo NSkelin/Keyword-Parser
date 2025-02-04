@@ -1,4 +1,5 @@
 import {BulletList} from "@/components/BulletList";
+import {Button} from "@/components/Button";
 import {ResumeSection} from "@/components/ResumeSection";
 import {ResumeSubSection} from "@/components/ResumeSubSection";
 import {SkillSummary} from "@/components/SkillSummary";
@@ -236,7 +237,7 @@ export function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderPr
     <section className={styles.container}>
       <h1>Resume Builder</h1>
       <SkillSummary skillGroups={skillGroups} />
-      <button onClick={resetOverride}>Reset overrides</button>
+      <Button onClick={resetOverride}>Reset overrides</Button>
       {resumeSections}
     </section>
   );

@@ -1,8 +1,10 @@
+import {Button} from "@/components/Button";
 import {Input} from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
 import {ChangeEvent, useState} from "react";
 import styles from "./CommaSeparatedInput.module.scss";
+
 const validationRules: ValidationInputRules = {
   required: true,
   minLen: 2,
@@ -61,9 +63,9 @@ export function CommaSeparatedInput({label, required, savedInputs, errorMessage,
   const savedInputsDisplay = savedInputs.map((val, index) => (
     <span key={index}>
       {val}
-      <button data-cy="remove" onClick={() => handleDelete(val)}>
+      <Button buttonStyle="delete" iconOnly data-cy="remove" onClick={() => handleDelete(val)}>
         x
-      </button>
+      </Button>
     </span>
   ));
 

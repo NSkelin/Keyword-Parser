@@ -1,9 +1,11 @@
+import {Button} from "@/components/Button";
 import {CommaSeparatedInput} from "@/components/CommaSeparatedInput";
 import {Input} from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
 import {useState} from "react";
 import styles from "./KeywordEditor.module.scss";
+
 const validationRules: ValidationInputRules = {
   required: true,
   minLen: 2,
@@ -181,27 +183,27 @@ export function KeywordEditor({
     if (mode === "Create") {
       return (
         <>
-          <button data-cy="submit" onClick={() => void handleSubmit("Create")}>
+          <Button buttonStyle="submit" data-cy="submit" onClick={() => void handleSubmit("Create")}>
             Create
-          </button>
-          <button data-cy="cancel" onClick={onCancel}>
+          </Button>
+          <Button data-cy="cancel" onClick={onCancel}>
             Cancel
-          </button>
+          </Button>
         </>
       );
     } else if (mode === "Edit") {
       return (
         <>
-          <button data-cy="submit" onClick={() => void handleSubmit("Update")}>
+          <Button buttonStyle="submit" data-cy="submit" onClick={() => void handleSubmit("Update")}>
             Save
-          </button>
+          </Button>
           <div>
-            <button data-cy="delete" onClick={() => void handleSubmit("Delete")}>
+            <Button buttonStyle="delete" data-cy="delete" onClick={() => void handleSubmit("Delete")}>
               Delete
-            </button>
-            <button data-cy="cancel" onClick={onCancel}>
+            </Button>
+            <Button data-cy="cancel" onClick={onCancel}>
               Cancel
-            </button>
+            </Button>
           </div>
         </>
       );

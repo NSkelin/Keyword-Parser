@@ -1,3 +1,4 @@
+import {Button} from "@/components/Button";
 import {SkillGroup} from "@/components/SkillGroup";
 import Image from "next/image";
 import {useEffect} from "react";
@@ -164,9 +165,9 @@ export function SkillSummary({skillGroups}: KeywordSummaryProps) {
     <section>
       <div className={styles.title}>
         <h2>Skills</h2>
-        <button className={styles.button} onClick={copyToClipboard}>
+        <Button iconOnly onClick={copyToClipboard}>
           <Image src="/content_copy.svg" alt="Copy to clipboard icon" width={20} height={20} />
-        </button>
+        </Button>
       </div>
       <div>{skillGroupElements}</div>
     </section>

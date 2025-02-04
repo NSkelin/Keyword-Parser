@@ -1,3 +1,4 @@
+import {Button} from "@/components/Button";
 import {KeywordDisplay} from "@/components/KeywordDisplay";
 import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import {createCollectionAction} from "@/utils/actions";
@@ -100,10 +101,12 @@ export function KeywordDisplayCollection({
             ></input>
           </div>
           <div className={styles.actionBar}>
-            <button type="submit">Create</button>
-            <button type="button" onClick={handleDialogCancel}>
+            <Button buttonStyle="submit" type="submit">
+              Create {addSVG}
+            </Button>
+            <Button type="button" onClick={handleDialogCancel}>
               Cancel
-            </button>
+            </Button>
           </div>
         </form>
       </Dialog>

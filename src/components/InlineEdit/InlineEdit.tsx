@@ -1,3 +1,4 @@
+import {Button} from "@/components/Button";
 import Image from "next/image";
 import {useState} from "react";
 import styles from "./InlineEdit.module.scss";
@@ -37,10 +38,12 @@ export function InlineEdit({value, onSave, type = "text", children}: InlineEditP
             <input type={type} value={inputValue} onChange={(e) => setInputValue(e.target.value)} autoFocus />
           )}
           <div className={styles.buttonContainer}>
-            <button className={styles.submitButton} onClick={handleSave}>
+            <Button buttonStyle="submit" iconOnly onClick={handleSave}>
               {checkSVG}
-            </button>
-            <button onClick={handleCancel}>{closeSVG}</button>
+            </Button>
+            <Button iconOnly onClick={handleCancel}>
+              {closeSVG}
+            </Button>
           </div>
         </div>
       ) : (
