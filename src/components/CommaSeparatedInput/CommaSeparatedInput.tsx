@@ -2,6 +2,7 @@ import {Button} from "@/components/Button";
 import {Input} from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
+import Image from "next/image";
 import {ChangeEvent, useState} from "react";
 import styles from "./CommaSeparatedInput.module.scss";
 
@@ -27,6 +28,8 @@ export interface CommaSeparatedInputProps {
 export function CommaSeparatedInput({label, required, savedInputs, errorMessage, onInputChange}: CommaSeparatedInputProps) {
   const [inputValue, setInputValue] = useState("");
   const [validation, setValidation] = useState({valid: true, error: ""});
+
+  const closeSVG = <Image src="/close_light.svg" alt="Edit icon" width={16} height={16} />;
 
   /** Handles the response to a user typing in the input. When the user enters a comma, the input will be cleared and a new item will be added to the list below. */
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -64,7 +67,7 @@ export function CommaSeparatedInput({label, required, savedInputs, errorMessage,
     <span key={index}>
       {val}
       <Button buttonStyle="delete" iconOnly data-cy="remove" onClick={() => handleDelete(val)}>
-        x
+        {closeSVG}
       </Button>
     </span>
   ));

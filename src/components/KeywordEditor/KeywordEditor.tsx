@@ -3,6 +3,7 @@ import {CommaSeparatedInput} from "@/components/CommaSeparatedInput";
 import {Input} from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
+import Image from "next/image";
 import {useState} from "react";
 import styles from "./KeywordEditor.module.scss";
 
@@ -73,6 +74,9 @@ export function KeywordEditor({
   const [aliases, setAliases] = useState<string[]>(initialAliases);
   const [CSIErrorMessage, setCSIErrorMessage] = useState<string | undefined>(undefined);
   const displayNameValidation = validateInput(displayName, validationRules);
+
+  const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
+  const trashSVG = <Image src="/delete_forever.svg" alt="Edit icon" width={16} height={16} />;
 
   function validateForm() {
     let valid = true;
@@ -184,7 +188,7 @@ export function KeywordEditor({
       return (
         <>
           <Button buttonStyle="submit" data-cy="submit" onClick={() => void handleSubmit("Create")}>
-            Create
+            Create {addSVG}
           </Button>
           <Button data-cy="cancel" onClick={onCancel}>
             Cancel
@@ -199,7 +203,7 @@ export function KeywordEditor({
           </Button>
           <div>
             <Button buttonStyle="delete" data-cy="delete" onClick={() => void handleSubmit("Delete")}>
-              Delete
+              Delete {trashSVG}
             </Button>
             <Button data-cy="cancel" onClick={onCancel}>
               Cancel

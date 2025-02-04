@@ -7,6 +7,7 @@ import {createKeywordsRegEx, getAliases, getInstancedKeywords} from "@/utils";
 import type {Keyword} from "@/utils/types";
 import {Prisma} from "@prisma/client";
 import {enableMapSet} from "immer";
+import Image from "next/image";
 import {CSSProperties} from "react";
 import {useImmer} from "use-immer";
 import styles from "./ResumeBuilder.module.scss";
@@ -86,6 +87,8 @@ export function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderPr
   const keywords: Keyword[] = keywordCollections.flatMap(({keywords}) => keywords);
   const activeBullets: string[] = [];
   const resumeSections = createSections(sectionData);
+
+  const resetSVG = <Image src="/reset.svg" alt="Star Icon" width={16} height={16} />;
 
   /** Compares each restriction against the keywords passed in to confirm that the keywords include each restriction.
    *
@@ -237,7 +240,7 @@ export function ResumeBuilder({keywordCollections, sectionData}: ResumeBuilderPr
     <section className={styles.container}>
       <h1>Resume Builder</h1>
       <SkillSummary skillGroups={skillGroups} />
-      <Button onClick={resetOverride}>Reset overrides</Button>
+      <Button onClick={resetOverride}>Reset overrides {resetSVG}</Button>
       {resumeSections}
     </section>
   );

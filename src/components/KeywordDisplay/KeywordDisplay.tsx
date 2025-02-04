@@ -141,7 +141,7 @@ export function KeywordDisplay({
           </div>
           <div className={styles.actionBar}>
             <Button buttonStyle="delete" type="submit">
-              Yes, delete forever
+              Yes, delete forever {trashSVG}
             </Button>
             <Button type="button" onClick={closeCollectionDeleteDialog}>
               Cancel
