@@ -26,12 +26,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-}
-
 label {
   display: flex;
   flex-direction: column;
