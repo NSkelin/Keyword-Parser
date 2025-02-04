@@ -1,27 +1,30 @@
-.HighlightAreaWrap {
-  background-color: white;
-  padding: 50px;
-  border-radius: 10px;
-  box-shadow: 3px 3px 3px gray;
-}
-.HighlightAreaWrap {
-  display: flex;
-  flex-direction: column;
-  h2 {
-    margin-bottom: 20px;
-  }
-  flex: 1;
-  max-width: 49%;
-}
-.textArea {
-  flex: 1;
-  overflow: auto;
-  padding-top: 10px;
-  border-top: 2px solid gray;
-}
 .contentWrap {
   display: flex;
   justify-content: space-between;
+
   height: 80vh;
+
   margin-bottom: 20px;
+  gap: 25px;
+
+  .HighlightAreaWrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px gray;
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .textArea {
+      overflow: auto;
+      padding-top: 10px;
+      border-top: 2px solid gray;
+    }
+  }
 }
