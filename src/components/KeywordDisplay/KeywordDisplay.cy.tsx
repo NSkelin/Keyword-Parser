@@ -1,8 +1,7 @@
-import data from "@/mockData/keywords.json";
-import {Keyword} from "@/utils/types";
+import {keywords as data} from "@/mockData/keywords";
 import {KeywordDisplay} from "./KeywordDisplay";
 
-const keywords: Keyword[] = data;
+const keywords = data();
 
 describe("<KeywordDisplay />", () => {
   beforeEach(() => {

@@ -1,0 +1,13 @@
+import {Keyword} from "@/utils/types";
+
+export const keywords = (): Keyword[] => {
+  return keywordsData;
+};
+
+const keywordsData: Keyword[] = [
+  {id: 1, aliases: ["kw1", "kw11", "kw111"], displayName: "kw1", instances: 0, proficient: false},
+  {id: 2, aliases: ["kw2", "kw22", "kw222"], displayName: "kw2", instances: 1, proficient: false},
+  {id: 3, aliases: ["kw3", "kw33", "kw333"], displayName: "kw3", instances: 0, proficient: false},
+  {id: 4, aliases: ["kw4", "kw44", "kw444"], displayName: "kw4", instances: 3, proficient: false},
+  {id: 5, aliases: ["kw5", "kw55", "kw555"], displayName: "kw5", instances: 2, proficient: false},
+];
