@@ -36,7 +36,6 @@ export function KeywordDisplayCollection({
   onCollectionUpdate,
   onCollectionDelete,
 }: KeywordDisplayCollectionProps) {
-  const [collectionName, setCollectionName] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
@@ -63,21 +62,10 @@ export function KeywordDisplayCollection({
 
   function closeDialog() {
     setDialogOpen(false);
-    // reset inputs
-    setCollectionName("");
   }
 
-  async function handleCreateCollection(formData: FormData) {
-    const {title} = NewCollection.parse({
-      title: formData.get("title"),
-    });
-
-    await createCollectionAction(formData);
-    onCollectionCreate(title);
-    closeDialog();
-  }
-
-  function handleDialogCancel() {
+  function handleCollectionCreate(newCollection: string) {
+    onCollectionCreate(newCollection);
     closeDialog();
   }
 
@@ -89,27 +77,63 @@ export function KeywordDisplayCollection({
           New collection {addSVG}
         </Button>
       </div>
-      <Dialog open={dialogOpen}>
-        <form action={handleCreateCollection} className={styles.form}>
-          <h2>Create a new collection</h2>
-          <div className={styles.inputs}>
-            <input
-              placeholder="collection title"
-              name="title"
-              value={collectionName}
-              onChange={(e) => setCollectionName(e.target.value)}
-            ></input>
-          </div>
-          <div className={styles.actionBar}>
-            <Button buttonStyle="submit" type="submit">
-              Create {addSVG}
-            </Button>
-            <Button type="button" onClick={handleDialogCancel}>
-              Cancel
-            </Button>
-          </div>
-        </form>
-      </Dialog>
+      <CreateCollectionFormDialog
+        onCreate={(newCollection) => handleCollectionCreate(newCollection)}
+        onCancel={closeDialog}
+        open={dialogOpen}
+      />
     </section>
+  );
+}
+
+interface CreateCollectionFormDialogProps {
+  onCreate: (collectionName: string) => void;
+  onCancel: () => void;
+  open?: boolean;
+}
+
+function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCollectionFormDialogProps) {
+  const [collectionName, setCollectionName] = useState("");
+
+  const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
+
+  async function createCollection(formData: FormData) {
+    const {title} = NewCollection.parse({
+      title: formData.get("title"),
+    });
+
+    await createCollectionAction(formData);
+    onCreate(title);
+  }
+
+  function handleCancel() {
+    // reset inputs
+    setCollectionName("");
+
+    onCancel();
+  }
+
+  return (
+    <Dialog open={open}>
+      <form action={createCollection} className={styles.form}>
+        <h2>Create a new collection</h2>
+        <div className={styles.inputs}>
+          <input
+            placeholder="collection name"
+            name="title"
+            value={collectionName}
+            onChange={(e) => setCollectionName(e.target.value)}
+          ></input>
+        </div>
+        <div className={styles.actionBar}>
+          <Button buttonStyle="submit" type="submit">
+            Create {addSVG}
+          </Button>
+          <Button type="button" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </Dialog>
   );
 }
