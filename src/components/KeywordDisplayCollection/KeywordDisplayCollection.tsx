@@ -103,6 +103,7 @@ function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCollection
     });
 
     await createCollectionAction(formData);
+    setCollectionName("");
     onCreate(title);
   }
 
