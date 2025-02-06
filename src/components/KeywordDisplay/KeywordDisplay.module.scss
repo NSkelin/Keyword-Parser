@@ -1,9 +1,10 @@
 .container {
   display: flex;
   flex-direction: column;
-  flex: 0 0 30%;
-  width: 220px;
+  flex-shrink: 0;
   gap: 5px;
+
+  width: 235px;
 }
 .titleContainer {
   display: flex;
