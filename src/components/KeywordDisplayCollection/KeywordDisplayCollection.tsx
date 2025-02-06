@@ -77,11 +77,7 @@ export function KeywordDisplayCollection({
           New collection {addSVG}
         </Button>
       </div>
-      <CreateCollectionFormDialog
-        onCreate={(newCollection) => handleCollectionCreate(newCollection)}
-        onCancel={closeDialog}
-        open={dialogOpen}
-      />
+      <CreateCollectionFormDialog onCreate={handleCollectionCreate} onCancel={closeDialog} open={dialogOpen} />
     </section>
   );
 }
