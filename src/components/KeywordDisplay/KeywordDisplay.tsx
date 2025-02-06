@@ -7,7 +7,7 @@ import {PopoverPicker} from "@/components/PopoverPicker";
 import {deleteCollectionAction, updateCollectionAction} from "@/utils/actions";
 import type {Keyword} from "@/utils/types";
 import Image from "next/image";
-import {useRef, useState} from "react";
+import {useState} from "react";
 import {InlineEdit} from "../InlineEdit";
 import styles from "./KeywordDisplay.module.scss";
 
@@ -36,8 +36,8 @@ export function KeywordDisplay({
   onCollectionUpdate,
   onCollectionDelete,
 }: KeywordDisplayProps) {
-  const keywordEditDialogRef = useRef<HTMLDialogElement>(null);
-  const collectionDeleteDialogRef = useRef<HTMLDialogElement>(null);
+  const [keywordEditDialogOpen, setKeywordEditDialogOpen] = useState(false);
+  const [collectionDeleteDialogOpen, setCollectionDeleteDialogOpen] = useState(false);
   const [editorId, setEditorId] = useState<number>(-1);
   const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
   const [color, setColor] = useState(highlightColor ?? "FFFFFF");
@@ -54,28 +54,26 @@ export function KeywordDisplay({
   function openKeywordCreateDialog() {
     setEditorMode("Create");
     setEditorId(-1);
-    keywordEditDialogRef.current?.showModal();
+    setKeywordEditDialogOpen(true);
   }
 
   /** Opens and sets the KeywordEditor dialog for editing existing keywords. */
   function openKeywordEditDialog(id: number) {
-    if (keywordEditDialogRef.current) {
-      setEditorId(id);
-      setEditorMode("Edit");
-      keywordEditDialogRef.current.showModal();
-    }
+    setEditorId(id);
+    setEditorMode("Edit");
+    setKeywordEditDialogOpen(true);
   }
 
   function handleKeywordDialogSubmit() {
     setEditorId(-1);
-    keywordEditDialogRef.current?.close();
+    setKeywordEditDialogOpen(false);
   }
 
   function handleKeywordDialogCancel() {
     // clear the form by reseting state when the user clickes cancel.
     // react resets the state when its key changes so we use a unique key that no other form will use.
     setEditorId(-2);
-    keywordEditDialogRef.current?.close();
+    setKeywordEditDialogOpen(false);
   }
 
   function handleColorChange(newColor: string) {
@@ -94,16 +92,16 @@ export function KeywordDisplay({
 
   async function handleCollectionDelete() {
     await deleteCollectionAction(title);
-    collectionDeleteDialogRef.current?.close();
+    setCollectionDeleteDialogOpen(false);
     onCollectionDelete(title);
   }
 
   function openCollectionDeleteDialog() {
-    collectionDeleteDialogRef.current?.showModal();
+    setCollectionDeleteDialogOpen(true);
   }
 
   function closeCollectionDeleteDialog() {
-    collectionDeleteDialogRef.current?.close();
+    setCollectionDeleteDialogOpen(false);
   }
 
   // get the initial data
@@ -116,7 +114,7 @@ export function KeywordDisplay({
   }
   return (
     <section data-cy="keywordDisplayComp" className={styles.container}>
-      <Dialog ref={keywordEditDialogRef}>
+      <Dialog open={keywordEditDialogOpen}>
         <KeywordEditor
           key={editorId}
           id={editorId}
@@ -132,7 +130,7 @@ export function KeywordDisplay({
           onCancel={handleKeywordDialogCancel}
         />
       </Dialog>
-      <Dialog ref={collectionDeleteDialogRef}>
+      <Dialog open={collectionDeleteDialogOpen}>
         <form action={handleCollectionDelete} className={styles.form}>
           <div className={styles.warning}>
             <h3>Are you sure you want to delete this collection</h3>

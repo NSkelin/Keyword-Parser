@@ -4,7 +4,7 @@ import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import {createCollectionAction} from "@/utils/actions";
 import type {Keyword} from "@/utils/types";
 import Image from "next/image";
-import {CSSProperties, useRef, useState} from "react";
+import {CSSProperties, useState} from "react";
 import {z} from "zod";
 import {Dialog} from "../Dialog";
 import styles from "./KeywordDisplayCollection.module.scss";
@@ -37,7 +37,7 @@ export function KeywordDisplayCollection({
   onCollectionDelete,
 }: KeywordDisplayCollectionProps) {
   const [collectionName, setCollectionName] = useState("");
-  const dialogRef = useRef<HTMLDialogElement>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
 
@@ -58,11 +58,11 @@ export function KeywordDisplayCollection({
   });
 
   function openDialog() {
-    dialogRef.current?.showModal();
+    setDialogOpen(true);
   }
 
   function closeDialog() {
-    dialogRef.current?.close();
+    setDialogOpen(false);
     // reset inputs
     setCollectionName("");
   }
@@ -89,7 +89,7 @@ export function KeywordDisplayCollection({
           New collection {addSVG}
         </Button>
       </div>
-      <Dialog ref={dialogRef}>
+      <Dialog open={dialogOpen}>
         <form action={handleCreateCollection} className={styles.form}>
           <h2>Create a new collection</h2>
           <div className={styles.inputs}>
