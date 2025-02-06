@@ -90,8 +90,7 @@ export function KeywordDisplay({
     onCollectionUpdate(title, title, newHighlightColor);
   }
 
-  async function handleCollectionDelete() {
-    await deleteCollectionAction(title);
+  function handleCollectionDelete() {
     setCollectionDeleteDialogOpen(false);
     onCollectionDelete(title);
   }
@@ -130,23 +129,12 @@ export function KeywordDisplay({
           onCancel={handleKeywordDialogCancel}
         />
       </Dialog>
-      <Dialog open={collectionDeleteDialogOpen}>
-        <form action={handleCollectionDelete} className={styles.form}>
-          <div className={styles.warning}>
-            <h3>Are you sure you want to delete this collection</h3>
-            <b>{title}</b>
-            <span>This action cannot be undone.</span>
-          </div>
-          <div className={styles.actionBar}>
-            <Button buttonStyle="delete" type="submit">
-              Yes, delete forever {trashSVG}
-            </Button>
-            <Button type="button" onClick={closeCollectionDeleteDialog}>
-              Cancel
-            </Button>
-          </div>
-        </form>
-      </Dialog>
+      <DeleteCollectionFormDialog
+        collectionName={title}
+        open={collectionDeleteDialogOpen}
+        onDelete={handleCollectionDelete}
+        onCancel={closeCollectionDeleteDialog}
+      />
       <div className={styles.titleContainer}>
         <PopoverPicker
           color={color}
@@ -165,5 +153,41 @@ export function KeywordDisplay({
       </Button>
       <KeywordList onEdit={openKeywordEditDialog} keywords={keywordsList} highlightColor={color} />
     </section>
+  );
+}
+
+interface DeleteCollectionFormDialogProps {
+  collectionName: string;
+  onDelete: () => void;
+  onCancel: () => void;
+  open?: boolean;
+}
+
+function DeleteCollectionFormDialog({collectionName, onDelete, onCancel, open}: DeleteCollectionFormDialogProps) {
+  const trashSVG = <Image src="/delete_forever.svg" alt="Edit icon" width={20} height={20} />;
+
+  async function handleCollectionDelete() {
+    await deleteCollectionAction(collectionName);
+    onDelete();
+  }
+
+  return (
+    <Dialog open={open}>
+      <form action={handleCollectionDelete} className={styles.form}>
+        <div className={styles.warning}>
+          <h3>Are you sure you want to delete this collection</h3>
+          <b>{collectionName}</b>
+          <span>This action cannot be undone.</span>
+        </div>
+        <div className={styles.actionBar}>
+          <Button buttonStyle="delete" type="submit">
+            Yes, delete forever {trashSVG}
+          </Button>
+          <Button type="button" onClick={onCancel}>
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </Dialog>
   );
 }
