@@ -40,7 +40,6 @@ export function useClickOutside(ref: React.RefObject<HTMLElement | null>, handle
 export function useKeyup(keys: string | string[], callBack: (e: KeyboardEvent) => void) {
   useEffect(() => {
     const listener = (event: KeyboardEvent) => {
-      console.log(event.key);
       if (typeof keys === "string") {
         if (event.key === keys) {
           callBack(event);
