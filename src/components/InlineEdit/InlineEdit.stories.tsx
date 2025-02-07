@@ -10,7 +10,7 @@ type Story = StoryObj<typeof InlineEdit>;
 
 export const Default: Story = {
   args: {
-    value: "title",
+    defaultValue: "title",
     children: <>Title</>,
   },
 };

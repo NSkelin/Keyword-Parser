@@ -5,7 +5,10 @@ import {ChangeEvent, useCallback, useEffect, useRef, useState} from "react";
 import styles from "./InlineEdit.module.scss";
 
 export interface InlineEditProps {
-  value: string;
+  /**
+   * The inital value shown when the component enters edit mode.
+   */
+  defaultValue: string;
   /**
    * Ideally use a memoized function to prevent unnecessary eventlistener connection / disconnects.
    */
@@ -19,9 +22,9 @@ export interface InlineEditProps {
   children?: React.ReactNode;
 }
 
-export function InlineEdit({value, onSave, onChange, onCancel, type = "text", children}: InlineEditProps) {
+export function InlineEdit({defaultValue, onSave, onChange, onCancel, type = "text", children}: InlineEditProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [inputValue, setInputValue] = useState(value);
+  const [inputValue, setInputValue] = useState(defaultValue);
   const inlineEdit = useRef(null);
 
   const editSVG = <Image src="/edit.svg" alt="Edit icon" width={16} height={16} />;
@@ -35,9 +38,9 @@ export function InlineEdit({value, onSave, onChange, onCancel, type = "text", ch
 
   const handleCancel = useCallback(() => {
     setIsEditing(false);
-    setInputValue(value);
+    setInputValue(defaultValue);
     if (onCancel) onCancel();
-  }, [onCancel, value]);
+  }, [onCancel, defaultValue]);
 
   useClickOutside(inlineEdit, handleCancel);
   useEffect(() => {

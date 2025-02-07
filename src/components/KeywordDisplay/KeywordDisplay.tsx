@@ -141,7 +141,7 @@ export function KeywordDisplay({
           onChange={handleColorChange}
           onConfirm={(newColor) => void handleCollectionColorUpdate(newColor)}
         />
-        <InlineEdit value={title} onSave={(newValue) => void handleCollectionNameUpdate(newValue)}>
+        <InlineEdit defaultValue={title} onSave={(newValue) => void handleCollectionNameUpdate(newValue)}>
           <h2>{title}</h2>
         </InlineEdit>
       </div>
