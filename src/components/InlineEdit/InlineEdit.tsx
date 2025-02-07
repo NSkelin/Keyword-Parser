@@ -7,11 +7,12 @@ import styles from "./InlineEdit.module.scss";
 export interface InlineEditProps {
   value: string;
   onSave: (newValue: string) => void;
+  onCancel?: () => void;
   type?: "text" | "number" | "textarea";
   children?: React.ReactNode;
 }
 
-export function InlineEdit({value, onSave, type = "text", children}: InlineEditProps) {
+export function InlineEdit({value, onSave, onCancel, type = "text", children}: InlineEditProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(value);
   const inlineEdit = useRef(null);
@@ -30,6 +31,7 @@ export function InlineEdit({value, onSave, type = "text", children}: InlineEditP
   function handleCancel() {
     setIsEditing(false);
     setInputValue(value);
+    if (onCancel) onCancel();
   }
 
   return (
