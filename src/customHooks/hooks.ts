@@ -31,3 +31,28 @@ export function useClickOutside(ref: React.RefObject<HTMLElement | null>, handle
     };
   }, [ref, handler]);
 }
+
+/**
+ * Listens for a keyup event from the matching key before calling back.
+ *
+ * @param keys If any one of the keys matches a callback will be made.
+ */
+export function useKeyup(keys: string | string[], callBack: (e: KeyboardEvent) => void) {
+  useEffect(() => {
+    const listener = (event: KeyboardEvent) => {
+      console.log(event.key);
+      if (typeof keys === "string") {
+        if (event.key === keys) {
+          callBack(event);
+        }
+      } else if (keys.some((key) => event.key === key)) {
+        callBack(event);
+      }
+    };
+
+    document.addEventListener("keyup", listener);
+    return () => {
+      document.removeEventListener("keyup", listener);
+    };
+  }, [callBack, keys]);
+}
