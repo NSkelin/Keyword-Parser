@@ -1,5 +1,6 @@
 import {Button} from "@/components/Button";
 import {useClickOutside} from "@/customHooks";
+import {useKeyup} from "@/customHooks/hooks";
 import Image from "next/image";
 import {useRef, useState} from "react";
 import {HexColorPicker} from "react-colorful";
@@ -17,6 +18,8 @@ export function PopoverPicker({color, onChange, onConfirm}: PopoverPickerProps) 
   const previousColor = useRef(color);
 
   useClickOutside(popover, handleCancel);
+  useKeyup("Enter", handleConfirmClick);
+  useKeyup("Escape", handleCancel);
 
   const closeSVG = <Image src="/close.svg" alt="Edit icon" width={16} height={16} />;
   const checkSVG = <Image src="/check.svg" alt="Edit icon" width={16} height={16} />;
