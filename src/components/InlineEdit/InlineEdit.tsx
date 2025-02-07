@@ -1,7 +1,7 @@
 import {Button} from "@/components/Button";
 import {useClickOutside} from "@/customHooks";
 import Image from "next/image";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useRef, useState} from "react";
 import styles from "./InlineEdit.module.scss";
 
 export interface InlineEditProps {
@@ -10,6 +10,7 @@ export interface InlineEditProps {
    * Ideally use a memoized function to prevent unnecessary eventlistener connection / disconnects.
    */
   onSave: (newValue: string) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
   /**
    * Ideally use a memoized function to prevent unnecessary eventlistener connection / disconnects.
    */
@@ -18,7 +19,7 @@ export interface InlineEditProps {
   children?: React.ReactNode;
 }
 
-export function InlineEdit({value, onSave, onCancel, type = "text", children}: InlineEditProps) {
+export function InlineEdit({value, onSave, onChange, onCancel, type = "text", children}: InlineEditProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [inputValue, setInputValue] = useState(value);
   const inlineEdit = useRef(null);
@@ -56,14 +57,19 @@ export function InlineEdit({value, onSave, onCancel, type = "text", children}: I
     };
   }, [handleSave, handleCancel, isEditing, onCancel]);
 
+  function handleChange(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) {
+    setInputValue(e.target.value);
+    if (onChange) onChange(e);
+  }
+
   return (
     <div className={styles.container}>
       {isEditing ? (
         <div ref={inlineEdit} className={styles.editingContainer}>
           {type === "textarea" ? (
-            <textarea value={inputValue} onChange={(e) => setInputValue(e.target.value)} autoFocus />
+            <textarea value={inputValue} onChange={handleChange} autoFocus />
           ) : (
-            <input type={type} value={inputValue} onChange={(e) => setInputValue(e.target.value)} autoFocus />
+            <input type={type} value={inputValue} onChange={handleChange} autoFocus />
           )}
           <div className={styles.buttonContainer}>
             <Button buttonStyle="submit" iconOnly onClick={handleSave}>
