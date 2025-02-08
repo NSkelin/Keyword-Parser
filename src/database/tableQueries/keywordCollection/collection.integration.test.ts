@@ -2,6 +2,7 @@ import prisma from "@/database/client";
 import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "@/database/tableQueries/keywordCollection";
 import {
   createCollections,
+  deleteCollection,
   getCollectionsAliases,
   getCollectionsKeywords,
   getCollectionsWithKeywordsAndAliases,
@@ -286,5 +287,30 @@ describe("createCollections", () => {
 
     expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection1"}})).not.toBeNull();
     expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection2"}})).not.toBeNull();
+  });
+});
+
+describe("deleteCollection", () => {
+  it("should delete the collection and its many-to-one relations (keyword, keywordAlias", async () => {
+    expect(await prisma.keywordCollection.findFirst({where: {title: "col1Title"}})).not.toBeNull();
+    expect(await prisma.keyword.findFirst({where: {displayName: "col1Key1Name"}})).not.toBeNull();
+    expect(await prisma.keywordAlias.findFirst({where: {alias: "col1Key1Alias1"}})).not.toBeNull();
+    expect(await prisma.keywordAlias.findFirst({where: {alias: "col1Key1Alias2"}})).not.toBeNull();
+    expect(await prisma.keywordAlias.findFirst({where: {alias: "col1Key1Alias3"}})).not.toBeNull();
+
+    await deleteCollection("col1Title");
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: "col1Title"}})).toBeNull();
+    expect(await prisma.keyword.findFirst({where: {displayName: "col1Key1Name"}})).toBeNull();
+    expect(await prisma.keywordAlias.findFirst({where: {alias: "col1Key1Alias1"}})).toBeNull();
+    expect(await prisma.keywordAlias.findFirst({where: {alias: "col1Key1Alias2"}})).toBeNull();
+    expect(await prisma.keywordAlias.findFirst({where: {alias: "col1Key1Alias3"}})).toBeNull();
+  });
+
+  it("should not delete unrelated collections", async () => {
+    await deleteCollection("col1Title");
+    await deleteCollection("");
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: "col2Title"}})).not.toBeNull();
   });
 });
