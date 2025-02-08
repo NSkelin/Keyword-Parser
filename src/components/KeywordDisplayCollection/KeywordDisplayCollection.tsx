@@ -111,7 +111,7 @@ function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCollection
   }
 
   return (
-    <Dialog open={open}>
+    <Dialog onCancel={handleCancel} open={open}>
       <form action={createCollection} className={styles.form}>
         <h2>Create a new collection</h2>
         <div className={styles.inputs}>

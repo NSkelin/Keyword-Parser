@@ -113,7 +113,7 @@ export function KeywordDisplay({
   }
   return (
     <section data-cy="keywordDisplayComp" className={styles.container}>
-      <Dialog open={keywordEditDialogOpen}>
+      <Dialog onClose={handleKeywordDialogCancel} open={keywordEditDialogOpen}>
         <KeywordEditor
           key={editorId}
           id={editorId}
@@ -172,7 +172,7 @@ function DeleteCollectionFormDialog({collectionName, onDelete, onCancel, open}: 
   }
 
   return (
-    <Dialog open={open}>
+    <Dialog onCancel={onCancel} open={open}>
       <form action={handleCollectionDelete} className={styles.form}>
         <div className={styles.warning}>
           <h3>Are you sure you want to delete this collection</h3>
