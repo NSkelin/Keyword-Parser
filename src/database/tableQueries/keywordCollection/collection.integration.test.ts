@@ -1,7 +1,11 @@
 import prisma from "@/database/client";
 import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "@/database/tableQueries/keywordCollection";
-import {getCollectionsAliases, getCollectionsKeywords, getCollectionsWithKeywordsAndAliases} from "./collection";
-
+import {
+  createCollections,
+  getCollectionsAliases,
+  getCollectionsKeywords,
+  getCollectionsWithKeywordsAndAliases,
+} from "./collection";
 const DBSeedData = [
   {
     title: "col1Title",
@@ -260,4 +264,27 @@ describe("deleteCollections", () => {
 
   // no functions to add bullets as its not implemented yet.
   it.todo("should not delete optional relations (many-to-many, one-to-many)");
+});
+
+describe("createCollections", () => {
+  it("should create 1 collection", async () => {
+    const collectiontitle = "newCollection";
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: collectiontitle}})).toBeNull();
+
+    await createCollections([{title: collectiontitle, highlightColor: "FFFFFF"}]);
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: collectiontitle}})).not.toBeNull();
+  });
+
+  it("should create multiple collections", async () => {
+    expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection1"}})).toBeNull();
+    expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection2"}})).toBeNull();
+
+    await createCollections([{title: "newCollection1", highlightColor: "FFFFFF"}]);
+    await createCollections([{title: "newCollection2", highlightColor: "FFFFFF"}]);
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection1"}})).not.toBeNull();
+    expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection2"}})).not.toBeNull();
+  });
 });
