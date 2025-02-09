@@ -6,6 +6,7 @@ import {
   getCollectionsAliases,
   getCollectionsKeywords,
   getCollectionsWithKeywordsAndAliases,
+  updateCollection,
 } from "./collection";
 const DBSeedData = [
   {
@@ -287,6 +288,59 @@ describe("createCollections", () => {
 
     expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection1"}})).not.toBeNull();
     expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection2"}})).not.toBeNull();
+  });
+});
+
+describe("updateCollection", () => {
+  it("should update the title and highlightColor", async () => {
+    const oldTitle = DBSeedData[0].title;
+    const updateData = {
+      newTitle: "newCol1Title",
+      newHighlightColor: "EEEEEE",
+    };
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: oldTitle}})).not.toBeNull();
+
+    await updateCollection(oldTitle, updateData);
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: oldTitle}})).toBeNull();
+    const updatedCollection = await prisma.keywordCollection.findFirst({where: {title: updateData.newTitle}});
+    expect(updatedCollection?.title).toBe(updateData.newTitle);
+    expect(updatedCollection?.highlightColor).toBe(updateData.newHighlightColor);
+  });
+
+  it("should update ONLY the title", async () => {
+    const oldTitle = DBSeedData[0].title;
+    const oldHighlightColor = DBSeedData[0].highlightColor;
+    const updateData = {
+      newTitle: "newCol1Title",
+    };
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: oldTitle}})).not.toBeNull();
+
+    await updateCollection(oldTitle, updateData);
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: oldTitle}})).toBeNull();
+    const updatedCollection = await prisma.keywordCollection.findFirst({where: {title: updateData.newTitle}});
+    expect(updatedCollection?.title).toBe(updateData.newTitle);
+    expect(updatedCollection?.highlightColor).toBe(oldHighlightColor);
+  });
+
+  it("should update ONLY the highlightColor", async () => {
+    const oldTitle = DBSeedData[0].title;
+    const oldHighlightColor = DBSeedData[0].highlightColor;
+    const updateData = {
+      newHighlightColor: "EEEEEE",
+    };
+
+    const oldCollection = await prisma.keywordCollection.findFirst({where: {title: oldTitle}});
+    expect(oldCollection?.highlightColor).toBe(oldHighlightColor);
+
+    await updateCollection(oldTitle, updateData);
+
+    const updatedCollection = await prisma.keywordCollection.findFirst({where: {title: oldTitle}});
+    expect(updatedCollection?.title).toBe(oldTitle);
+    expect(updatedCollection?.highlightColor).toBe(updateData.newHighlightColor);
   });
 });
 
