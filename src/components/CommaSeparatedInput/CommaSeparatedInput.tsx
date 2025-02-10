@@ -29,7 +29,7 @@ export function CommaSeparatedInput({label, required, savedInputs, errorMessage,
   const [inputValue, setInputValue] = useState("");
   const [validation, setValidation] = useState({valid: true, error: ""});
 
-  const closeSVG = <Image src="/close_light.svg" alt="Edit icon" width={16} height={16} />;
+  const closeSVG = <Image src="/close.svg" alt="Edit icon" width={16} height={16} />;
 
   /** Handles the response to a user typing in the input. When the user enters a comma, the input will be cleared and a new item will be added to the list below. */
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -66,7 +66,7 @@ export function CommaSeparatedInput({label, required, savedInputs, errorMessage,
   const savedInputsDisplay = savedInputs.map((val, index) => (
     <span key={index}>
       {val}
-      <Button buttonStyle="delete" iconOnly data-cy="remove" onClick={() => handleDelete(val)}>
+      <Button buttonStyle="clear" iconOnly data-cy="remove" onClick={() => handleDelete(val)}>
         {closeSVG}
       </Button>
     </span>
