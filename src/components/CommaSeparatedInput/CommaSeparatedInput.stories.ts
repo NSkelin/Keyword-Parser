@@ -14,3 +14,11 @@ export const Default: Story = {
     savedInputs: ["Ains", "Lefi"],
   },
 };
+
+export const Error: Story = {
+  args: {
+    label: "Fantasy Names",
+    savedInputs: ["Ains", "Lefi"],
+    errorMessage: "Error, your name is not fantasy enough!",
+  },
+};
