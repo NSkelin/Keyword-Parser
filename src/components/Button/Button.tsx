@@ -6,7 +6,7 @@ export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTML
    * Determines the buttons styling.
    * @default "default"
    */
-  buttonStyle?: "default" | "submit" | "delete" | "create";
+  buttonStyle?: "default" | "submit" | "delete" | "create" | "clear";
   /**
    * True makes the padding on all sides equal, results in a square button instead of a rectangular button.
    * @default false

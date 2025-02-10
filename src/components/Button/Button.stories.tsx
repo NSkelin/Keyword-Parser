@@ -39,6 +39,13 @@ export const Create: Story = {
   },
 };
 
+export const Clear: Story = {
+  args: {
+    buttonStyle: "clear",
+    children: <>Button</>,
+  },
+};
+
 export const IconOnly: Story = {
   args: {
     buttonStyle: "delete",
