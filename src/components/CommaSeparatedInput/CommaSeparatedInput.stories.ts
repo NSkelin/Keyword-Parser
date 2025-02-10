@@ -10,7 +10,7 @@ type Story = StoryObj<typeof CommaSeparatedInput>;
 
 export const Default: Story = {
   args: {
-    label: "label",
-    savedInputs: ["Word1", "Word2"],
+    label: "Fantasy Names",
+    savedInputs: ["Ains", "Lefi"],
   },
 };
