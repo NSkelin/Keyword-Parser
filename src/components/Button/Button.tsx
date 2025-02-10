@@ -31,16 +31,12 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  const iconStyle = iconOnly ? "icon" : "";
-  const stretchedStyle = `${stretch}Stretched`;
+  const buttonStyleClass = styles[buttonStyle];
+  const iconStyle = iconOnly ? styles.icon : "";
+  const stretchedStyle = stretch === "none" ? "" : styles[`${stretch}Stretched`];
+  const customClasses = className ?? "";
 
-  // space after each line is required to work.
-  const classNames = `
-  ${styles[buttonStyle]} 
-  ${styles[iconStyle]} 
-  ${styles[stretchedStyle]} 
-  ${className} 
-  `;
+  const classNames = `${buttonStyleClass} ${iconStyle} ${stretchedStyle} ${customClasses}`;
   return (
     <>
       <button className={classNames} {...props}>
