@@ -47,25 +47,25 @@ export function InlineEdit({defaultValue, onSave, onChange, onCancel, type = "te
   }
 
   return (
-    <div className={styles.container}>
+    <div data-cy="inlineEditComp" className={styles.container}>
       {isEditing ? (
-        <div ref={inlineEdit} className={styles.editingContainer}>
+        <div data-cy="editingContainer" ref={inlineEdit} className={styles.editingContainer}>
           {type === "textarea" ? (
             <textarea value={inputValue} onChange={handleChange} autoFocus />
           ) : (
             <input type={type} value={inputValue} onChange={handleChange} autoFocus />
           )}
           <div className={styles.buttonContainer}>
-            <Button buttonStyle="submit" iconOnly onClick={handleSave}>
+            <Button data-cy="submitButton" buttonStyle="submit" iconOnly onClick={handleSave}>
               {checkSVG}
             </Button>
-            <Button iconOnly onClick={handleCancel}>
+            <Button data-cy="cancelButton" iconOnly onClick={handleCancel}>
               {closeSVG}
             </Button>
           </div>
         </div>
       ) : (
-        <div className={styles.children} onClick={() => setIsEditing(true)}>
+        <div data-cy="childContainer" className={styles.children} onClick={() => setIsEditing(true)}>
           {children}
           {editSVG}
         </div>
