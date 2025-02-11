@@ -41,16 +41,16 @@ export function PopoverPicker({color, onChange, onConfirm}: PopoverPickerProps) 
 
   return (
     <div className={styles.picker}>
-      <div className={styles.swatch} style={{backgroundColor: color}} onClick={handleOpen} />
+      <div data-cy="swatchButton" className={styles.swatch} style={{backgroundColor: color}} onClick={handleOpen} />
 
       {isOpen && (
-        <div className={styles.popover} ref={popover}>
-          <HexColorPicker color={color} onChange={onChange} />
+        <div data-cy="popOver" className={styles.popover} ref={popover}>
+          <HexColorPicker data-cy="hexColorPicker" color={color} onChange={onChange} />
           <div className={styles.buttonWrap}>
-            <Button iconOnly onClick={handleCancel}>
+            <Button data-cy="cancelButton" iconOnly onClick={handleCancel}>
               {closeSVG}
             </Button>
-            <Button buttonStyle="submit" iconOnly onClick={handleConfirmClick}>
+            <Button data-cy="submitButton" buttonStyle="submit" iconOnly onClick={handleConfirmClick}>
               {checkSVG}
             </Button>
           </div>
