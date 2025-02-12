@@ -39,7 +39,6 @@ describe("'Create' mode", () => {
     cy.get("@aliases").find("[data-cy='input']").type("alias1,");
 
     cy.get("[data-cy='submit']").click();
-    cy.wait(1000);
 
     cy.get("@onSubmit").should("be.called");
   });
@@ -49,7 +48,6 @@ describe("'Create' mode", () => {
     cy.get("@aliases").find("[data-cy='input']").type("alias1,");
 
     cy.get("[data-cy='submit']").click();
-    cy.wait(1000);
 
     cy.get("@onSubmit").should("not.be.called");
   });
@@ -72,7 +70,7 @@ describe("'Create' mode", () => {
 
       // confirm that submit did run
       cy.get("[data-cy='submit']").click();
-      cy.wait(1000);
+
       // should not call api
       cy.get("@post").should("have.been.called");
       // should not update state
@@ -105,7 +103,7 @@ describe("'Create' mode", () => {
       afterEach(() => {
         // confirm that submit did not run
         cy.get("[data-cy='submit']").click();
-        cy.wait(1000);
+
         // should not call api
         cy.get("@post").should("not.have.been.called");
         // should not update state
@@ -200,7 +198,6 @@ describe("'Edit' mode", () => {
       cy.intercept("PUT", "http://localhost:8080/api/*/*", "success");
 
       cy.get("[data-cy='submit']").click();
-      cy.wait(1000);
 
       cy.get("@onSubmit").should("be.called");
     });
@@ -209,7 +206,6 @@ describe("'Edit' mode", () => {
       cy.intercept("DELETE", "http://localhost:8080/api/*/*", "success");
 
       cy.get("[data-cy='delete']").click();
-      cy.wait(1000);
 
       cy.get("@onSubmit").should("be.called");
     });
@@ -218,14 +214,12 @@ describe("'Edit' mode", () => {
   describe("should not call onSubmit if the api call fails", () => {
     it("on failed update", () => {
       cy.get("[data-cy='submit']").click();
-      cy.wait(1000);
 
       cy.get("@onSubmit").should("not.be.called");
     });
 
     it("on failed delete", () => {
       cy.get("[data-cy='delete']").click();
-      cy.wait(1000);
 
       cy.get("@onSubmit").should("not.be.called");
     });
