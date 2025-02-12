@@ -11,31 +11,6 @@
   padding: 0 0 15px 0;
   gap: 5px;
 }
-
-.form {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
-  .warning {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    text-align: center;
-  }
-
-  span {
-    color: red;
-  }
-
-  .actionBar {
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-}
 .button {
   height: 60px;
 }
