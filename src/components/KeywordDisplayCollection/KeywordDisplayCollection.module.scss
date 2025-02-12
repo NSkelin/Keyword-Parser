@@ -19,24 +19,6 @@
   }
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  gap: 15px;
-
-  h2 {
-    align-self: center;
-  }
-  .inputs {
-    flex: 1;
-  }
-  .actionBar {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
 .addButton {
   width: 235px;
   flex-shrink: 0;
