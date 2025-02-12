@@ -10,6 +10,7 @@ type Story = StoryObj<typeof InlineEdit>;
 
 export const Default: Story = {
   args: {
+    onSave: () => {},
     defaultValue: "title",
     children: <>Title</>,
   },
