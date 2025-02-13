@@ -1,5 +1,6 @@
 import {Button} from "@/components/Button";
 import {Dialog} from "@/components/Dialog";
+import {Input} from "@/components/Input";
 import {createCollectionAction} from "@/utils/actions";
 import {createCollectionSchema} from "@/utils/zodSchemas";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -20,7 +21,7 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
     register,
     handleSubmit,
     reset,
-    formState: {isSubmitSuccessful},
+    formState: {isSubmitSuccessful, errors},
   } = useForm<z.output<typeof createCollectionSchema>>({
     resolver: zodResolver(createCollectionSchema),
   });
@@ -57,7 +58,7 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
       >
         <h2>Create a new collection</h2>
         <div className={styles.inputs}>
-          <input {...register("title")} placeholder="collection name" name="title"></input>
+          <Input errorMessage={errors.title?.message} {...register("title")} placeholder="collection name" name="title" />
         </div>
         <div className={styles.actionBar}>
           <Button buttonStyle="submit" type="submit">
