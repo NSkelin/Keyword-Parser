@@ -58,7 +58,14 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
       >
         <h2>Create a new collection</h2>
         <div className={styles.inputs}>
-          <Input errorMessage={errors.title?.message} {...register("title")} placeholder="collection name" name="title" />
+          <Input
+            required
+            label="Collection title"
+            errorMessage={errors.title?.message}
+            {...register("title")}
+            placeholder="collection name"
+            name="title"
+          />
         </div>
         <div className={styles.actionBar}>
           <Button buttonStyle="submit" type="submit">
