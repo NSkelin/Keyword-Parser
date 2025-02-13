@@ -1,8 +1,10 @@
 import {Button} from "@/components/Button";
 import {Dialog} from "@/components/Dialog";
 import {createCollectionAction} from "@/utils/actions";
+import {zodResolver} from "@hookform/resolvers/zod";
 import Image from "next/image";
-import {useState} from "react";
+import {useEffect} from "react";
+import {useForm} from "react-hook-form";
 import {z} from "zod";
 import styles from "./CreateCollectionFormDialog.module.scss";
 
@@ -17,38 +19,48 @@ export interface CreateCollectionFormDialogProps {
 }
 
 export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCollectionFormDialogProps) {
-  const [collectionName, setCollectionName] = useState("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: {isSubmitSuccessful},
+  } = useForm<z.output<typeof NewCollection>>({
+    resolver: zodResolver(NewCollection),
+  });
 
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
 
-  async function createCollection(formData: FormData) {
-    const {title} = NewCollection.parse({
-      title: formData.get("title"),
-    });
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
+
+  async function onSubmit(inputs: z.output<typeof NewCollection>) {
+    const formData = new FormData();
+    formData.append("title", inputs.title);
 
     await createCollectionAction(formData);
-    setCollectionName("");
-    onCreate(title);
+
+    onCreate(inputs.title);
   }
 
   function handleCancel() {
-    // reset inputs
-    setCollectionName("");
-
     onCancel();
+    reset();
   }
 
   return (
     <Dialog onCancel={handleCancel} open={open}>
-      <form action={createCollection} className={styles.form}>
+      <form
+        onSubmit={(event) => {
+          void handleSubmit(onSubmit)(event);
+        }}
+        className={styles.form}
+      >
         <h2>Create a new collection</h2>
         <div className={styles.inputs}>
-          <input
-            placeholder="collection name"
-            name="title"
-            value={collectionName}
-            onChange={(e) => setCollectionName(e.target.value)}
-          ></input>
+          <input {...register("title")} placeholder="collection name" name="title"></input>
         </div>
         <div className={styles.actionBar}>
           <Button buttonStyle="submit" type="submit">
