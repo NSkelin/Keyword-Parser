@@ -1,16 +1,13 @@
 import {Button} from "@/components/Button";
 import {Dialog} from "@/components/Dialog";
 import {createCollectionAction} from "@/utils/actions";
+import {createCollectionSchema} from "@/utils/zodSchemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Image from "next/image";
 import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import styles from "./CreateCollectionFormDialog.module.scss";
-
-const NewCollection = z.object({
-  title: z.string(),
-});
 
 export interface CreateCollectionFormDialogProps {
   onCreate: (collectionName: string) => void;
@@ -24,8 +21,8 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
     handleSubmit,
     reset,
     formState: {isSubmitSuccessful},
-  } = useForm<z.output<typeof NewCollection>>({
-    resolver: zodResolver(NewCollection),
+  } = useForm<z.output<typeof createCollectionSchema>>({
+    resolver: zodResolver(createCollectionSchema),
   });
 
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
@@ -36,7 +33,7 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
     }
   }, [isSubmitSuccessful, reset]);
 
-  async function onSubmit(inputs: z.output<typeof NewCollection>) {
+  async function onSubmit(inputs: z.output<typeof createCollectionSchema>) {
     const formData = new FormData();
     formData.append("title", inputs.title);
 

@@ -2,14 +2,10 @@
 
 import {createCollections, updateCollection} from "@/database/tableQueries/keywordCollection";
 import {deleteCollection} from "@/database/tableQueries/keywordCollection/collection";
-import {z} from "zod";
-
-const NewCollection = z.object({
-  title: z.string(),
-});
+import {createCollectionSchema} from "./zodSchemas";
 
 export async function createCollectionAction(formData: FormData) {
-  const {title} = NewCollection.parse({
+  const {title} = createCollectionSchema.parse({
     title: formData.get("title"),
   });
 
