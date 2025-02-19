@@ -8,11 +8,13 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
   /** Adds a red "*" character directly infront of the label to indicate this input field is required.  */
   required?: boolean;
+  /** Overrides the main data-cy for testing purposes. */
+  "data-cy"?: string;
 }
 /** A wrapper for the html input component that adds support for labels and error messages. */
-export function Input({label, errorMessage, required = false, ...props}: InputProps) {
+export function Input({label, errorMessage, "data-cy": dataCy, required = false, ...props}: InputProps) {
   return (
-    <div data-cy="inputComp" className={styles.wrapper}>
+    <div data-cy={dataCy ?? "inputComp"} className={styles.wrapper}>
       <strong data-cy="errorMessage" className={styles.errorMessage}>
         {errorMessage}
       </strong>
