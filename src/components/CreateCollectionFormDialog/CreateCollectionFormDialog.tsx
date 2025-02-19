@@ -5,7 +5,7 @@ import {createCollectionAction} from "@/utils/actions";
 import {createCollectionSchema} from "@/utils/zodSchemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Image from "next/image";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import styles from "./CreateCollectionFormDialog.module.scss";
@@ -17,6 +17,7 @@ export interface CreateCollectionFormDialogProps {
 }
 
 export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCollectionFormDialogProps) {
+  const [serverMsg, setServerMsg] = useState("");
   const {
     register,
     handleSubmit,
@@ -38,14 +39,18 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
     const formData = new FormData();
     formData.append("title", inputs.title);
 
-    await createCollectionAction(formData);
+    const {success, message} = await createCollectionAction(formData);
+    setServerMsg(message);
 
-    onCreate(inputs.title);
+    if (success) {
+      onCreate(inputs.title);
+    }
   }
 
   function handleCancel() {
     onCancel();
     reset();
+    setServerMsg("");
   }
 
   return (
@@ -67,6 +72,7 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
             name="title"
           />
         </div>
+        <div className={styles.serverError}>{serverMsg}</div>
         <div className={styles.actionBar}>
           <Button buttonStyle="submit" type="submit">
             Create {addSVG}

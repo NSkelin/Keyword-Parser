@@ -1,6 +1,7 @@
 import {prismaMock} from "@/database/clientMock";
 import {expect} from "@jest/globals";
-import {getCollectionsAliases} from "./collection";
+import {Prisma} from "@prisma/client";
+import {createCollections, getCollectionsAliases} from "./collection";
 
 describe("getCollectionsAliases", () => {
   const mockResponse = [
@@ -91,5 +92,32 @@ describe("getCollectionsAliases", () => {
   it("should return a formatted response when provided with an empty array", async () => {
     prismaMock.keywordCollection.findMany.mockResolvedValue(mockResponse);
     expect(await getCollectionsAliases([])).toEqual(expectedFormattedData);
+  });
+});
+
+describe("createCollections", () => {
+  it("should return an error when PrismaClientKnownRequestError is thrown", async () => {
+    const error = new Prisma.PrismaClientKnownRequestError("Test error", {
+      code: "P2002",
+      clientVersion: "4.0.0",
+      meta: {target: ["title"]},
+    });
+    prismaMock.keywordCollection.createMany.mockRejectedValue(error);
+
+    const result = await createCollections([{title: "Test Collection", highlightColor: "#FF0000"}]);
+
+    expect(result.success).toBe(false);
+    expect(result.error).toEqual({
+      code: "P2002",
+      message: "Test error",
+      meta: {target: ["title"]},
+    });
+  });
+
+  it("should throw an unexpected error if it's not a PrismaClientKnownRequestError", async () => {
+    const unexpectedError = new Error("Unexpected error");
+    prismaMock.keywordCollection.createMany.mockRejectedValue(unexpectedError);
+
+    await expect(createCollections([{title: "Test Collection", highlightColor: "#FF0000"}])).rejects.toThrow("Unexpected error");
   });
 });

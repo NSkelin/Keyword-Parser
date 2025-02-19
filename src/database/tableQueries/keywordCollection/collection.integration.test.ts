@@ -289,6 +289,47 @@ describe("createCollections", () => {
     expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection1"}})).not.toBeNull();
     expect(await prisma.keywordCollection.findFirst({where: {title: "newCollection2"}})).not.toBeNull();
   });
+
+  it("should return an error if the new collection already exists", async () => {
+    const existingCollection = DBSeedData[0].title;
+    const {success, data, error} = await createCollections([{title: existingCollection, highlightColor: "FFFFFF"}]);
+
+    expect(success).toBeFalsy();
+    expect(data).toBeUndefined();
+    expect(error).toBeDefined();
+  });
+
+  it("should return an error if any of the new collections already exists", async () => {
+    const newCollections = ["newtitle1", DBSeedData[0].title, "newtitle2"];
+    const {success, data, error} = await createCollections([
+      {title: newCollections[0], highlightColor: "FFFFFF"},
+      {title: newCollections[1], highlightColor: "FFFFFF"},
+      {title: newCollections[2], highlightColor: "FFFFFF"},
+    ]);
+
+    expect(success).toBeFalsy();
+    expect(data).toBeUndefined();
+    expect(error).toBeDefined();
+  });
+
+  it("should not create any collections if one fails to create", async () => {
+    const newCollections = ["newtitle1", DBSeedData[0].title, "newtitle2"];
+    await createCollections([
+      {title: newCollections[0], highlightColor: "FFFFFF"},
+      {title: newCollections[1], highlightColor: "FFFFFF"},
+      {title: newCollections[2], highlightColor: "FFFFFF"},
+    ]);
+
+    expect(await prisma.keywordCollection.findFirst({where: {title: newCollections[0]}})).toBeNull();
+    expect(await prisma.keywordCollection.findFirst({where: {title: newCollections[2]}})).toBeNull();
+  });
+
+  it("should return an object with the count of created collections and a success bool = true on success", async () => {
+    const {success, data} = await createCollections([{title: "newTitle", highlightColor: "FFFFFF"}]);
+
+    expect(success).toBeTruthy();
+    expect(data).toStrictEqual({count: 1});
+  });
 });
 
 describe("updateCollection", () => {

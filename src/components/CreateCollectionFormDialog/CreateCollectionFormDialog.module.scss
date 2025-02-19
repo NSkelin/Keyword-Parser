@@ -7,6 +7,13 @@
   h2 {
     align-self: center;
   }
+  .serverError {
+    color: red;
+    font-weight: normal;
+    font-size: 14px;
+    height: 14px;
+    text-align: center;
+  }
   .inputs {
     flex: 1;
   }

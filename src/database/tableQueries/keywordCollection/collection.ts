@@ -1,4 +1,5 @@
 import prisma from "@/database/client";
+import {Prisma} from "@prisma/client";
 
 /**
  * Gets one or more collections (leave blank for all collections)
@@ -193,11 +194,34 @@ export async function deleteAllCollections() {
 /**
  * Creates one or more new empty keywordCollections. Does not create keywords or aliases.
  */
-export async function createCollections(collections: {title: string; highlightColor: string}[]) {
-  await prisma.keywordCollection.createMany({
-    data: collections,
-  });
-  return;
+export async function createCollections(collections: {title: string; highlightColor: string}[]): Promise<{
+  success: boolean;
+  data?: Prisma.BatchPayload;
+  error?: Pick<Prisma.PrismaClientKnownRequestError, "code" | "message" | "meta">;
+}> {
+  try {
+    const data = await prisma.keywordCollection.createMany({
+      data: collections,
+    });
+
+    return {
+      success: true,
+      data,
+    };
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      const {code, message, meta} = e;
+      return {
+        success: false,
+        error: {
+          code,
+          message,
+          meta,
+        },
+      };
+    }
+    throw e;
+  }
 }
 
 /**
