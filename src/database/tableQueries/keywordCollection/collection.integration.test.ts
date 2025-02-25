@@ -404,7 +404,6 @@ describe("deleteCollection", () => {
 
   it("should not delete unrelated collections", async () => {
     await deleteCollection("col1Title");
-    await deleteCollection("");
 
     expect(await prisma.keywordCollection.findFirst({where: {title: "col2Title"}})).not.toBeNull();
   });

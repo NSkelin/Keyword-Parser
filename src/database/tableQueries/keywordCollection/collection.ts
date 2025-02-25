@@ -241,9 +241,7 @@ export async function updateCollection(collectionTitle: string, newData: {newTit
 }
 
 export async function deleteCollection(title: string) {
-  const deleteCollection = prisma.keywordCollection.deleteMany({
+  await prisma.keywordCollection.delete({
     where: {title: title},
   });
-
-  await prisma.$transaction([deleteCollection]);
 }
