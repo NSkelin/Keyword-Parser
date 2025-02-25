@@ -1,4 +1,4 @@
-import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "../keywordCollection";
+import {createCollectionsWithKeywordsAndAliases, deleteAllCollections} from "../keywordCollection";
 import {createKeywordWithAliases, deleteKeywordAndAliases, getKeywordWithAliasesByID, updateKeywordAndAliases} from "./keyword";
 
 const DBSeedData = [
@@ -81,7 +81,7 @@ async function seedDB() {
 }
 
 async function clearDB() {
-  await deleteCollections();
+  await deleteAllCollections();
   return;
 }
 

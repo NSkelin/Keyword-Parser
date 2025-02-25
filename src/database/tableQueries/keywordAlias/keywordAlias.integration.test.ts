@@ -1,5 +1,5 @@
 import {getKeywordAliases} from ".";
-import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "../keywordCollection";
+import {createCollectionsWithKeywordsAndAliases, deleteAllCollections} from "../keywordCollection";
 
 const DBSeedData = [
   {
@@ -81,7 +81,7 @@ async function seedDB() {
 }
 
 async function clearDB() {
-  await deleteCollections();
+  await deleteAllCollections();
   return;
 }
 

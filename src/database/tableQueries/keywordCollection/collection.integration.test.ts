@@ -1,5 +1,5 @@
 import prisma from "@/database/client";
-import {createCollectionsWithKeywordsAndAliases, deleteCollections} from "@/database/tableQueries/keywordCollection";
+import {createCollectionsWithKeywordsAndAliases, deleteAllCollections} from "@/database/tableQueries/keywordCollection";
 import {
   createCollections,
   deleteCollection,
@@ -88,7 +88,7 @@ async function seedDB() {
 }
 
 async function clearDB() {
-  await deleteCollections();
+  await deleteAllCollections();
   return;
 }
 
@@ -251,13 +251,13 @@ describe("getCollectionsWithKeywordsAndAliases", () => {
   });
 });
 
-describe("deleteCollections", () => {
+describe("deleteAllCollections", () => {
   it("should delete all collections and their many-to-one relations (keyword, keywordAlias)", async () => {
     expect(await prisma.keywordCollection.findFirst()).not.toBeNull();
     expect(await prisma.keyword.findFirst()).not.toBeNull();
     expect(await prisma.keywordAlias.findFirst()).not.toBeNull();
 
-    await deleteCollections();
+    await deleteAllCollections();
 
     expect(await prisma.keywordCollection.findFirst()).toBeNull();
     expect(await prisma.keyword.findFirst()).toBeNull();

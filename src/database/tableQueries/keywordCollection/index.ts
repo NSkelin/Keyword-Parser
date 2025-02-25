@@ -1,7 +1,7 @@
 export {
   createCollections,
   createCollectionsWithKeywordsAndAliases,
-  deleteAllCollections as deleteCollections,
+  deleteAllCollections,
   getCollectionsAliases,
   getCollectionsKeywords,
   getCollectionsWithKeywordsAndAliases,
