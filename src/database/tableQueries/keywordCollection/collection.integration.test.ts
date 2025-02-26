@@ -386,7 +386,7 @@ describe("updateCollection", () => {
 });
 
 describe("deleteCollection", () => {
-  it("should delete the collection and its many-to-one relations (keyword, keywordAlias", async () => {
+  it("should delete the collection and its many-to-one relations (keyword, keywordAlias)", async () => {
     expect(await prisma.keywordCollection.findFirst({where: {title: "col1Title"}})).not.toBeNull();
     expect(await prisma.keyword.findFirst({where: {displayName: "col1Key1Name"}})).not.toBeNull();
     expect(await prisma.keywordAlias.findFirst({where: {alias: "col1Key1Alias1"}})).not.toBeNull();
@@ -402,9 +402,20 @@ describe("deleteCollection", () => {
     expect(await prisma.keywordAlias.findFirst({where: {alias: "col1Key1Alias3"}})).toBeNull();
   });
 
-  it("should not delete unrelated collections", async () => {
+  it("should only delete related records", async () => {
+    expect(await prisma.keywordCollection.findFirst({where: {title: "col2Title"}})).not.toBeNull();
+    expect(await prisma.keyword.findFirst({where: {displayName: "col2Key1Name"}})).not.toBeNull();
+
     await deleteCollection("col1Title");
 
     expect(await prisma.keywordCollection.findFirst({where: {title: "col2Title"}})).not.toBeNull();
+    expect(await prisma.keyword.findFirst({where: {displayName: "col2Key1Name"}})).not.toBeNull();
+  });
+
+  it("should return success: false when deleting a non-existent collection", async () => {
+    const result = await deleteCollection("nonExistentTitle");
+    expect(result.success).toBe(false);
+    expect(result.error).toBeDefined();
+    expect(result.error?.code).toBe("P2025");
   });
 });

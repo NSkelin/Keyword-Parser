@@ -241,7 +241,26 @@ export async function updateCollection(collectionTitle: string, newData: {newTit
 }
 
 export async function deleteCollection(title: string) {
-  await prisma.keywordCollection.delete({
-    where: {title: title},
-  });
+  try {
+    const deletedCollection = await prisma.keywordCollection.delete({
+      where: {title: title},
+    });
+    return {
+      success: true,
+      data: deletedCollection,
+    };
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      const {code, message, meta} = e;
+      return {
+        success: false,
+        error: {
+          code,
+          message,
+          meta,
+        },
+      };
+    }
+    throw e;
+  }
 }

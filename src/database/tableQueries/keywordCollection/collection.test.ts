@@ -1,7 +1,7 @@
 import {prismaMock} from "@/database/clientMock";
 import {expect} from "@jest/globals";
 import {Prisma} from "@prisma/client";
-import {createCollections, getCollectionsAliases} from "./collection";
+import {createCollections, deleteCollection, getCollectionsAliases} from "./collection";
 
 describe("getCollectionsAliases", () => {
   const mockResponse = [
@@ -119,5 +119,14 @@ describe("createCollections", () => {
     prismaMock.keywordCollection.createMany.mockRejectedValue(unexpectedError);
 
     await expect(createCollections([{title: "Test Collection", highlightColor: "#FF0000"}])).rejects.toThrow("Unexpected error");
+  });
+});
+
+describe("deleteCollection", () => {
+  it("should throw an unexpected error if it's not a PrismaClientKnownRequestError", async () => {
+    const unexpectedError = new Error("Unexpected error");
+    prismaMock.keywordCollection.delete.mockRejectedValue(unexpectedError);
+
+    await expect(deleteCollection("col1Title")).rejects.toThrow("Unexpected error");
   });
 });
