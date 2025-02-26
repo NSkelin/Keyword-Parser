@@ -35,5 +35,16 @@ export async function updateCollectionAction(collectionTitle: string, newData: {
 }
 
 export async function deleteCollectionAction(title: string) {
-  await deleteCollection(title);
+  try {
+    const data = await deleteCollection(title);
+    if (data.success) {
+      return {success: true, message: ""};
+    } else if (data.error?.code === "P2025") {
+      return {success: false, message: `Collection "${title}" doesnt exist!`};
+    } else {
+      return {success: false, message: "Something went wrong, please try again later."};
+    }
+  } catch {
+    return {success: false, message: "Something went wrong, please try again later."};
+  }
 }

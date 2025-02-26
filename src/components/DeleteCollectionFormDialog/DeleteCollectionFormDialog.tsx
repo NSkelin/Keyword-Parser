@@ -2,6 +2,7 @@ import {Button} from "@/components/Button";
 import {Dialog} from "@/components/Dialog";
 import {deleteCollectionAction} from "@/utils/actions";
 import Image from "next/image";
+import {useState} from "react";
 import {useForm} from "react-hook-form";
 import styles from "./DeleteCollectionFormDialog.module.scss";
 
@@ -13,13 +14,18 @@ export interface DeleteCollectionFormDialogProps {
 }
 
 export function DeleteCollectionFormDialog({collectionName, onDelete, onCancel, open}: DeleteCollectionFormDialogProps) {
+  const [serverMsg, setServerMsg] = useState("");
   const {handleSubmit} = useForm();
 
   const trashSVG = <Image src="/delete_forever.svg" alt="Edit icon" width={20} height={20} />;
 
   async function onSubmit() {
-    await deleteCollectionAction(collectionName);
-    onDelete();
+    const {success, message} = await deleteCollectionAction(collectionName);
+    setServerMsg(message);
+
+    if (success) {
+      onDelete();
+    }
   }
 
   return (
@@ -35,6 +41,7 @@ export function DeleteCollectionFormDialog({collectionName, onDelete, onCancel, 
           <b>{collectionName}</b>
           <span>This action cannot be undone.</span>
         </div>
+        <div className={styles.serverError}>{serverMsg}</div>
         <div className={styles.actionBar}>
           <Button buttonStyle="delete" type="submit">
             Yes, delete forever {trashSVG}
