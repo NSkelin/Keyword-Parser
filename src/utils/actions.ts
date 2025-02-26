@@ -26,7 +26,6 @@ export async function createCollectionAction(formData: FormData) {
       return {success: false, message: "Something went wrong, please try again later."};
     }
   } catch {
-    console.log("t");
     return {success: false, message: "Something went wrong, please try again later."};
   }
 }
