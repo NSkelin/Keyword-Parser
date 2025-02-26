@@ -32,11 +32,12 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
 
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
 
+  // Recommended way of resetting by React Hook Form.
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (isSubmitSuccessful && serverMsg === "") {
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSubmitSuccessful, reset, serverMsg]);
 
   async function onSubmit(inputs: z.output<typeof createCollectionSchema>) {
     const formData = new FormData();
