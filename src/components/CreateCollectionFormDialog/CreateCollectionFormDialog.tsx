@@ -25,6 +25,9 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
     formState: {isSubmitSuccessful, errors},
   } = useForm<z.output<typeof createCollectionSchema>>({
     resolver: zodResolver(createCollectionSchema),
+    defaultValues: {
+      title: "",
+    },
   });
 
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
