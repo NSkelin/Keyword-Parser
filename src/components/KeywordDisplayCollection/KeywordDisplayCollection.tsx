@@ -67,7 +67,7 @@ export function KeywordDisplayCollection({
     <section className={styles.displayCollection}>
       <div className={styles.overflowContainer}>
         {displaysList}
-        <Button className={styles.addButton} buttonStyle="create" onClick={openDialog}>
+        <Button data-cy="openButton" className={styles.addButton} buttonStyle="create" onClick={openDialog}>
           New collection {addSVG}
         </Button>
       </div>

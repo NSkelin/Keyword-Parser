@@ -46,7 +46,7 @@ export function DeleteCollectionFormDialog({collectionName, onDelete, onCancel, 
           <Button buttonStyle="delete" type="submit">
             Yes, delete forever {trashSVG}
           </Button>
-          <Button type="button" onClick={onCancel}>
+          <Button data-cy="cancelButton" type="button" onClick={onCancel}>
             Cancel
           </Button>
         </div>

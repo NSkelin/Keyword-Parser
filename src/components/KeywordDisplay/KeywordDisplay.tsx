@@ -146,7 +146,7 @@ export function KeywordDisplay({
           <h2>{title}</h2>
         </InlineEdit>
       </div>
-      <Button buttonStyle="delete" onClick={openCollectionDeleteDialog}>
+      <Button data-cy="deleteButton" buttonStyle="delete" onClick={openCollectionDeleteDialog}>
         Delete collection {trashSVG}
       </Button>
       <Button data-cy="create" className={styles.button} buttonStyle="create" onClick={openKeywordCreateDialog}>
