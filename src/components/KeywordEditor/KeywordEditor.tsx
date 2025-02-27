@@ -225,7 +225,7 @@ export function KeywordEditor({
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
         />
-        <label>
+        <label className={styles.checkbox}>
           Proficient
           <input
             data-cy="proficient"
