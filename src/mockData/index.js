@@ -1,4 +1,3 @@
-import mockKeywordDisplay from "./keywordDisplays.json";
 import sectionData from "./sectionData.json";
 
 // StartDate and endDate are expected to be a Date object but you cant store Date objects in json.
@@ -17,4 +16,6 @@ const mockSectionData = sectionData.map(({positions, ...rest}) => {
 });
 
 // Separate imports from exports because you cant re-export the json, it must be imported and parsed (i assume happens automatically) first.
-export {mockKeywordDisplay, mockSectionData};
+export {generateMockDisplays, getMockDisplays} from "./displays";
+export {generateMockKeywords, getMockKeywords} from "./keywords";
+export {mockSectionData};

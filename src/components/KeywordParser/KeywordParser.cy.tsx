@@ -1,15 +1,16 @@
-import {mockKeywordDisplay, mockSectionData} from "@/mockData";
+import {mockSectionData} from "@/mockData";
+import {generateMockDisplays} from "@/mockData/displays";
 import {KeywordParser} from "./KeywordParser";
 
 describe("<KeywordParser />", () => {
   beforeEach(() => {
-    cy.mount(<KeywordParser initialDisplays={mockKeywordDisplay} sectionData={mockSectionData} />);
+    cy.mount(<KeywordParser initialDisplays={generateMockDisplays(3, 4)} sectionData={mockSectionData} />);
 
     cy.get(".notranslate").as("textArea");
   });
 
   it("renders", () => {
-    cy.mount(<KeywordParser initialDisplays={mockKeywordDisplay} sectionData={mockSectionData} />);
+    cy.mount(<KeywordParser initialDisplays={generateMockDisplays(3, 4)} sectionData={mockSectionData} />);
   });
 
   describe("<KeywordDisplay /> should represent the text in <HighlightWithinTextArea />", () => {

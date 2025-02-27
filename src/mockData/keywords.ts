@@ -8,6 +8,28 @@ export const getMockKeywords = (): Keyword[] => {
   });
 };
 
+/**
+ * Similar to getMockKeywords but the words are generated based on the parameters to create easily testable keywords.
+ *
+ * @param id The unique identifier for this batch of keywords. For example an id of 1 = kw1-1, kw2-1... | id of 4 = kw4-1, kw4-2...
+ * @param quantity The amount of keywords to generate.
+ */
+export function generateMockKeywords(id: number, quantity: number): Keyword[] {
+  const keywords = [];
+
+  for (let i = 1; i <= quantity; i++) {
+    keywords.push({
+      id: i,
+      displayName: `Keyword ${id}-${i}`,
+      instances: i,
+      proficient: true,
+      aliases: [`keyword${id}-${i}`, `keyword ${id}-${i}`, `kw${id}-${i}`],
+    });
+  }
+
+  return keywords;
+}
+
 const keywordsData: Omit<Keyword, "id">[] = [
   {displayName: "Cleveland", instances: 0, proficient: false, aliases: ["cupidatat", "magna", "minim"]},
   {displayName: "Sheppard", instances: 1, proficient: true, aliases: ["Burris", "May"]},
