@@ -1,12 +1,7 @@
+import {generateMockKeywords} from "@/mockData";
 import {KeywordDisplay} from "./KeywordDisplay";
 
-const keywords = [
-  {id: 1, aliases: ["kw1", "kw11", "kw111"], displayName: "kw1", instances: 0, proficient: false},
-  {id: 2, aliases: ["kw2", "kw22", "kw222"], displayName: "kw2", instances: 1, proficient: false},
-  {id: 3, aliases: ["kw3", "kw33", "kw333"], displayName: "kw3", instances: 0, proficient: false},
-  {id: 4, aliases: ["kw4", "kw44", "kw444"], displayName: "kw4", instances: 3, proficient: false},
-  {id: 5, aliases: ["kw5", "kw55", "kw555"], displayName: "kw5", instances: 2, proficient: false},
-];
+const keywords = generateMockKeywords(1, 5);
 
 describe("<KeywordDisplay />", () => {
   beforeEach(() => {
@@ -108,16 +103,16 @@ describe("<KeywordDisplay />", () => {
 
         // reopen form
         cy.get("[data-cy='edit']").eq(0).click();
-        cy.get("@CSI").contains("span", "kw4").should("exist");
+        cy.get("@CSI").contains("span", "keyword1 5").should("exist");
       });
 
       it("reset created aliases", () => {
-        cy.get("@aliases").type("keyword 11,");
+        cy.get("@aliases").type("keyword1 1,");
         cy.get("@cancel").click();
 
         // reopen form
         cy.get("[data-cy='edit']").eq(0).click();
-        cy.get("@CSI").contains("span", "keyword 11").should("not.exist");
+        cy.get("@CSI").contains("span", "keyword1 1").should("not.exist");
       });
 
       it("reset proficiency", () => {
@@ -126,7 +121,7 @@ describe("<KeywordDisplay />", () => {
 
         // reopen form
         cy.get("[data-cy='edit']").eq(0).click();
-        cy.get("[data-cy='proficient']").should("not.be.checked");
+        cy.get("[data-cy='proficient']").should("be.checked");
       });
     });
   });
