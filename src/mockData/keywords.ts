@@ -20,10 +20,10 @@ export function generateMockKeywords(id: number, quantity: number): Keyword[] {
   for (let i = 1; i <= quantity; i++) {
     keywords.push({
       id: i,
-      displayName: `Keyword ${id}-${i}`,
+      displayName: `Keyword ${id} ${i}`,
       instances: i,
       proficient: true,
-      aliases: [`keyword${id}-${i}`, `keyword ${id}-${i}`, `kw${id}-${i}`],
+      aliases: [`keyword${id} ${i}`, `keyword ${id} ${i}`, `kw${id} ${i}`],
     });
   }
 

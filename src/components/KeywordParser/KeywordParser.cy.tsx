@@ -15,27 +15,27 @@ describe("<KeywordParser />", () => {
 
   describe("<KeywordDisplay /> should represent the text in <HighlightWithinTextArea />", () => {
     it("a keywords count should equal the total instances of that keyword found inside the textarea", () => {
-      cy.get("@textArea").type("kw1-1 kw1-1 keyword1-1 kw2-2 kw2-2");
+      cy.get("@textArea").type("kw1 1 kw1 1 keyword1 1 kw2 2 kw2 2");
 
       cy.get("[data-cy='keywordItemComp']")
-        .filter(":contains('Keyword 1-1')")
+        .filter(":contains('Keyword 1 1')")
         .find("[data-cy='instances']")
         .invoke("text")
         .should("eq", "3");
       cy.get("[data-cy='keywordItemComp']")
-        .filter(":contains('Keyword 2-2')")
+        .filter(":contains('Keyword 2 2')")
         .find("[data-cy='instances']")
         .invoke("text")
         .should("eq", "2");
       cy.get("[data-cy='keywordItemComp']")
-        .filter(":contains('Keyword 2-1')")
+        .filter(":contains('Keyword 2 1')")
         .find("[data-cy='instances']")
         .invoke("text")
         .should("eq", "0");
     });
 
     it("should highlight the keyword list item that matches the entered text", () => {
-      cy.get("@textArea").type("kw1-1");
+      cy.get("@textArea").type("kw1 1");
       cy.get("[data-cy='keywordDisplayComp']")
         .eq(0)
         .find("[data-cy='keywordListComp']")
