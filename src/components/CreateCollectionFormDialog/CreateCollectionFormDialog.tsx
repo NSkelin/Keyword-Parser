@@ -58,14 +58,13 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
   }
 
   return (
-    <Dialog onCancel={handleCancel} open={open}>
+    <Dialog title="Create a new collection" onCancel={handleCancel} open={open}>
       <form
         onSubmit={(event) => {
           void handleSubmit(onSubmit)(event);
         }}
         className={styles.form}
       >
-        <h2>Create a new collection</h2>
         <div className={styles.inputs}>
           <Input
             required

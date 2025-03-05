@@ -29,7 +29,7 @@ export function DeleteCollectionFormDialog({collectionName, onDelete, onCancel, 
   }
 
   return (
-    <Dialog onCancel={onCancel} open={open}>
+    <Dialog title="Delete Collection" onCancel={onCancel} open={open}>
       <form
         onSubmit={(event) => {
           void handleSubmit(onSubmit)(event);

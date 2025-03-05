@@ -2,6 +2,7 @@ import {useEffect, useRef} from "react";
 import styles from "./Dialog.module.scss";
 
 export interface DialogProps {
+  title: string;
   open?: boolean;
   onCancel?: (e: Event) => void;
   onClose?: (e: Event) => void;
@@ -10,7 +11,7 @@ export interface DialogProps {
   /** Dialog onClose event */
 }
 /** A html dialog wrapper */
-export function Dialog({open, onCancel, onClose, children}: DialogProps) {
+export function Dialog({title, open, onCancel, onClose, children}: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
 
   // open/close dialog depending on open prop.
@@ -49,6 +50,7 @@ export function Dialog({open, onCancel, onClose, children}: DialogProps) {
 
   return (
     <dialog data-cy="dialogComp" ref={ref} className={styles.dialog}>
+      <h2> {title} </h2>
       {children}
     </dialog>
   );

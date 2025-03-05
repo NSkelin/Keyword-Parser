@@ -114,7 +114,7 @@ export function KeywordDisplay({
   }
   return (
     <section data-cy="keywordDisplayComp" className={styles.container}>
-      <Dialog onClose={handleKeywordDialogCancel} open={keywordEditDialogOpen}>
+      <Dialog title="" onClose={handleKeywordDialogCancel} open={keywordEditDialogOpen}>
         <KeywordEditor
           key={editorId}
           id={editorId}
