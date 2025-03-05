@@ -76,14 +76,14 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
           />
         </div>
         <div className={styles.serverError}>{serverMsg}</div>
-        <div className={styles.actionBar}>
+        <Dialog.ActionBar>
           <Button buttonStyle="submit" type="submit">
             Create {addSVG}
           </Button>
           <Button type="button" onClick={handleCancel}>
             Cancel
           </Button>
-        </div>
+        </Dialog.ActionBar>
       </form>
     </Dialog>
   );

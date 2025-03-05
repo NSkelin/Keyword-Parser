@@ -42,14 +42,14 @@ export function DeleteCollectionFormDialog({collectionName, onDelete, onCancel, 
           <span>This action cannot be undone.</span>
         </div>
         <div className={styles.serverError}>{serverMsg}</div>
-        <div className={styles.actionBar}>
+        <Dialog.ActionBar>
           <Button buttonStyle="delete" type="submit">
             Yes, delete forever {trashSVG}
           </Button>
           <Button data-cy="cancelButton" type="button" onClick={onCancel}>
             Cancel
           </Button>
-        </div>
+        </Dialog.ActionBar>
       </form>
     </Dialog>
   );
