@@ -55,3 +55,13 @@ export function Dialog({title, open, onCancel, onClose, children}: DialogProps) 
     </dialog>
   );
 }
+
+interface ActionBarProps {
+  children?: React.ReactNode;
+}
+
+function ActionBar({children}: ActionBarProps) {
+  return <div className={styles.actionBar}>{children}</div>;
+}
+
+Dialog.ActionBar = ActionBar;

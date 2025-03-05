@@ -10,4 +10,9 @@
   &::backdrop {
     background-color: rgba(128, 128, 128, 0.4);
   }
+
+  .actionBar {
+    display: flex;
+    justify-content: space-between;
+  }
 }
