@@ -9,6 +9,7 @@ import {updateCollectionAction} from "@/utils/actions";
 import type {Keyword} from "@/utils/types";
 import Image from "next/image";
 import {useState} from "react";
+import {CreateKeywordFormDialog, CreateKeywordFormDialogProps} from "../CreateKeywordFormDialog";
 import {InlineEdit} from "../InlineEdit";
 import styles from "./KeywordDisplay.module.scss";
 
@@ -19,7 +20,8 @@ export interface KeywordDisplayProps extends SubmissionCallbacks {
   keywords: Keyword[];
   /** The color used for each keywords highlight color */
   highlightColor?: string;
-
+  /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
+  onKeywordCreate: CreateKeywordFormDialogProps["onKeywordCreate"];
   onCollectionUpdate: (collectionName: string, newCollectionName: string, newHighlightColor: string) => void;
   onCollectionDelete: (collectionName: string) => void;
 }
@@ -38,9 +40,9 @@ export function KeywordDisplay({
   onCollectionDelete,
 }: KeywordDisplayProps) {
   const [keywordEditDialogOpen, setKeywordEditDialogOpen] = useState(false);
+  const [createKeywordFormDialogOpen, setCreateKeywordFormDialogOpen] = useState(false);
   const [collectionDeleteDialogOpen, setCollectionDeleteDialogOpen] = useState(false);
   const [editorId, setEditorId] = useState<number>(-1);
-  const [editorMode, setEditorMode] = useState<"Create" | "Edit">("Create");
   const [color, setColor] = useState(highlightColor ?? "FFFFFF");
 
   const trashSVG = <Image src="/delete_forever.svg" alt="Edit icon" width={20} height={20} />;
@@ -51,17 +53,9 @@ export function KeywordDisplay({
     return {...rest};
   });
 
-  /** Opens and sets the KeywordEditor dialog for creating new keywords. */
-  function openKeywordCreateDialog() {
-    setEditorMode("Create");
-    setEditorId(-1);
-    setKeywordEditDialogOpen(true);
-  }
-
   /** Opens and sets the KeywordEditor dialog for editing existing keywords. */
   function openKeywordEditDialog(id: number) {
     setEditorId(id);
-    setEditorMode("Edit");
     setKeywordEditDialogOpen(true);
   }
 
@@ -104,6 +98,14 @@ export function KeywordDisplay({
     setCollectionDeleteDialogOpen(false);
   }
 
+  function handleCreateKeywordSubmit() {
+    setCreateKeywordFormDialogOpen(false);
+  }
+
+  function handleCreateKeywordCancel() {
+    setCreateKeywordFormDialogOpen(false);
+  }
+
   // get the initial data
   let displayName, aliases, proficient;
 
@@ -114,6 +116,13 @@ export function KeywordDisplay({
   }
   return (
     <section data-cy="keywordDisplayComp" className={styles.container}>
+      <CreateKeywordFormDialog
+        collection={title}
+        onKeywordCreate={onKeywordCreate}
+        onSubmit={handleCreateKeywordSubmit}
+        onCancel={handleCreateKeywordCancel}
+        open={createKeywordFormDialogOpen}
+      ></CreateKeywordFormDialog>
       <Dialog title="" onClose={handleKeywordDialogCancel} open={keywordEditDialogOpen}>
         <KeywordEditor
           key={editorId}
@@ -122,8 +131,6 @@ export function KeywordDisplay({
           initialDisplayName={displayName}
           initialProficient={proficient}
           initialAliases={aliases}
-          mode={editorMode}
-          onKeywordCreate={onKeywordCreate}
           onKeywordUpdate={onKeywordUpdate}
           onKeywordDelete={onKeywordDelete}
           onSubmit={handleKeywordDialogSubmit}
@@ -149,7 +156,12 @@ export function KeywordDisplay({
       <Button data-cy="deleteButton" buttonStyle="delete" onClick={openCollectionDeleteDialog}>
         Delete collection {trashSVG}
       </Button>
-      <Button data-cy="create" className={styles.button} buttonStyle="create" onClick={openKeywordCreateDialog}>
+      <Button
+        data-cy="create"
+        className={styles.button}
+        buttonStyle="create"
+        onClick={() => setCreateKeywordFormDialogOpen(true)}
+      >
         New keyword {addSVG}
       </Button>
       <KeywordList onEdit={openKeywordEditDialog} keywords={keywordsList} highlightColor={color} />

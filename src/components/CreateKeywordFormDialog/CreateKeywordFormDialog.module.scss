@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 500px;
+}
+.inputs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 20px;
+  min-height: 0;
+}
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  div {
+    display: flex;
+    gap: 10px;
+  }
+  padding-bottom: 30px;
+}
+.checkbox {
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  input {
+    height: 19px;
+    width: 19px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

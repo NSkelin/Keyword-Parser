@@ -14,14 +14,6 @@ const validationRules: ValidationInputRules = {
 };
 
 export interface SubmissionCallbacks {
-  /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onKeywordCreate: (
-    keywordId: number,
-    collectionName: string,
-    displayName: string,
-    proficient: boolean,
-    aliases: string[],
-  ) => void;
   /** A callback for when a user successfully updates a keyword. Should be used to update state to keep the list relevant. */
   onKeywordUpdate: (
     keywordId: number,
@@ -47,9 +39,6 @@ export interface KeywordEditorProps extends SubmissionCallbacks {
   /** The list of aliases shown under the aliases \<input>. Each alias is represented by a clickable box underneath
    * the input allowing users to delete existing keywords easily. Requires onAliasesChange to function properly. */
   initialAliases?: string[];
-  /** Changes how the dialog's title and buttons are rendered. "Create" has two buttons, one to create a new keyword and another to cancel.
-   * "Edit" has three buttons, one to save changes, one to delete the keyword, and another to cancel any changes.*/
-  mode?: "Create" | "Edit";
   /** Called upon a successful creation / update / deletion. */
   onSubmit?: () => void;
   /** Called when the user clicks the cancel button */
@@ -62,8 +51,6 @@ export function KeywordEditor({
   collection,
   initialProficient = false,
   initialAliases = [],
-  mode = "Create",
-  onKeywordCreate,
   onKeywordUpdate,
   onKeywordDelete,
   onSubmit,
@@ -75,7 +62,6 @@ export function KeywordEditor({
   const [CSIErrorMessage, setCSIErrorMessage] = useState<string | undefined>(undefined);
   const displayNameValidation = validateInput(displayName, validationRules);
 
-  const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
   const trashSVG = <Image src="/delete_forever.svg" alt="Edit icon" width={16} height={16} />;
 
   function validateForm() {
@@ -96,30 +82,6 @@ export function KeywordEditor({
   function handleCSIChange(aliases: string[]) {
     setAliases(aliases);
     setCSIErrorMessage("");
-  }
-
-  /**
-   * Sends a POST request to the API to create a new keyword.
-   * @returns The newly created keywords ID.
-   */
-  async function requestKeywordCreate() {
-    const response = await fetch(`/api/${collection}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({displayName: displayName, proficient: proficient, aliases: aliases}),
-    });
-
-    if (!response.ok) throw new Error("Bad response");
-
-    const jsonData: unknown = await response.json();
-
-    if (typeof jsonData === "object" && jsonData != null && "id" in jsonData && typeof jsonData.id === "number") {
-      return jsonData.id;
-    } else {
-      throw new Error("Bad id");
-    }
   }
 
   /**
@@ -144,19 +106,8 @@ export function KeywordEditor({
     if (!response.ok) throw new Error("Failed to delete keyword");
   }
 
-  async function handleSubmit(type: "Create" | "Update" | "Delete") {
+  async function handleSubmit(type: "Update" | "Delete") {
     switch (type) {
-      case "Create":
-        try {
-          if (!validateForm()) return;
-          const id = await requestKeywordCreate();
-          onKeywordCreate(id, collection, displayName, proficient, aliases);
-        } catch (error) {
-          console.error("Error occurred while adding keyword:", error);
-          return;
-        }
-        break;
-
       case "Update":
         try {
           if (!validateForm()) return;
@@ -181,43 +132,10 @@ export function KeywordEditor({
     if (onSubmit) onSubmit();
   }
 
-  // Create the editors title and available buttons depending on if its creating a new keyword or editing and existing one.
-  const title = mode === "Create" ? "Create a new keyword" : "Edit or delete the keyword";
-  const buttons = () => {
-    if (mode === "Create") {
-      return (
-        <>
-          <Button buttonStyle="submit" data-cy="submit" onClick={() => void handleSubmit("Create")}>
-            Create {addSVG}
-          </Button>
-          <Button data-cy="cancel" onClick={onCancel}>
-            Cancel
-          </Button>
-        </>
-      );
-    } else if (mode === "Edit") {
-      return (
-        <>
-          <Button buttonStyle="submit" data-cy="submit" onClick={() => void handleSubmit("Update")}>
-            Save
-          </Button>
-          <div>
-            <Button buttonStyle="delete" data-cy="delete" onClick={() => void handleSubmit("Delete")}>
-              Delete {trashSVG}
-            </Button>
-            <Button data-cy="cancel" onClick={onCancel}>
-              Cancel
-            </Button>
-          </div>
-        </>
-      );
-    }
-  };
-
   return (
     <div data-cy="keywordEditorComp" className={styles.container}>
       <div className={styles.inputs}>
-        <h2>{title}</h2>
+        <h2>Edit or delete the keyword</h2>
         <Input
           label="Display Name"
           errorMessage={displayNameValidation.valid ? undefined : displayNameValidation.error}
@@ -242,7 +160,19 @@ export function KeywordEditor({
           errorMessage={CSIErrorMessage}
         />
       </div>
-      <div className={styles.actionBar}>{buttons()}</div>
+      <div className={styles.actionBar}>
+        <Button buttonStyle="submit" data-cy="submit" onClick={() => void handleSubmit("Update")}>
+          Save
+        </Button>
+        <div>
+          <Button buttonStyle="delete" data-cy="delete" onClick={() => void handleSubmit("Delete")}>
+            Delete {trashSVG}
+          </Button>
+          <Button data-cy="cancel" onClick={onCancel}>
+            Cancel
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
