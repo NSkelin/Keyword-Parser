@@ -1,8 +1,8 @@
 .dialog {
-  padding: 50px;
+  padding: 0 30px;
   margin: auto;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 1px 1px 2px gray;
   width: 500px;
 
@@ -10,8 +10,13 @@
     background-color: rgba(128, 128, 128, 0.4);
   }
 
-  .actionBar {
-    display: flex;
-    justify-content: space-between;
+  h2 {
+    margin: 30px 0 15px 0;
   }
+}
+
+.actionBar {
+  margin: 15px 0 30px 0;
+  display: flex;
+  justify-content: space-between;
 }
