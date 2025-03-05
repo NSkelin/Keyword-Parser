@@ -65,16 +65,14 @@ export function CreateCollectionFormDialog({onCreate, onCancel, open}: CreateCol
         }}
         className={styles.form}
       >
-        <div className={styles.inputs}>
-          <Input
-            required
-            label="Collection title"
-            errorMessage={errors.title?.message}
-            {...register("title")}
-            placeholder="collection name"
-            name="title"
-          />
-        </div>
+        <Input
+          required
+          label="Collection title"
+          errorMessage={errors.title?.message}
+          {...register("title")}
+          placeholder="collection name"
+          name="title"
+        />
         <div className={styles.serverError}>{serverMsg}</div>
         <Dialog.ActionBar>
           <Button buttonStyle="submit" type="submit">

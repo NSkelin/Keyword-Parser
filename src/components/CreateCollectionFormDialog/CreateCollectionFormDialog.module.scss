@@ -1,7 +1,6 @@
 .form {
   display: flex;
   flex-direction: column;
-  height: 100%;
   gap: 15px;
 
   .serverError {
@@ -10,8 +9,5 @@
     font-size: 14px;
     height: 14px;
     text-align: center;
-  }
-  .inputs {
-    flex: 1;
   }
 }
