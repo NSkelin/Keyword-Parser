@@ -36,10 +36,12 @@ export function DeleteCollectionFormDialog({collectionName, onDelete, onCancel, 
         }}
         className={styles.form}
       >
-        <div className={styles.warning}>
-          <h3>Are you sure you want to delete this collection</h3>
-          <b>{collectionName}</b>
-          <span>This action cannot be undone.</span>
+        <div className={styles.content}>
+          <span>
+            Are you sure you want to delete <b>{collectionName}</b>?
+          </span>
+
+          <strong>This action cannot be undone.</strong>
         </div>
         <div className={styles.serverError}>{serverMsg}</div>
         <Dialog.ActionBar>
