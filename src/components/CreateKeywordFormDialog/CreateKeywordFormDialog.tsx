@@ -104,15 +104,13 @@ export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSu
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
           />
-          <label className={styles.checkbox}>
-            Proficient
-            <input
-              data-cy="proficient"
-              type="checkbox"
-              checked={proficient}
-              onChange={(e) => setProficient(e.target.checked)}
-            ></input>
-          </label>
+          <Input
+            data-cy="proficient"
+            label="Proficient"
+            type="checkbox"
+            checked={proficient}
+            onChange={(e) => setProficient(e.target.checked)}
+          />
           <CommaSeparatedInput
             label={"Aliases (comma-separated)"}
             savedInputs={aliases}
