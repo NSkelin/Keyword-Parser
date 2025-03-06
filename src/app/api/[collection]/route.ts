@@ -11,7 +11,9 @@ export async function POST(req: Request, props: {params: Promise<{collection: st
 
     const {success, data} = createKeywordSchema.safeParse(jsonData);
 
-    if (!success) return new Response("Failed", {status: 400});
+    if (!success) {
+      return NextResponse.json({success: false, message: "Invalid form data"});
+    }
 
     const {title, proficient, aliases} = data;
 
@@ -20,9 +22,9 @@ export async function POST(req: Request, props: {params: Promise<{collection: st
     });
 
     const newId = await createKeywordWithAliases(title, proficient, aliasObjs, collection);
-    return NextResponse.json({id: newId});
-  } catch (error) {
-    console.log(error);
-    return new Response("Failed", {status: 400});
+
+    return NextResponse.json({success: true, message: "", id: newId});
+  } catch {
+    return NextResponse.json({success: false, message: "Something went wrong, please try again later."});
   }
 }

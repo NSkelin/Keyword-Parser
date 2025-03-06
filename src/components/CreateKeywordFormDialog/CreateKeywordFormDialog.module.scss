@@ -3,6 +3,13 @@
   flex-direction: column;
   justify-content: space-between;
   height: 500px;
+  .serverError {
+    color: red;
+    font-weight: normal;
+    font-size: 14px;
+    height: 14px;
+    text-align: center;
+  }
 }
 .inputs {
   display: flex;

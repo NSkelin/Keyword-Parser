@@ -4,11 +4,17 @@ import {Input} from "@/components/Input";
 import {createKeywordSchema} from "@/utils/zodSchemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import Image from "next/image";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Controller, useForm} from "react-hook-form";
 import {z} from "zod";
 import {Dialog} from "../Dialog";
 import styles from "./CreateKeywordFormDialog.module.scss";
+
+const serverResponse = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  id: z.number().optional(),
+});
 
 export interface CreateKeywordFormDialogProps {
   /** The collection the currently edited keyword is apart of. Used to call the REST api. */
@@ -21,6 +27,7 @@ export interface CreateKeywordFormDialogProps {
 }
 /** A \<dialog> form used to add / edit / delete keywords. */
 export function CreateKeywordFormDialog({collection, open, onCreate, onCancel}: CreateKeywordFormDialogProps) {
+  const [serverMsg, setServerMsg] = useState("");
   const {
     register,
     handleSubmit,
@@ -50,27 +57,30 @@ export function CreateKeywordFormDialog({collection, open, onCreate, onCancel}: 
    * @returns The newly created keywords ID.
    */
   async function onSubmit(inputs: z.output<typeof createKeywordSchema>) {
-    try {
-      const {title, proficient, aliases} = inputs;
-      const response = await fetch(`/api/${collection}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({displayName: title, proficient, aliases}),
-      });
+    const {title, proficient, aliases} = inputs;
+    const response = await fetch(`/api/${collection}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({displayName: title, proficient, aliases}),
+    });
 
-      if (!response.ok) throw new Error("Bad response");
+    if (!response.ok) {
+      setServerMsg("Something went wrong, please try again later.");
+    }
 
-      const jsonData: unknown = await response.json();
+    const {success, data} = serverResponse.safeParse(response);
+    if (!success) {
+      setServerMsg("Something went wrong, please try again later.");
+      return;
+    }
+    const {success: serverSuccess, message, id} = data;
 
-      if (typeof jsonData === "object" && jsonData != null && "id" in jsonData && typeof jsonData.id === "number") {
-        onCreate(jsonData.id, collection, title, proficient, aliases);
-      } else {
-        throw new Error("Bad id");
-      }
-    } catch (error) {
-      console.error("Error occurred while adding keyword:", error);
+    if (serverSuccess && id) {
+      onCreate(id, collection, title, proficient, aliases);
+    } else {
+      setServerMsg(message);
       return;
     }
   }
@@ -119,6 +129,9 @@ export function CreateKeywordFormDialog({collection, open, onCreate, onCancel}: 
               />
             )}
           />
+        </div>
+        <div data-cy="serverResponse" className={styles.serverError}>
+          {serverMsg}
         </div>
         <Dialog.ActionBar>
           <Button buttonStyle="submit" data-cy="submit" type="submit">
