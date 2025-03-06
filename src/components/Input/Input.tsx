@@ -10,7 +10,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
   /** Overrides the main data-cy for testing purposes. */
   "data-cy"?: string;
-  type: InputHTMLAttributes<HTMLInputElement>["type"];
+  type?: InputHTMLAttributes<HTMLInputElement>["type"];
 }
 /** A wrapper for the html input component that adds support for labels and error messages. */
 export function Input({label, errorMessage, "data-cy": dataCy, required = false, type, ...props}: InputProps) {
