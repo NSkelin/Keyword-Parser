@@ -82,14 +82,14 @@ export function CreateKeywordFormDialog({collection, open, onCreate, onCancel}: 
 
     if (serverSuccess && id) {
       onCreate(id, collection, title, proficient, aliases);
-    } else {
-      setServerMsg(message);
-      return;
     }
+
+    setServerMsg(message);
   }
 
   function handleCancel() {
     if (onCancel) onCancel();
+    setServerMsg("");
     reset();
   }
 
