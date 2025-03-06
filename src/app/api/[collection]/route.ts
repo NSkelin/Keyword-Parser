@@ -30,7 +30,7 @@ export async function POST(req: Request, props: {params: Promise<{collection: st
       const error = result.error;
       if (error.code === "P2002") {
         if (!error.meta || !Array.isArray(error.meta.target)) return;
-        if (error.meta?.target[0] === "keyword")
+        if (error.meta?.target[0] === "displayName")
           return NextResponse.json({success: false, message: "The Keyword already exists."});
         else if (error.meta?.target[0] === "alias")
           return NextResponse.json({success: false, message: "An Alias already exists."});
