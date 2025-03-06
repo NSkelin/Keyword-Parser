@@ -5,6 +5,7 @@ import type {SubmissionCallbacks} from "@/components/KeywordEditor";
 import type {Keyword} from "@/utils/types";
 import Image from "next/image";
 import {CSSProperties, useState} from "react";
+import type {CreateKeywordFormDialogProps} from "../CreateKeywordFormDialog";
 import styles from "./KeywordDisplayCollection.module.scss";
 
 export interface Display {
@@ -15,6 +16,7 @@ export interface Display {
 export interface KeywordDisplayCollectionProps extends SubmissionCallbacks {
   /** The list of data used to generate the displays */
   displays: Display[];
+  onKeywordCreate: CreateKeywordFormDialogProps["onCreate"];
   onCollectionCreate: (collectionName: string) => void;
   onCollectionUpdate: (collectionName: string, newCollectionName: string, newHighlightColor: string) => void;
   onCollectionDelete: (collectionName: string) => void;
