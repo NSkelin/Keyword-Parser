@@ -68,6 +68,7 @@ export function CreateKeywordFormDialog({collection, open, onCreate, onCancel}: 
 
     if (!response.ok) {
       setServerMsg("Something went wrong, please try again later.");
+      return;
     }
 
     const jsonData: unknown = await response.json();
