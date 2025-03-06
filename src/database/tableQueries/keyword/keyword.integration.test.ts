@@ -102,12 +102,17 @@ describe("getKeywordWithAliasesByID", () => {
       collectionTitle: DBSeedData[0].title,
     };
 
-    const newKeywordID = await createKeywordWithAliases(
+    const result = await createKeywordWithAliases(
       mockData.displayName,
       mockData.proficient,
       mockData.aliases,
       mockData.collectionTitle,
     );
+
+    expect(result.success).toBeTruthy();
+    if (!result.success) return;
+    const newKeywordID = result.data;
+
     const keyword = await getKeywordWithAliasesByID(newKeywordID);
 
     expect(keyword).toMatchObject(mockData);
@@ -123,12 +128,17 @@ describe("createKeywordWithAliases", () => {
       collectionTitle: DBSeedData[0].title,
     };
 
-    const newKeywordID = await createKeywordWithAliases(
+    const result = await createKeywordWithAliases(
       mockData.displayName,
       mockData.proficient,
       mockData.aliases,
       mockData.collectionTitle,
     );
+
+    expect(result.success).toBeTruthy();
+    if (!result.success) return;
+    const newKeywordID = result.data;
+
     const keyword = await getKeywordWithAliasesByID(newKeywordID);
 
     expect(keyword).toMatchObject(mockData);
@@ -150,12 +160,16 @@ describe("updateKeywordAndAliases", () => {
       collectionTitle: DBSeedData[0].title,
     };
 
-    const newKeywordID = await createKeywordWithAliases(
+    const result = await createKeywordWithAliases(
       mockData.displayName,
       mockData.proficient,
       mockData.aliases,
       mockData.collectionTitle,
     );
+
+    expect(result.success).toBeTruthy();
+    if (!result.success) return;
+    const newKeywordID = result.data;
 
     await updateKeywordAndAliases(newKeywordID, true, ["newAlias1", "newAlias2"], "newDisplayName1");
     const keyword = await getKeywordWithAliasesByID(newKeywordID);
@@ -179,12 +193,16 @@ describe("deleteKeywordAndAliases", () => {
       collectionTitle: DBSeedData[0].title,
     };
 
-    const newKeywordID = await createKeywordWithAliases(
+    const result = await createKeywordWithAliases(
       mockData.displayName,
       mockData.proficient,
       mockData.aliases,
       mockData.collectionTitle,
     );
+
+    expect(result.success).toBeTruthy();
+    if (!result.success) return;
+    const newKeywordID = result.data;
 
     expect(await getKeywordWithAliasesByID(newKeywordID)).not.toBeNull();
 

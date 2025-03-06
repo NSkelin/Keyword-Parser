@@ -21,9 +21,23 @@ export async function POST(req: Request, props: {params: Promise<{collection: st
       return {alias: alias};
     });
 
-    const newId = await createKeywordWithAliases(title, proficient, aliasObjs, collection);
+    const result = await createKeywordWithAliases(title, proficient, aliasObjs, collection);
 
-    return NextResponse.json({success: true, message: "", id: newId});
+    if (result.success) {
+      const id = result.data;
+      return NextResponse.json({success: true, message: "", id});
+    } else {
+      const error = result.error;
+      if (error.code === "P2002") {
+        if (!error.meta || !Array.isArray(error.meta.target)) return;
+        if (error.meta?.target[0] === "keyword")
+          return NextResponse.json({success: false, message: "The Keyword already exists."});
+        else if (error.meta?.target[0] === "alias")
+          return NextResponse.json({success: false, message: "An Alias already exists."});
+      } else {
+        return NextResponse.json({success: false, message: "Something went wrong, please try again later."});
+      }
+    }
   } catch {
     return NextResponse.json({success: false, message: "Something went wrong, please try again later."});
   }
