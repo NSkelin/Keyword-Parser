@@ -4,7 +4,7 @@ import {Input} from "@/components/Input";
 import type {ValidationInputRules} from "@/utils";
 import {validateInput} from "@/utils";
 import Image from "next/image";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 import {Dialog} from "../Dialog";
 import styles from "./CreateKeywordFormDialog.module.scss";
 
@@ -65,8 +65,9 @@ export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSu
    * Sends a POST request to the API to create a new keyword.
    * @returns The newly created keywords ID.
    */
-  async function requestKeywordCreate() {
+  async function requestKeywordCreate(e: FormEvent<HTMLFormElement>) {
     try {
+      e.preventDefault();
       if (!validateForm()) return;
       const response = await fetch(`/api/${collection}`, {
         method: "POST",
@@ -94,7 +95,7 @@ export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSu
 
   return (
     <Dialog title="" onCancel={onCancel} open={open}>
-      <div data-cy="keywordEditorComp" className={styles.container}>
+      <form data-cy="keywordEditorComp" onSubmit={(e) => void requestKeywordCreate(e)} className={styles.container}>
         <div className={styles.inputs}>
           <h2>Create</h2>
           <Input
@@ -120,14 +121,14 @@ export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSu
           />
         </div>
         <Dialog.ActionBar>
-          <Button buttonStyle="submit" data-cy="submit" onClick={() => void requestKeywordCreate()}>
+          <Button buttonStyle="submit" data-cy="submit" type="submit">
             Create {addSVG}
           </Button>
-          <Button data-cy="cancel" onClick={onCancel}>
+          <Button data-cy="cancel" type="button" onClick={onCancel}>
             Cancel
           </Button>
         </Dialog.ActionBar>
-      </div>
+      </form>
     </Dialog>
   );
 }
