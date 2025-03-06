@@ -1,3 +1,29 @@
+.wrapper {
+  .checkbox {
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    input {
+      height: 19px;
+      width: 19px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
 .errorMessage {
   color: red;
   font-weight: normal;

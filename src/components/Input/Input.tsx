@@ -10,20 +10,21 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   required?: boolean;
   /** Overrides the main data-cy for testing purposes. */
   "data-cy"?: string;
+  type: InputHTMLAttributes<HTMLInputElement>["type"];
 }
 /** A wrapper for the html input component that adds support for labels and error messages. */
-export function Input({label, errorMessage, "data-cy": dataCy, required = false, ...props}: InputProps) {
+export function Input({label, errorMessage, "data-cy": dataCy, required = false, type, ...props}: InputProps) {
   return (
     <div data-cy={dataCy ?? "inputComp"} className={styles.wrapper}>
       <strong data-cy="errorMessage" className={styles.errorMessage}>
         {errorMessage}
       </strong>
-      <label>
+      <label className={type === "checkbox" ? styles.checkbox : ""}>
         <div>
           <span style={{color: "red"}}>{required ? "*" : ""}</span>
           {label}
         </div>
-        <input data-cy="input" {...props}></input>
+        <input data-cy="input" type={type} {...props}></input>
       </label>
     </div>
   );
