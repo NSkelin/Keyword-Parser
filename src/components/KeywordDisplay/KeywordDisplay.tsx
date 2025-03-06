@@ -9,7 +9,8 @@ import {updateCollectionAction} from "@/utils/actions";
 import type {Keyword} from "@/utils/types";
 import Image from "next/image";
 import {useState} from "react";
-import {CreateKeywordFormDialog, CreateKeywordFormDialogProps} from "../CreateKeywordFormDialog";
+import type {CreateKeywordFormDialogProps} from "../CreateKeywordFormDialog";
+import {CreateKeywordFormDialog} from "../CreateKeywordFormDialog";
 import {InlineEdit} from "../InlineEdit";
 import styles from "./KeywordDisplay.module.scss";
 
