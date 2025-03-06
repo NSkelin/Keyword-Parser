@@ -1,80 +1,63 @@
 import {Button} from "@/components/Button";
 import {CommaSeparatedInput} from "@/components/CommaSeparatedInput";
 import {Input} from "@/components/Input";
-import type {ValidationInputRules} from "@/utils";
-import {validateInput} from "@/utils";
+import {createKeywordSchema} from "@/utils/zodSchemas";
+import {zodResolver} from "@hookform/resolvers/zod";
 import Image from "next/image";
-import {FormEvent, useState} from "react";
+import {useEffect} from "react";
+import {Controller, useForm} from "react-hook-form";
+import {z} from "zod";
 import {Dialog} from "../Dialog";
 import styles from "./CreateKeywordFormDialog.module.scss";
-
-const validationRules: ValidationInputRules = {
-  required: true,
-  minLen: 2,
-  maxLen: 50,
-};
 
 export interface CreateKeywordFormDialogProps {
   /** The collection the currently edited keyword is apart of. Used to call the REST api. */
   collection: string;
   open?: boolean;
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onKeywordCreate: (
-    keywordId: number,
-    collectionName: string,
-    displayName: string,
-    proficient: boolean,
-    aliases: string[],
-  ) => void;
-  /** Called upon a successful creation / update / deletion. */
-  onSubmit?: () => void;
+  onCreate: (keywordId: number, collectionName: string, displayName: string, proficient: boolean, aliases: string[]) => void;
   /** Called when the user clicks the cancel button */
   onCancel?: () => void;
 }
 /** A \<dialog> form used to add / edit / delete keywords. */
-export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSubmit, onCancel}: CreateKeywordFormDialogProps) {
-  const [displayName, setDisplayName] = useState<string>("");
-  const [proficient, setProficient] = useState<boolean>(false);
-  const [aliases, setAliases] = useState<string[]>([]);
-  const [CSIErrorMessage, setCSIErrorMessage] = useState<string | undefined>(undefined);
-  const displayNameValidation = validateInput(displayName, validationRules);
+export function CreateKeywordFormDialog({collection, open, onCreate, onCancel}: CreateKeywordFormDialogProps) {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: {isSubmitSuccessful, errors},
+    control,
+  } = useForm<z.output<typeof createKeywordSchema>>({
+    resolver: zodResolver(createKeywordSchema),
+    defaultValues: {
+      title: "",
+      proficient: false,
+      aliases: [],
+    },
+  });
 
   const addSVG = <Image src="/add.svg" alt="Edit icon" width={16} height={16} />;
 
-  function validateForm() {
-    let valid = true;
-
-    if (displayNameValidation.valid === false) {
-      valid = false;
+  // Recommended way of resetting by React Hook Form.
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
     }
-
-    if (aliases.length <= 0) {
-      valid = false;
-      setCSIErrorMessage("Atleast 1 alias is required.");
-    }
-
-    return valid;
-  }
-
-  function handleCSIChange(aliases: string[]) {
-    setAliases(aliases);
-    setCSIErrorMessage("");
-  }
+  }, [isSubmitSuccessful, reset]);
 
   /**
    * Sends a POST request to the API to create a new keyword.
    * @returns The newly created keywords ID.
    */
-  async function requestKeywordCreate(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(inputs: z.output<typeof createKeywordSchema>) {
     try {
-      e.preventDefault();
-      if (!validateForm()) return;
+      const {title, proficient, aliases} = inputs;
       const response = await fetch(`/api/${collection}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({displayName: displayName, proficient: proficient, aliases: aliases}),
+        body: JSON.stringify({displayName: title, proficient, aliases}),
       });
 
       if (!response.ok) throw new Error("Bad response");
@@ -82,8 +65,7 @@ export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSu
       const jsonData: unknown = await response.json();
 
       if (typeof jsonData === "object" && jsonData != null && "id" in jsonData && typeof jsonData.id === "number") {
-        onKeywordCreate(jsonData.id, collection, displayName, proficient, aliases);
-        if (onSubmit) onSubmit();
+        onCreate(jsonData.id, collection, title, proficient, aliases);
       } else {
         throw new Error("Bad id");
       }
@@ -93,37 +75,56 @@ export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSu
     }
   }
 
+  function handleCancel() {
+    if (onCancel) onCancel();
+    reset();
+  }
+
   return (
-    <Dialog title="Create Keyword" onCancel={onCancel} open={open}>
-      <form data-cy="keywordEditorComp" onSubmit={(e) => void requestKeywordCreate(e)} className={styles.container}>
+    <Dialog title="Create Keyword" onCancel={handleCancel} open={open}>
+      <form
+        data-cy="keywordEditorComp"
+        onSubmit={(event) => {
+          void handleSubmit(onSubmit)(event);
+        }}
+        className={styles.container}
+      >
         <div className={styles.inputs}>
           <Input
+            required
             label="Display Name"
-            errorMessage={displayNameValidation.valid ? undefined : displayNameValidation.error}
-            required={true}
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
+            errorMessage={errors.title?.message}
+            {...register("title")}
+            placeholder="The name of the keyword"
+            name="title"
           />
           <Input
             data-cy="proficient"
             label="Proficient"
             type="checkbox"
-            checked={proficient}
-            onChange={(e) => setProficient(e.target.checked)}
+            {...register("proficient")}
+            errorMessage={errors.proficient?.message}
+            name="proficient"
           />
-          <CommaSeparatedInput
-            label={"Aliases (comma-separated)"}
-            savedInputs={aliases}
-            onInputChange={handleCSIChange}
-            required={true}
-            errorMessage={CSIErrorMessage}
+          <Controller
+            control={control}
+            name="aliases"
+            render={({field: {onChange, value}}) => (
+              <CommaSeparatedInput
+                label={"Aliases (comma-separated)"}
+                savedInputs={value}
+                onInputChange={onChange}
+                required={true}
+                errorMessage={errors.aliases?.message}
+              />
+            )}
           />
         </div>
         <Dialog.ActionBar>
           <Button buttonStyle="submit" data-cy="submit" type="submit">
             Create {addSVG}
           </Button>
-          <Button data-cy="cancel" type="button" onClick={onCancel}>
+          <Button data-cy="cancel" type="button" onClick={handleCancel}>
             Cancel
           </Button>
         </Dialog.ActionBar>

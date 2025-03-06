@@ -21,7 +21,7 @@ export interface KeywordDisplayProps extends SubmissionCallbacks {
   /** The color used for each keywords highlight color */
   highlightColor?: string;
   /** A callback for when a user successfully creates a new keyword. Should be used to update state to keep the list relevant. */
-  onKeywordCreate: CreateKeywordFormDialogProps["onKeywordCreate"];
+  onKeywordCreate: CreateKeywordFormDialogProps["onCreate"];
   onCollectionUpdate: (collectionName: string, newCollectionName: string, newHighlightColor: string) => void;
   onCollectionDelete: (collectionName: string) => void;
 }
@@ -98,8 +98,9 @@ export function KeywordDisplay({
     setCollectionDeleteDialogOpen(false);
   }
 
-  function handleCreateKeywordSubmit() {
+  function handleKeywordCreate(...args: Parameters<CreateKeywordFormDialogProps["onCreate"]>) {
     setCreateKeywordFormDialogOpen(false);
+    onKeywordCreate(...args);
   }
 
   function handleCreateKeywordCancel() {
@@ -118,8 +119,7 @@ export function KeywordDisplay({
     <section data-cy="keywordDisplayComp" className={styles.container}>
       <CreateKeywordFormDialog
         collection={title}
-        onKeywordCreate={onKeywordCreate}
-        onSubmit={handleCreateKeywordSubmit}
+        onCreate={handleKeywordCreate}
         onCancel={handleCreateKeywordCancel}
         open={createKeywordFormDialogOpen}
       ></CreateKeywordFormDialog>
