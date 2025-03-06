@@ -47,10 +47,10 @@ export function CreateKeywordFormDialog({collection, open, onCreate, onCancel}: 
 
   // Recommended way of resetting by React Hook Form.
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (isSubmitSuccessful && serverMsg === "") {
       reset();
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSubmitSuccessful, reset, serverMsg]);
 
   /**
    * Sends a POST request to the API to create a new keyword.
