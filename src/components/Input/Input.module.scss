@@ -23,6 +23,19 @@
       }
     }
   }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  input {
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    box-shadow: inset 1px 1px 3px rgb(235, 235, 235);
+  }
 }
 .errorMessage {
   color: red;
