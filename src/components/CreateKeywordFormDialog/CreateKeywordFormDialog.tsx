@@ -94,10 +94,9 @@ export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSu
   }
 
   return (
-    <Dialog title="" onCancel={onCancel} open={open}>
+    <Dialog title="Create Keyword" onCancel={onCancel} open={open}>
       <form data-cy="keywordEditorComp" onSubmit={(e) => void requestKeywordCreate(e)} className={styles.container}>
         <div className={styles.inputs}>
-          <h2>Create</h2>
           <Input
             label="Display Name"
             errorMessage={displayNameValidation.valid ? undefined : displayNameValidation.error}
