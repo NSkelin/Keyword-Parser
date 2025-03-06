@@ -119,14 +119,14 @@ export function CreateKeywordFormDialog({collection, open, onKeywordCreate, onSu
             errorMessage={CSIErrorMessage}
           />
         </div>
-        <div className={styles.actionBar}>
+        <Dialog.ActionBar>
           <Button buttonStyle="submit" data-cy="submit" onClick={() => void requestKeywordCreate()}>
             Create {addSVG}
           </Button>
           <Button data-cy="cancel" onClick={onCancel}>
             Cancel
           </Button>
-        </div>
+        </Dialog.ActionBar>
       </div>
     </Dialog>
   );
