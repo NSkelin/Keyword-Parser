@@ -63,14 +63,16 @@ export function CreateKeywordFormDialog({collection, open, onCreate, onCancel}: 
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({displayName: title, proficient, aliases}),
+      body: JSON.stringify({title, proficient, aliases}),
     });
 
     if (!response.ok) {
       setServerMsg("Something went wrong, please try again later.");
     }
 
-    const {success, data} = serverResponse.safeParse(response);
+    const jsonData: unknown = await response.json();
+
+    const {success, data} = serverResponse.safeParse(jsonData);
     if (!success) {
       setServerMsg("Something went wrong, please try again later.");
       return;
