@@ -292,24 +292,24 @@ describe("createCollections", () => {
 
   it("should return an error if the new collection already exists", async () => {
     const existingCollection = DBSeedData[0].title;
-    const {success, data, error} = await createCollections([{title: existingCollection, highlightColor: "FFFFFF"}]);
+    const result = await createCollections([{title: existingCollection, highlightColor: "FFFFFF"}]);
 
-    expect(success).toBeFalsy();
-    expect(data).toBeUndefined();
-    expect(error).toBeDefined();
+    expect(result.success).toBeFalsy();
+    if (result.success) return;
+    expect(result.error).toBeDefined();
   });
 
   it("should return an error if any of the new collections already exists", async () => {
     const newCollections = ["newtitle1", DBSeedData[0].title, "newtitle2"];
-    const {success, data, error} = await createCollections([
+    const result = await createCollections([
       {title: newCollections[0], highlightColor: "FFFFFF"},
       {title: newCollections[1], highlightColor: "FFFFFF"},
       {title: newCollections[2], highlightColor: "FFFFFF"},
     ]);
 
-    expect(success).toBeFalsy();
-    expect(data).toBeUndefined();
-    expect(error).toBeDefined();
+    expect(result.success).toBeFalsy();
+    if (result.success) return;
+    expect(result.error).toBeDefined();
   });
 
   it("should not create any collections if one fails to create", async () => {
@@ -325,10 +325,11 @@ describe("createCollections", () => {
   });
 
   it("should return an object with the count of created collections and a success bool = true on success", async () => {
-    const {success, data} = await createCollections([{title: "newTitle", highlightColor: "FFFFFF"}]);
+    const result = await createCollections([{title: "newTitle", highlightColor: "FFFFFF"}]);
 
-    expect(success).toBeTruthy();
-    expect(data).toStrictEqual({count: 1});
+    expect(result.success).toBeTruthy();
+    if (!result.success) return;
+    expect(result.data).toStrictEqual({count: 1});
   });
 });
 
@@ -415,6 +416,7 @@ describe("deleteCollection", () => {
   it("should return success: false when deleting a non-existent collection", async () => {
     const result = await deleteCollection("nonExistentTitle");
     expect(result.success).toBe(false);
+    if (result.success) return;
     expect(result.error).toBeDefined();
     expect(result.error?.code).toBe("P2025");
   });

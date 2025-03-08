@@ -1,5 +1,5 @@
 import prisma from "@/database/client";
-import {Prisma} from "@prisma/client";
+import {prismaQueryErrorHandlingWrapper} from "@/utils";
 
 /**
  * Gets one or more collections (leave blank for all collections)
@@ -194,34 +194,12 @@ export async function deleteAllCollections() {
 /**
  * Creates one or more new empty keywordCollections. Does not create keywords or aliases.
  */
-export async function createCollections(collections: {title: string; highlightColor: string}[]): Promise<{
-  success: boolean;
-  data?: Prisma.BatchPayload;
-  error?: Pick<Prisma.PrismaClientKnownRequestError, "code" | "message" | "meta">;
-}> {
-  try {
-    const data = await prisma.keywordCollection.createMany({
+export async function createCollections(collections: {title: string; highlightColor: string}[]) {
+  return prismaQueryErrorHandlingWrapper(() =>
+    prisma.keywordCollection.createMany({
       data: collections,
-    });
-
-    return {
-      success: true,
-      data,
-    };
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const {code, message, meta} = e;
-      return {
-        success: false,
-        error: {
-          code,
-          message,
-          meta,
-        },
-      };
-    }
-    throw e;
-  }
+    }),
+  );
 }
 
 /**
@@ -241,26 +219,9 @@ export async function updateCollection(collectionTitle: string, newData: {newTit
 }
 
 export async function deleteCollection(title: string) {
-  try {
-    const deletedCollection = await prisma.keywordCollection.delete({
+  return prismaQueryErrorHandlingWrapper(() =>
+    prisma.keywordCollection.delete({
       where: {title: title},
-    });
-    return {
-      success: true,
-      data: deletedCollection,
-    };
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const {code, message, meta} = e;
-      return {
-        success: false,
-        error: {
-          code,
-          message,
-          meta,
-        },
-      };
-    }
-    throw e;
-  }
+    }),
+  );
 }
