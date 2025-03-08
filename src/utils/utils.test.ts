@@ -1,5 +1,9 @@
+import {prismaMock} from "@/database/clientMock"; // MUST COME BEFORE prisma IMPORT OR prisma DOESNT GET MOCKED
+// comment line to stop vscode organize imports from placing prismaMock below prisma
+import prisma from "@/database/client";
 import type {ValidationInputRules} from "@/utils";
 import {expect} from "@jest/globals";
+import {Prisma} from "@prisma/client";
 import {
   createKeywordsRegEx,
   getAliases,
@@ -7,6 +11,7 @@ import {
   getInstancedKeywords,
   getMatches,
   getUniqueMatches,
+  prismaQueryErrorHandlingWrapper,
   validateInput,
 } from "./utils";
 
@@ -407,5 +412,75 @@ describe("validateInput", () => {
     const errMsg = validateInput("abc***", validationRules).error;
 
     expect(errMsg?.match(/[*]/g)?.length).toBe(1);
+  });
+});
+
+describe("prismaQueryErrorHandlingWrapper", () => {
+  it("should return { success: true, data } where data is the resolved value of the query", async () => {
+    prismaMock.keywordCollection.create.mockResolvedValue({title: "title", highlightColor: "#FFFFFF"});
+
+    const result = await prismaQueryErrorHandlingWrapper(() => {
+      return new Promise((resolve) => {
+        resolve(prisma.keywordCollection.create({data: {title: "t", highlightColor: "c"}}));
+      });
+    });
+
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.data).toEqual({title: "title", highlightColor: "#FFFFFF"});
+  });
+
+  it("should return { success: false, error }, where error contains code, message, and meta from the thrown error.", async () => {
+    const error = new Prisma.PrismaClientKnownRequestError("Test error", {
+      code: "P2002",
+      clientVersion: "4.0.0",
+      meta: {target: ["title"]},
+    });
+    prismaMock.keywordCollection.create.mockRejectedValue(error);
+
+    const result = await prismaQueryErrorHandlingWrapper(() => {
+      return new Promise((resolve) => {
+        resolve(prisma.keywordCollection.create({data: {title: "Test Collection", highlightColor: "#FF0000"}}));
+      });
+    });
+
+    expect(result.success).toBe(false);
+    if (result.success) return;
+    expect(result.error).toEqual({
+      code: "P2002",
+      message: "Test error",
+      meta: {target: ["title"]},
+    });
+  });
+
+  it("should handle PrismaClientKnownRequestError errors", async () => {
+    const error = new Prisma.PrismaClientKnownRequestError("Test error", {
+      code: "P2002",
+      clientVersion: "4.0.0",
+    });
+    prismaMock.keywordCollection.create.mockRejectedValue(error);
+
+    const result = await prismaQueryErrorHandlingWrapper(() => {
+      return new Promise((resolve) => {
+        resolve(prisma.keywordCollection.create({data: {title: "Test Collection", highlightColor: "#FF0000"}}));
+      });
+    });
+
+    expect(result.success).toBe(false);
+    if (result.success) return;
+    expect(result.error).toBeDefined();
+  });
+
+  it("should throw any unhandled errors", async () => {
+    const error = new Error("err");
+    prismaMock.keywordCollection.create.mockRejectedValue(error);
+
+    await expect(
+      prismaQueryErrorHandlingWrapper(() => {
+        return new Promise((resolve) => {
+          resolve(prisma.keywordCollection.create({data: {title: "Test Collection", highlightColor: "#FF0000"}}));
+        });
+      }),
+    ).rejects.toThrow("err");
   });
 });
