@@ -24,7 +24,7 @@ export async function POST(req: Request, props: {params: Promise<{collection: st
     const result = await createKeywordWithAliases(title, proficient, aliasObjs, collection);
 
     if (result.success) {
-      const id = result.data;
+      const id = result.data.id;
       return NextResponse.json({success: true, message: "", id});
     } else {
       const error = result.error;

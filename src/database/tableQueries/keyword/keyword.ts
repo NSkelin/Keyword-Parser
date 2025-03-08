@@ -1,6 +1,6 @@
 import prisma from "@/database/client";
 import {getKeywordAliases} from "@/database/tableQueries/keywordAlias";
-import {Prisma} from "@prisma/client";
+import {prismaQueryErrorHandlingWrapper} from "@/utils";
 
 /** Returns a keyword and its aliases */
 export async function getKeywordWithAliasesByID(id: number) {
@@ -15,18 +15,6 @@ export async function getKeywordWithAliasesByID(id: number) {
   return keyword;
 }
 
-interface SuccessResponse<T> {
-  success: true;
-  data: T;
-}
-
-interface ErrorResponse {
-  success: false;
-  error: Pick<Prisma.PrismaClientKnownRequestError, "code" | "message" | "meta">;
-}
-
-type Response<T> = SuccessResponse<T> | ErrorResponse;
-
 /**
  * Creates a keyword and creates its aliases.
  *
@@ -39,9 +27,9 @@ export async function createKeywordWithAliases(
   proficient: boolean,
   aliases: {alias: string}[],
   collection: string,
-): Promise<Response<number>> {
-  try {
-    const newKeyword = await prisma.keyword.create({
+) {
+  return prismaQueryErrorHandlingWrapper(() =>
+    prisma.keyword.create({
       data: {
         displayName: displayName,
         collectionTitle: collection,
@@ -50,26 +38,8 @@ export async function createKeywordWithAliases(
           create: aliases,
         },
       },
-    });
-
-    return {
-      success: true,
-      data: newKeyword.id,
-    };
-  } catch (e) {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const {code, message, meta} = e;
-      return {
-        success: false,
-        error: {
-          code,
-          message,
-          meta,
-        },
-      };
-    }
-    throw e;
-  }
+    }),
+  );
 }
 
 /**

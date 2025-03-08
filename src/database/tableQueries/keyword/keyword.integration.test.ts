@@ -111,7 +111,7 @@ describe("getKeywordWithAliasesByID", () => {
 
     expect(result.success).toBeTruthy();
     if (!result.success) return;
-    const newKeywordID = result.data;
+    const newKeywordID = result.data.id;
 
     const keyword = await getKeywordWithAliasesByID(newKeywordID);
 
@@ -137,7 +137,7 @@ describe("createKeywordWithAliases", () => {
 
     expect(result.success).toBeTruthy();
     if (!result.success) return;
-    const newKeywordID = result.data;
+    const newKeywordID = result.data.id;
 
     const keyword = await getKeywordWithAliasesByID(newKeywordID);
 
@@ -169,7 +169,7 @@ describe("updateKeywordAndAliases", () => {
 
     expect(result.success).toBeTruthy();
     if (!result.success) return;
-    const newKeywordID = result.data;
+    const newKeywordID = result.data.id;
 
     await updateKeywordAndAliases(newKeywordID, true, ["newAlias1", "newAlias2"], "newDisplayName1");
     const keyword = await getKeywordWithAliasesByID(newKeywordID);
@@ -202,7 +202,7 @@ describe("deleteKeywordAndAliases", () => {
 
     expect(result.success).toBeTruthy();
     if (!result.success) return;
-    const newKeywordID = result.data;
+    const newKeywordID = result.data.id;
 
     expect(await getKeywordWithAliasesByID(newKeywordID)).not.toBeNull();
 
