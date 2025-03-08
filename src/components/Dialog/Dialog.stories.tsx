@@ -15,7 +15,7 @@ const Mock = () => {
   return (
     <>
       <button onClick={() => setOpen(true)}>Show Dialog</button>
-      <Dialog open={open}>
+      <Dialog title="Dialog" open={open}>
         I am the dialog
         <button onClick={() => setOpen(false)}>Close me!</button>
       </Dialog>

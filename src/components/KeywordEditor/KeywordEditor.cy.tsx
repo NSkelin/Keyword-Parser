@@ -7,9 +7,7 @@ describe("'Create' mode", () => {
       <KeywordEditor
         id={1}
         collection="collection"
-        mode="Create"
         onSubmit={cy.spy().as("onSubmit")}
-        onKeywordCreate={cy.spy().as("onKeywordCreate")}
         onKeywordUpdate={cy.spy().as("onKeywordUpdate")}
         onKeywordDelete={cy.spy().as("onKeywordDelete")}
       />,
@@ -25,7 +23,6 @@ describe("'Create' mode", () => {
         id={1}
         collection="collection"
         onSubmit={cy.spy().as("onSubmit")}
-        onKeywordCreate={cy.spy().as("onKeywordCreate")}
         onKeywordUpdate={cy.spy().as("onKeywordUpdate")}
         onKeywordDelete={cy.spy().as("onKeywordDelete")}
       />,
@@ -178,12 +175,10 @@ describe("'Edit' mode", () => {
       <KeywordEditor
         id={1}
         collection="collection"
-        mode="Edit"
         initialDisplayName="displayName"
         initialProficient={false}
         initialAliases={["alias1", "alias2"]}
         onSubmit={cy.spy().as("onSubmit")}
-        onKeywordCreate={cy.spy().as("onKeywordCreate")}
         onKeywordUpdate={cy.spy().as("onKeywordUpdate")}
         onKeywordDelete={cy.spy().as("onKeywordDelete")}
       />,
