@@ -141,6 +141,18 @@ interface ErrorResponse {
 
 type Response<T> = SuccessResponse<T> | ErrorResponse;
 
+/**
+ * A Wrapper for prisma queries used to handle specific errors & returns in a consistent format.
+ *
+ * @param query The prisma query to be wrapped.
+ * @returns One of two objects, both with a success value that determines if the query succeeded or not.
+ *
+ * - If the query succeeded it returns an additional data object with the queries return value.
+ *
+ * - If the query failed it returns an additional error object with info about the error.
+ *
+ * @throws any unhandled errors.
+ */
 export async function prismaQueryErrorHandlingWrapper<T>(query: () => Promise<T>): Promise<Response<T>> {
   try {
     const data = await query();
