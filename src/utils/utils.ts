@@ -1,3 +1,5 @@
+import {Prisma} from "@prisma/client";
+
 /** Creates a regular expression capable of matching all the keywords sent in. */
 export function createKeywordsRegEx(keywords: string[] | string) {
   if (keywords.length < 1) throw new Error("Keyword(s) cannot be empty");
@@ -125,4 +127,36 @@ export function validateInput(input: string, rules?: ValidationInputRules) {
   }
 
   return {valid: true, error: ""};
+}
+
+interface SuccessResponse<T> {
+  success: true;
+  data: T;
+}
+
+interface ErrorResponse {
+  success: false;
+  error: Pick<Prisma.PrismaClientKnownRequestError, "code" | "message" | "meta">;
+}
+
+type Response<T> = SuccessResponse<T> | ErrorResponse;
+
+export async function prismaQueryErrorHandlingWrapper<T>(query: () => Promise<T>): Promise<Response<T>> {
+  try {
+    const data = await query();
+    return {success: true, data};
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      const {code, message, meta} = e;
+      return {
+        success: false,
+        error: {
+          code,
+          message,
+          meta,
+        },
+      };
+    }
+    throw e;
+  }
 }
